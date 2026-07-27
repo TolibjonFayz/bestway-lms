@@ -1,0 +1,141 @@
+/* Best Way LMS — global reset, font and type scale.
+   Values mirror design/01-design-system.html sections 01–02. This and
+   tokens.css are the only non-scoped stylesheets in the app. */
+
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: var(--green);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--green-dark);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* Keyboard-only focus. Components that draw their own ring opt out. */
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+/* ── Type scale ──────────────────────────────────────────────────────── */
+
+.bw-display,
+.bw-h1,
+.bw-h2,
+.bw-h3 {
+  margin: 0;
+  color: var(--ink);
+}
+
+.bw-display {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.bw-h1 {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.bw-h2 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.bw-h3 {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.bw-body-lg {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.bw-body {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.bw-caption {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--gray);
+}
+
+/* Counters, scores and money never jitter as they tick. */
+.bw-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Shared animations ───────────────────────────────────────────────── */
+
+@keyframes bw-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bw-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

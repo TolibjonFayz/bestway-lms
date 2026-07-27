@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#0f172a;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:#16a34a;text-decoration:none}
+  a:hover{color:#15803d}
+  input::placeholder{color:#94a3b8}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#f8fafc;padding:44px 24px 96px">
+  <div style="max-width:1080px;margin:0 auto">
+
+    <!-- page header -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+      <div style="position:relative;width:40px;height:40px;border-radius:12px;background:#16a34a;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(22,163,74,.28);flex:none">
+        <span style="color:#fff;font-weight:800;font-size:22px;line-height:1">B</span>
+        <span style="position:absolute;right:-4px;top:-4px;width:14px;height:14px;border-radius:50%;background:#ea8c3c;border:3px solid #f8fafc"></span>
+      </div>
+      <div style="line-height:1.1"><div style="font-weight:800;font-size:18px;letter-spacing:-.02em">Best Way</div><div style="font-weight:600;font-size:10px;color:#16a34a;letter-spacing:.16em;text-transform:uppercase">Taʼlim markazi</div></div>
+    </div>
+    <h1 style="margin:0;font-size:30px;font-weight:800;letter-spacing:-.02em;color:#0f172a">Autentifikatsiya oqimi</h1>
+    <p style="margin:8px 0 44px;font-size:16px;color:#64748b;font-weight:500">Rol tanlash → Kirish → Boshlangʻich sozlash. Mobil uchun moʻljallangan.</p>
+
+    <!-- ============ SCREEN A ============ -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;font-weight:800;font-size:14px;font-family:ui-monospace,Menlo,monospace;color:#15803d;background:#dcfce7;border-radius:9px">A</span>
+      <h2 style="margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em;color:#0f172a">Rol tanlash</h2>
+      <sc-if value="{{ bilingual }}" hint-placeholder-val="{{ true }}"><span style="font-size:14px;font-weight:500;color:#94a3b8">Role select</span></sc-if>
+    </div>
+    <div style="display:flex;justify-content:center;margin-bottom:64px">
+      <div style="width:390px;max-width:100%;min-height:812px;background:#fff;border-radius:38px;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);overflow:hidden;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:15px 26px 4px;font-size:13px;font-weight:700;color:#0f172a"><span>9:41</span><span style="display:flex;gap:6px;align-items:center"><span style="display:flex;gap:2px;align-items:flex-end"><span style="width:3px;height:5px;background:#0f172a;border-radius:1px"></span><span style="width:3px;height:8px;background:#0f172a;border-radius:1px"></span><span style="width:3px;height:11px;background:#0f172a;border-radius:1px"></span></span><span style="width:22px;height:11px;border:1.5px solid #0f172a;border-radius:3px;position:relative;display:inline-block"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;width:12px;background:#0f172a;border-radius:1px"></span></span></span></div>
+        <div style="flex:1;display:flex;flex-direction:column;padding:34px 26px 30px">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
+            <div style="position:relative;width:56px;height:56px;border-radius:17px;background:#16a34a;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(22,163,74,.3)"><span style="color:#fff;font-weight:800;font-size:30px;line-height:1">B</span><span style="position:absolute;right:-5px;top:-5px;width:18px;height:18px;border-radius:50%;background:#ea8c3c;border:3.5px solid #fff"></span></div>
+          </div>
+          <div style="text-align:center;margin-top:34px">
+            <h3 style="margin:0;font-size:25px;font-weight:800;letter-spacing:-.02em;color:#0f172a">Profilingizni tanlang</h3>
+            <p style="margin:9px 0 0;font-size:15px;color:#64748b;line-height:1.5">Davom etish uchun rolingizni tanlang</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:13px;margin-top:30px">
+            <button onClick="{{ selStudent }}" aria-pressed="{{ isStudent }}" style="{{ studentCard }}">
+              <span style="width:52px;height:52px;border-radius:14px;background:#f0fdf4;color:#16a34a;display:flex;align-items:center;justify-content:center;flex:none"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3Z"></path></svg></span>
+              <span style="flex:1;min-width:0"><span style="display:block;font-size:17px;font-weight:700;color:#0f172a">Oʻquvchi</span><span style="display:block;font-size:13.5px;color:#64748b;margin-top:2px">Darslar va uyga vazifalar</span></span>
+              <span style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;{{ studentRadio }}"><sc-if value="{{ isStudent }}" hint-placeholder-val="{{ true }}"><span style="width:11px;height:11px;border-radius:50%;background:#16a34a"></span></sc-if></span>
+            </button>
+            <button onClick="{{ selStaff }}" aria-pressed="{{ isStaff }}" style="{{ staffCard }}">
+              <span style="width:52px;height:52px;border-radius:14px;background:#f0fdf4;color:#16a34a;display:flex;align-items:center;justify-content:center;flex:none"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"></rect><circle cx="8" cy="11" r="2"></circle><path d="M5.5 16c.4-1.2 1.3-1.9 2.5-1.9s2.1.7 2.5 1.9"></path><line x1="14" y1="10" x2="18" y2="10"></line><line x1="14" y1="14" x2="18" y2="14"></line></svg></span>
+              <span style="flex:1;min-width:0"><span style="display:block;font-size:17px;font-weight:700;color:#0f172a">Xodim</span><span style="display:block;font-size:13.5px;color:#64748b;margin-top:2px">Oʻqituvchi va administrator uchun</span></span>
+              <span style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;{{ staffRadio }}"><sc-if value="{{ isStaff }}"><span style="width:11px;height:11px;border-radius:50%;background:#16a34a"></span></sc-if></span>
+            </button>
+          </div>
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;font-family:inherit;font-weight:700;font-size:16px;height:54px;border-radius:13px;border:none;background:#16a34a;color:#fff;box-shadow:0 12px 30px rgba(22,163,74,.28);cursor:pointer;margin-top:auto" style-hover="background:#15803d" style-active="background:#166534;transform:translateY(1px)">Davom etish<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><path d="m12 5 7 7-7 7"></path></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SCREEN B ============ -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;font-weight:800;font-size:14px;font-family:ui-monospace,Menlo,monospace;color:#15803d;background:#dcfce7;border-radius:9px">B</span>
+      <h2 style="margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em;color:#0f172a">Kirish</h2>
+      <sc-if value="{{ bilingual }}"><span style="font-size:14px;font-weight:500;color:#94a3b8">Login · standart + xato holati</span></sc-if>
+    </div>
+    <div style="display:flex;gap:28px;flex-wrap:wrap;justify-content:center;margin-bottom:64px">
+
+      <!-- B default (interactive) -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+        <div style="width:390px;max-width:100%;min-height:812px;background:#fff;border-radius:38px;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);overflow:hidden;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:15px 26px 4px;font-size:13px;font-weight:700;color:#0f172a"><span>9:41</span><span style="display:flex;gap:6px;align-items:center"><span style="display:flex;gap:2px;align-items:flex-end"><span style="width:3px;height:5px;background:#0f172a;border-radius:1px"></span><span style="width:3px;height:8px;background:#0f172a;border-radius:1px"></span><span style="width:3px;height:11px;background:#0f172a;border-radius:1px"></span></span><span style="width:22px;height:11px;border:1.5px solid #0f172a;border-radius:3px;position:relative;display:inline-block"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;width:12px;background:#0f172a;border-radius:1px"></span></span></span></div>
+          <div style="flex:1;display:flex;flex-direction:column;padding:30px 26px 28px">
+            <div style="display:flex;align-items:center;gap:10px"><div style="position:relative;width:40px;height:40px;border-radius:12px;background:#16a34a;display:flex;align-items:center;justify-content:center"><span style="color:#fff;font-weight:800;font-size:21px;line-height:1">B</span><span style="position:absolute;right:-4px;top:-4px;width:13px;height:13px;border-radius:50%;background:#ea8c3c;border:3px solid #fff"></span></div><span style="font-weight:800;font-size:16px;letter-spacing:-.02em">Best Way</span></div>
+            <h3 style="margin:30px 0 0;font-size:30px;font-weight:800;letter-spacing:-.02em;color:#0f172a">Oʻquvchi</h3>
+            <p style="margin:8px 0 0;font-size:15px;color:#64748b;line-height:1.5">Telefon raqamingiz bilan davom eting</p>
+
+            <div style="margin-top:28px">
+              <label style="display:block;font-weight:600;font-size:13px;color:#334155;margin-bottom:8px">Telefon raqami</label>
+              <div style="display:flex;align-items:center;height:52px;border:1.5px solid #e2e8f0;border-radius:12px;background:#fff;overflow:hidden">
+                <span style="display:flex;align-items:center;gap:8px;height:100%;padding:0 12px 0 14px;border-right:1.5px solid #e2e8f0;font-weight:700;font-size:16px;color:#0f172a">
+                  <span style="width:21px;height:15px;border-radius:3px;overflow:hidden;display:inline-flex;flex-direction:column;box-shadow:0 0 0 1px rgba(15,23,42,.1)"><span style="flex:1;background:#0099b5"></span><span style="height:1.5px;background:#ce1126"></span><span style="flex:1;background:#fff"></span><span style="height:1.5px;background:#ce1126"></span><span style="flex:1;background:#1eb53a"></span></span>+998
+                </span>
+                <input value="{{ phoneVal }}" onChange="{{ onPhone }}" inputmode="tel" aria-label="Telefon raqami" placeholder="90 123 45 67" style="flex:1;min-width:0;border:none;outline:none;height:100%;padding:0 14px;font-family:inherit;font-weight:600;font-size:16px;color:#0f172a;background:transparent;letter-spacing:.02em">
+              </div>
+            </div>
+
+            <div style="margin-top:18px">
+              <label style="display:block;font-weight:600;font-size:13px;color:#334155;margin-bottom:8px">Parol</label>
+              <div style="position:relative">
+                <input type="{{ pwdType }}" value="{{ pwd }}" onChange="{{ onPwd }}" aria-label="Parol" placeholder="Parolingiz" style="width:100%;height:52px;padding:0 50px 0 14px;font-family:inherit;font-weight:600;font-size:16px;color:#0f172a;background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;outline:none;transition:border-color .15s,box-shadow .15s" style-focus="border-color:#16a34a;box-shadow:0 0 0 4px rgba(22,163,74,.15)">
+                <button onClick="{{ togglePwd }}" aria-label="Parolni koʻrsatish" style="position:absolute;right:7px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:none;background:transparent;border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#64748b" style-hover="background:#f1f5f9;color:#0f172a">
+                  <sc-if value="{{ hidePwd }}" hint-placeholder-val="{{ true }}"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg></sc-if>
+                  <sc-if value="{{ showPwd }}"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c6.5 0 10 7 10 7a13.2 13.2 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.5 13.5 0 0 0 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.39-1.61"></path><line x1="2" y1="2" x2="22" y2="22"></line><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path></svg></sc-if>
+                </button>
+              </div>
+              <div style="text-align:right;margin-top:11px"><a href="#" style="font-size:13.5px;font-weight:600;color:#16a34a">Parolni unutdingizmi?</a></div>
+            </div>
+
+            <button disabled="{{ loginDisabled }}" style="{{ loginBtn }}" style-hover="filter:brightness(.96)">Kirish<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><path d="m12 5 7 7-7 7"></path></svg></button>
+            <div style="text-align:center;margin-top:auto;padding-top:22px"><a href="#" style="display:inline-flex;align-items:center;gap:6px;font-size:14.5px;font-weight:600;color:#64748b" style-hover="color:#0f172a"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>Orqaga</a></div>
+          </div>
+        </div>
+        <span style="font:700 11px ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase;color:#94a3b8">Standart · tugma toʻldirilganda faollashadi</span>
+      </div>
+
+      <!-- B error (static) -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+        <div style="width:390px;max-width:100%;min-height:812px;background:#fff;border-radius:38px;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);overflow:hidden;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:15px 26px 4px;font-size:13px;font-weight:700;color:#0f172a"><span>9:41</span><span style="display:flex;gap:6px;align-items:center"><span style="display:flex;gap:2px;align-items:flex-end"><span style="width:3px;height:5px;background:#0f172a;border-radius:1px"></span><span style="width:3px;height:8px;background:#0f172a;border-radius:1px"></span><span style="width:3px;height:11px;background:#0f172a;border-radius:1px"></span></span><span style="width:22px;height:11px;border:1.5px solid #0f172a;border-radius:3px;position:relative;display:inline-block"><span style="position:absolute;top:1.5px;bottom:1.5px;left:1.5px;width:12px;background:#0f172a;border-radius:1px"></span></span></span></div>
+          <div style="flex:1;display:flex;flex-direction:column;padding:30px 26px 28px">
+            <div style="display:flex;align-items:center;gap:10px"><div style="position:relative;width:40px;height:40px;border-radius:12px;background:#16a34a;display:flex;align-items:center;justify-content:center"><span style="color:#fff;font-weight:800;font-size:21px;line-height:1">B</span><span style="position:absolute;right:-4px;top:-4px;width:13px;height:13px;border-radius:50%;background:#ea8c3c;border:3px solid #fff"></span></div><span style="font-weight:800;font-size:16px;letter-spacing:-.02em">Best Way</span></div>
+            <h3 style="margin:30px 0 0;font-size:30px;font-weight:800;letter-spacing:-.02em;color:#0f172a">Oʻquvchi</h3>
+            <p style="margin:8px 0 0;font-size:15px;color:#64748b;line-height:1.5">Telefon raqamingiz bilan davom eting</p>
+
+            <div style="margin-top:28px">
+              <label style="display:block;font-weight:600;font-size:13px;color:#334155;margin-bottom:8px">Telefon raqami</label>
+              <div style="display:flex;align-items:center;height:52px;border:1.5px solid #ef4444;border-radius:12px;background:#fff;overflow:hidden;box-shadow:0 0 0 4px rgba(239,68,68,.1)">
+                <span style="display:flex;align-items:center;gap:8px;height:100%;padding:0 12px 0 14px;border-right:1.5px solid #fecaca;font-weight:700;font-size:16px;color:#0f172a">
+                  <span style="width:21px;height:15px;border-radius:3px;overflow:hidden;display:inline-flex;flex-direction:column;box-shadow:0 0 0 1px rgba(15,23,42,.1)"><span style="flex:1;background:#0099b5"></span><span style="height:1.5px;background:#ce1126"></span><span style="flex:1;background:#fff"></span><span style="height:1.5px;background:#ce1126"></span><span style="flex:1;background:#1eb53a"></span></span>+998
+                </span>
+                <input value="(90) 123-45-67" readonly aria-label="Telefon raqami" style="flex:1;min-width:0;border:none;outline:none;height:100%;padding:0 14px;font-family:inherit;font-weight:600;font-size:16px;color:#0f172a;background:transparent;letter-spacing:.02em">
+              </div>
+            </div>
+
+            <div style="margin-top:18px">
+              <label style="display:block;font-weight:600;font-size:13px;color:#334155;margin-bottom:8px">Parol</label>
+              <div style="position:relative">
+                <input type="password" value="wrongpass" readonly aria-label="Parol" style="width:100%;height:52px;padding:0 50px 0 14px;font-family:inherit;font-weight:600;font-size:16px;color:#0f172a;background:#fff;border:1.5px solid #ef4444;border-radius:12px;outline:none;box-shadow:0 0 0 4px rgba(239,68,68,.1);letter-spacing:.15em">
+                <span style="position:absolute;right:7px;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#64748b"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;margin-top:11px;color:#ef4444;font-size:13px;font-weight:600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Telefon raqam yoki parol notoʻgʻri</div>
+            </div>
+
+            <button style="display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;font-family:inherit;font-weight:700;font-size:16px;height:54px;border-radius:13px;border:none;background:#16a34a;color:#fff;box-shadow:0 12px 30px rgba(22,163,74,.28);cursor:pointer;margin-top:24px">Kirish<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><path d="m12 5 7 7-7 7"></path></svg></button>
+            <div style="text-align:center;margin-top:auto;padding-top:22px"><a href="#" style="display:inline-flex;align-items:center;gap:6px;font-size:14.5px;font-weight:600;color:#64748b" style-hover="color:#0f172a"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>Orqaga</a></div>
+          </div>
+        </div>
+        <span style="font:700 11px ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase;color:#ef4444">Xato holati</span>
+      </div>
+    </div>
+
+    <!-- ============ SCREEN C ============ -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;font-weight:800;font-size:14px;font-family:ui-monospace,Menlo,monospace;color:#15803d;background:#dcfce7;border-radius:9px">C</span>
+      <h2 style="margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em;color:#0f172a">Boshlangʻich sozlash</h2>
+      <sc-if value="{{ bilingual }}"><span style="font-size:14px;font-weight:500;color:#94a3b8">Onboarding · desktop (chap panel mobilda yashiriladi)</span></sc-if>
+    </div>
+    <div style="width:100%;max-width:960px;min-height:600px;background:#fff;border-radius:26px;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);overflow:hidden;display:flex">
+      <!-- left panel -->
+      <div style="width:45%;background:#f0fdf4;position:relative;overflow:hidden;padding:44px;display:flex;flex-direction:column">
+        <span style="position:absolute;width:240px;height:240px;border-radius:50%;background:#dcfce7;top:-70px;right:-60px"></span>
+        <span style="position:absolute;width:150px;height:150px;border-radius:50%;background:#bbf7d0;opacity:.55;bottom:60px;left:-40px"></span>
+        <span style="position:absolute;width:140px;height:140px;background:#22c55e;opacity:.16;border-radius:0 100% 30% 100%;transform:rotate(-8deg);left:96px;bottom:130px"></span>
+        <span style="position:absolute;width:140px;height:140px;background:#16a34a;opacity:.13;border-radius:100% 0 100% 30%;transform:rotate(8deg);left:172px;bottom:130px"></span>
+        <div style="position:relative;z-index:1;display:flex;align-items:center;gap:11px">
+          <div style="position:relative;width:44px;height:44px;border-radius:13px;background:#16a34a;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(22,163,74,.28)"><span style="color:#fff;font-weight:800;font-size:24px;line-height:1">B</span><span style="position:absolute;right:-4px;top:-4px;width:15px;height:15px;border-radius:50%;background:#ea8c3c;border:3px solid #f0fdf4"></span></div>
+          <div style="line-height:1.1"><div style="font-weight:800;font-size:18px;letter-spacing:-.02em;color:#0f172a">Best Way</div><div style="font-weight:600;font-size:9.5px;color:#16a34a;letter-spacing:.16em;text-transform:uppercase">Taʼlim markazi</div></div>
+        </div>
+        <div style="position:relative;z-index:1;margin-top:auto">
+          <div style="font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.12;color:#0f172a;text-wrap:balance">Bilim — eng yaxshi yoʻl</div>
+          <p style="margin:14px 0 0;font-size:15px;font-weight:500;color:#166534;line-height:1.55;max-width:280px">Har bir dars — maqsad sari qadam. Bugun boshlang.</p>
+        </div>
+      </div>
+      <!-- right panel -->
+      <div style="flex:1;padding:44px;display:flex;flex-direction:column">
+        <h3 style="margin:0;font-size:28px;font-weight:800;letter-spacing:-.02em;color:#0f172a">Xush kelibsiz, Jasur!</h3>
+        <p style="margin:9px 0 0;font-size:15px;color:#64748b;line-height:1.5">Boshlashdan oldin bilim darajangizni tasdiqlang.</p>
+
+        <!-- 3-step -->
+        <div style="display:flex;align-items:center;margin-top:30px">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex:none"><div style="width:34px;height:34px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;box-shadow:0 0 0 4px rgba(22,163,74,.15)">1</div><span style="font-size:12px;font-weight:700;color:#15803d">Daraja</span></div>
+          <div style="flex:1;height:3px;background:#e2e8f0;border-radius:2px;margin:0 8px 20px"></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex:none"><div style="width:34px;height:34px;border-radius:50%;background:#f1f5f9;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">2</div><span style="font-size:12px;font-weight:600;color:#94a3b8">Maqsad</span></div>
+          <div style="flex:1;height:3px;background:#e2e8f0;border-radius:2px;margin:0 8px 20px"></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex:none"><div style="width:34px;height:34px;border-radius:50%;background:#f1f5f9;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">3</div><span style="font-size:12px;font-weight:600;color:#94a3b8">Boshlash</span></div>
+        </div>
+
+        <div style="font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#94a3b8;margin:28px 0 12px">Til darajangiz</div>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <button onClick="{{ setA1 }}" style="{{ chipA1 }}"><span style="flex:1;text-align:left">Elementary <span style="color:#94a3b8;font-weight:600">(A1)</span></span><sc-if value="{{ isA1 }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></button>
+          <button onClick="{{ setA2 }}" style="{{ chipA2 }}"><span style="flex:1;text-align:left">Pre-Intermediate <span style="color:#94a3b8;font-weight:600">(A2)</span></span><sc-if value="{{ isA2 }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></button>
+          <button onClick="{{ setB1 }}" style="{{ chipB1 }}"><span style="flex:1;text-align:left">Intermediate <span style="color:#94a3b8;font-weight:600">(B1)</span></span><sc-if value="{{ isB1 }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></button>
+          <button onClick="{{ setB2 }}" style="{{ chipB2 }}"><span style="flex:1;text-align:left">Upper-Intermediate <span style="color:#94a3b8;font-weight:600">(B2)</span></span><sc-if value="{{ isB2 }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></button>
+        </div>
+
+        <button style="display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;font-family:inherit;font-weight:700;font-size:16px;height:54px;border-radius:13px;border:none;background:#16a34a;color:#fff;box-shadow:0 12px 30px rgba(22,163,74,.28);cursor:pointer;margin-top:auto" style-hover="background:#15803d" style-active="background:#166534;transform:translateY(1px)">Davom etish<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><path d="m12 5 7 7-7 7"></path></svg></button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;bilingualLabels&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;English glosses&quot;,&quot;section&quot;:&quot;Documentation&quot;}}">
+class Component extends DCLogic {
+  state = { role: 'student', phone: '', pwd: '', showPwd: false, level: 'B1' };
+
+  fmtPhone(d) {
+    d = (d || '').replace(/\D/g, '').slice(0, 9);
+    let o = '';
+    if (d.length > 0) o = '(' + d.slice(0, 2);
+    if (d.length >= 2) o += ') ' + d.slice(2, 5);
+    if (d.length >= 5) o += '-' + d.slice(5, 7);
+    if (d.length >= 7) o += '-' + d.slice(7, 9);
+    return o;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const digits = s.phone;
+    const valid = digits.length === 9 && s.pwd.length >= 6;
+
+    const cardSel = 'display:flex;align-items:center;gap:15px;width:100%;text-align:left;padding:17px 18px;border-radius:16px;cursor:pointer;font-family:inherit;border:2px solid #16a34a;background:#f0fdf4;';
+    const cardUn = 'display:flex;align-items:center;gap:15px;width:100%;text-align:left;padding:17px 18px;border-radius:16px;cursor:pointer;font-family:inherit;border:2px solid #e2e8f0;background:#fff;';
+    const radioSel = 'border:2px solid #16a34a;';
+    const radioUn = 'border:2px solid #cbd5e1;';
+
+    const chipBase = 'display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:54px;padding:0 18px;border-radius:14px;font-family:inherit;font-weight:700;font-size:15.5px;cursor:pointer;';
+    const chip = (on) => chipBase + (on ? 'border:2px solid #16a34a;background:#f0fdf4;color:#15803d;' : 'border:2px solid #e2e8f0;background:#fff;color:#334155;');
+
+    const btnBase = 'display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;font-family:inherit;font-weight:700;font-size:16px;height:54px;border-radius:13px;border:none;margin-top:24px;';
+
+    return {
+      bilingual: this.props.bilingualLabels ?? true,
+      isStudent: s.role === 'student',
+      isStaff: s.role === 'staff',
+      selStudent: () => this.setState({ role: 'student' }),
+      selStaff: () => this.setState({ role: 'staff' }),
+      studentCard: s.role === 'student' ? cardSel : cardUn,
+      staffCard: s.role === 'staff' ? cardSel : cardUn,
+      studentRadio: s.role === 'student' ? radioSel : radioUn,
+      staffRadio: s.role === 'staff' ? radioSel : radioUn,
+
+      phoneVal: this.fmtPhone(s.phone),
+      onPhone: (e) => this.setState({ phone: e.target.value.replace(/\D/g, '').slice(0, 9) }),
+      pwd: s.pwd,
+      onPwd: (e) => this.setState({ pwd: e.target.value }),
+      showPwd: s.showPwd,
+      hidePwd: !s.showPwd,
+      pwdType: s.showPwd ? 'text' : 'password',
+      togglePwd: () => this.setState(p => ({ showPwd: !p.showPwd })),
+      loginDisabled: !valid,
+      loginBtn: btnBase + (valid
+        ? 'background:#16a34a;color:#fff;box-shadow:0 12px 30px rgba(22,163,74,.28);cursor:pointer;'
+        : 'background:#e2e8f0;color:#94a3b8;cursor:not-allowed;'),
+
+      level: s.level,
+      isA1: s.level === 'A1', isA2: s.level === 'A2', isB1: s.level === 'B1', isB2: s.level === 'B2',
+      setA1: () => this.setState({ level: 'A1' }),
+      setA2: () => this.setState({ level: 'A2' }),
+      setB1: () => this.setState({ level: 'B1' }),
+      setB2: () => this.setState({ level: 'B2' }),
+      chipA1: chip(s.level === 'A1'), chipA2: chip(s.level === 'A2'),
+      chipB1: chip(s.level === 'B1'), chipB2: chip(s.level === 'B2'),
+    };
+  }
+}
+</script>
+</body>
+</html>

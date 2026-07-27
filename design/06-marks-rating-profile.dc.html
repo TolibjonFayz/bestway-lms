@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;background:#eef2f7;color:#0f172a;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:#16a34a;text-decoration:none}
+  a:hover{color:#15803d}
+  .bw-scroll{scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent}
+  .bw-scroll::-webkit-scrollbar{height:6px;width:6px}
+  .bw-scroll::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:99px}
+</style>
+</helmet>
+
+<div style="min-height:100vh;padding:44px 24px 96px">
+  <div style="max-width:1320px;margin:0 auto">
+
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+      <div style="position:relative;width:40px;height:40px;border-radius:12px;background:#16a34a;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(22,163,74,.28);flex:none"><span style="color:#fff;font-weight:800;font-size:22px;line-height:1">B</span><span style="position:absolute;right:-4px;top:-4px;width:14px;height:14px;border-radius:50%;background:#ea8c3c;border:3px solid #eef2f7"></span></div>
+      <div style="line-height:1.1"><div style="font-weight:800;font-size:18px;letter-spacing:-.02em">Best Way</div><div style="font-weight:600;font-size:10px;color:#16a34a;letter-spacing:.16em;text-transform:uppercase">Taʼlim markazi</div></div>
+    </div>
+    <h1 style="margin:0;font-size:30px;font-weight:800;letter-spacing:-.02em;color:#0f172a">Qoʻshimcha ekranlar</h1>
+    <p style="margin:8px 0 40px;font-size:16px;color:#64748b;font-weight:500">Baholar → Reyting → Profil. Desktop va mobil.</p>
+
+    <!-- ===================== SCREEN A — Baholar ===================== -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;font-weight:800;font-size:14px;font-family:ui-monospace,Menlo,monospace;color:#15803d;background:#dcfce7;border-radius:9px">A</span>
+      <h2 style="margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em;color:#0f172a">Baholar</h2>
+      <span style="font-size:14px;font-weight:500;color:#94a3b8">Marks · natijalar va davomat</span>
+    </div>
+
+    <div data-screen-label="Baholar desktop" style="background:#fff;border-radius:24px;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);padding:32px;margin-bottom:24px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px">
+        <h3 style="margin:0;font-size:26px;font-weight:800;letter-spacing:-.02em;color:#0f172a">Baholar</h3>
+        <div style="display:flex;align-items:center;gap:14px">
+          <button onClick="{{ prevMonth }}" aria-label="Oldingi oy" style="width:38px;height:38px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;color:#334155;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#f8fafc"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
+          <span style="font-size:16px;font-weight:700;color:#0f172a;min-width:130px;text-align:center">{{ monthLabel }}</span>
+          <button onClick="{{ nextMonth }}" aria-label="Keyingi oy" style="width:38px;height:38px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;color:#334155;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#f8fafc"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg></button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div style="flex:2;min-width:480px">
+          <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:18px">
+            <div style="background:#f0fdf4;border-radius:16px;padding:16px 22px"><div style="font-size:12.5px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.04em">Oʻrtacha</div><div style="font-size:32px;font-weight:800;color:#0f172a;font-variant-numeric:tabular-nums;margin-top:2px">87%</div></div>
+            <span style="display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13.5px;color:#15803d;background:#dcfce7;padding:8px 14px;border-radius:99px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6 13.5 15.5l-5-5L1 18"></path><path d="M17 6h6v6"></path></svg>+4% oʻtgan oyga nisbatan</span>
+          </div>
+
+          <svg width="100%" height="180" viewBox="0 0 560 170" preserveAspectRatio="none" style="overflow:visible">
+            <line x1="20" y1="20" x2="540" y2="20" stroke="#f1f5f9" stroke-width="1"></line>
+            <line x1="20" y1="60" x2="540" y2="60" stroke="#f1f5f9" stroke-width="1"></line>
+            <line x1="20" y1="100" x2="540" y2="100" stroke="#f1f5f9" stroke-width="1"></line>
+            <line x1="20" y1="140" x2="540" y2="140" stroke="#e2e8f0" stroke-width="1.5"></line>
+            <path d="M20,92 L150,77 L280,65 L410,68 L540,47 L540,140 L20,140 Z" fill="#16a34a" opacity="0.1"></path>
+            <path d="M20,92 L150,77 L280,65 L410,68 L540,47" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle cx="20" cy="92" r="5" fill="#fff" stroke="#16a34a" stroke-width="2.5"></circle>
+            <circle cx="150" cy="77" r="5" fill="#fff" stroke="#16a34a" stroke-width="2.5"></circle>
+            <circle cx="280" cy="65" r="5" fill="#fff" stroke="#16a34a" stroke-width="2.5"></circle>
+            <circle cx="410" cy="68" r="5" fill="#fff" stroke="#16a34a" stroke-width="2.5"></circle>
+            <circle cx="540" cy="47" r="6" fill="#16a34a" stroke="#fff" stroke-width="2.5"></circle>
+          </svg>
+          <div style="display:flex;justify-content:space-between;padding:0 4px;margin-top:2px"><span style="font-size:11.5px;font-weight:600;color:#94a3b8">1-hafta</span><span style="font-size:11.5px;font-weight:600;color:#94a3b8">2-hafta</span><span style="font-size:11.5px;font-weight:600;color:#94a3b8">3-hafta</span><span style="font-size:11.5px;font-weight:600;color:#94a3b8">4-hafta</span><span style="font-size:11.5px;font-weight:700;color:#16a34a">Joriy</span></div>
+
+          <div style="margin-top:26px">
+            <div style="font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin-bottom:10px">3–9 fevral</div>
+            <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:20px">
+              <div style="display:flex;align-items:center;gap:14px;padding:13px 14px;border:1px solid #f1f5f9;border-radius:14px;background:#fff"><div style="width:52px;flex:none;font-size:12.5px;font-weight:600;color:#94a3b8">5-fev</div><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:700;color:#0f172a">Unit 5.1 — Past Simple vs Present Perfect</div><span style="display:inline-flex;font-weight:600;font-size:11.5px;color:#475569;background:#f1f5f9;padding:3px 9px;border-radius:99px;margin-top:5px">Test</span></div><span style="font-weight:800;font-size:14px;color:#15803d;background:#dcfce7;padding:6px 13px;border-radius:99px;flex:none">88%</span></div>
+              <div style="display:flex;align-items:center;gap:14px;padding:13px 14px;border:1px solid #f1f5f9;border-radius:14px;background:#fff"><div style="width:52px;flex:none;font-size:12.5px;font-weight:600;color:#94a3b8">7-fev</div><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:700;color:#0f172a">Speaking mashqi</div><span style="display:inline-flex;font-weight:600;font-size:11.5px;color:#166534;background:#dcfce7;padding:3px 9px;border-radius:99px;margin-top:5px">Speaking</span><div style="font-size:12.5px;color:#94a3b8;margin-top:6px;font-style:italic">"Talaffuzga koʻproq eʼtibor bering" — A. Axtamov</div></div><span style="font-weight:800;font-size:14px;color:#b45309;background:#fdf0e4;padding:6px 13px;border-radius:99px;flex:none">72%</span></div>
+            </div>
+            <div style="font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin-bottom:10px">10–16 fevral</div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <div style="display:flex;align-items:center;gap:14px;padding:13px 14px;border:1px solid #f1f5f9;border-radius:14px;background:#fff"><div style="width:52px;flex:none;font-size:12.5px;font-weight:600;color:#94a3b8">12-fev</div><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:700;color:#0f172a">Unit 5.2 — Present Perfect</div><span style="display:inline-flex;font-weight:600;font-size:11.5px;color:#b45309;background:#fdf0e4;padding:3px 9px;border-radius:99px;margin-top:5px">Uyga vazifa</span></div><span style="font-weight:800;font-size:14px;color:#b45309;background:#fdf0e4;padding:6px 13px;border-radius:99px;flex:none">62%</span></div>
+              <div style="display:flex;align-items:center;gap:14px;padding:13px 14px;border:1px solid #f1f5f9;border-radius:14px;background:#fff"><div style="width:52px;flex:none;font-size:12.5px;font-weight:600;color:#94a3b8">14-fev</div><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:700;color:#0f172a">Vocabulary tekshiruvi</div><span style="display:inline-flex;font-weight:600;font-size:11.5px;color:#475569;background:#f1f5f9;padding:3px 9px;border-radius:99px;margin-top:5px">Test</span></div><span style="font-weight:800;font-size:14px;color:#15803d;background:#dcfce7;padding:6px 13px;border-radius:99px;flex:none">95%</span></div>
+              <div style="display:flex;align-items:center;gap:14px;padding:13px 14px;border:1px solid #f1f5f9;border-radius:14px;background:#fff"><div style="width:52px;flex:none;font-size:12.5px;font-weight:600;color:#94a3b8">16-fev</div><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:700;color:#0f172a">Unit 5.3 — nazorat ishi</div><span style="display:inline-flex;font-weight:600;font-size:11.5px;color:#475569;background:#f1f5f9;padding:3px 9px;border-radius:99px;margin-top:5px">Test</span><div style="font-size:12.5px;color:#94a3b8;margin-top:6px;font-style:italic">"Qoidalarni qayta koʻrib chiqing" — A. Axtamov</div></div><span style="font-weight:800;font-size:14px;color:#ef4444;background:#fef2f2;padding:6px 13px;border-radius:99px;flex:none">54%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- attendance -->
+        <div style="flex:1;min-width:300px">
+          <div style="font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin-bottom:12px">Davomat · {{ monthLabel }}</div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:8px">
+            <span style="text-align:center;font-size:11px;font-weight:700;color:#94a3b8">Du</span><span style="text-align:center;font-size:11px;font-weight:700;color:#94a3b8">Se</span><span style="text-align:center;font-size:11px;font-weight:700;color:#94a3b8">Ch</span><span style="text-align:center;font-size:11px;font-weight:700;color:#94a3b8">Pa</span><span style="text-align:center;font-size:11px;font-weight:700;color:#94a3b8">Ju</span><span style="text-align:center;font-size:11px;font-weight:700;color:#94a3b8">Sh</span><span style="text-align:center;font-size:11px;font-weight:700;color:#94a3b8">Ya</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
+            <span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#f5b301"></span><span style="aspect-ratio:1;border-radius:8px;background:#f1f5f9"></span><span style="aspect-ratio:1;border-radius:8px;background:#f1f5f9"></span>
+            <span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#ef4444"></span><span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#f1f5f9"></span><span style="aspect-ratio:1;border-radius:8px;background:#f1f5f9"></span>
+            <span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#0369a1"></span><span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#f1f5f9"></span><span style="aspect-ratio:1;border-radius:8px;background:#f1f5f9"></span>
+            <span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:8px;background:#f1f5f9"></span><span style="aspect-ratio:1;border-radius:8px;background:#f1f5f9"></span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+            <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#64748b"><span style="width:14px;height:14px;border-radius:5px;background:#16a34a"></span>Kelgan</span>
+            <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#64748b"><span style="width:14px;height:14px;border-radius:5px;background:#ef4444"></span>Kelmagan</span>
+            <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#64748b"><span style="width:14px;height:14px;border-radius:5px;background:#f5b301"></span>Kechikkan</span>
+            <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#64748b"><span style="width:14px;height:14px;border-radius:5px;background:#0369a1"></span>Sababli</span>
+            <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#64748b"><span style="width:14px;height:14px;border-radius:5px;background:#f1f5f9"></span>Dars yoʻq</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Baholar mobile -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:64px">
+      <div data-screen-label="Baholar mobile" style="width:375px;max-width:100%;background:#fff;border-radius:34px;overflow:hidden;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04)">
+        <div class="bw-scroll" style="max-height:812px;overflow-y:auto;padding:18px 18px 22px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><h3 style="margin:0;font-size:20px;font-weight:800;color:#0f172a">Baholar</h3></div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px"><button aria-label="Oldingi oy" style="width:34px;height:34px;border-radius:9px;border:1px solid #e2e8f0;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button><span style="font-size:14.5px;font-weight:700;color:#0f172a">{{ monthLabel }}</span><button aria-label="Keyingi oy" style="width:34px;height:34px;border-radius:9px;border:1px solid #e2e8f0;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg></button></div>
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px"><div style="background:#f0fdf4;border-radius:14px;padding:12px 16px"><div style="font-size:11px;font-weight:700;color:#166534;text-transform:uppercase">Oʻrtacha</div><div style="font-size:24px;font-weight:800;color:#0f172a">87%</div></div><span style="font-size:12px;font-weight:700;color:#15803d;background:#dcfce7;padding:6px 11px;border-radius:99px">+4%</span></div>
+          <svg width="100%" height="120" viewBox="0 0 335 110" preserveAspectRatio="none"><path d="M14,58 L94,48 L174,40 L254,42 L321,28 L321,90 L14,90 Z" fill="#16a34a" opacity=".1"></path><path d="M14,58 L94,48 L174,40 L254,42 L321,28" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <div style="font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin:16px 0 9px">3–9 fevral</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:11px;padding:11px;border:1px solid #f1f5f9;border-radius:13px"><div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:700;color:#0f172a">Unit 5.1 — Past Simple vs P.P.</div><span style="font-size:11px;font-weight:600;color:#475569;background:#f1f5f9;padding:2px 8px;border-radius:99px">Test</span></div><span style="font-weight:800;font-size:13px;color:#15803d;background:#dcfce7;padding:5px 10px;border-radius:99px">88%</span></div>
+            <div style="display:flex;align-items:center;gap:11px;padding:11px;border:1px solid #f1f5f9;border-radius:13px"><div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:700;color:#0f172a">Speaking mashqi</div><span style="font-size:11px;font-weight:600;color:#166534;background:#dcfce7;padding:2px 8px;border-radius:99px">Speaking</span></div><span style="font-weight:800;font-size:13px;color:#b45309;background:#fdf0e4;padding:5px 10px;border-radius:99px">72%</span></div>
+          </div>
+          <div style="font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin:18px 0 10px">Davomat</div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px"><span style="aspect-ratio:1;border-radius:7px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:7px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:7px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:7px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:7px;background:#f5b301"></span><span style="aspect-ratio:1;border-radius:7px;background:#f1f5f9"></span><span style="aspect-ratio:1;border-radius:7px;background:#f1f5f9"></span>
+          <span style="aspect-ratio:1;border-radius:7px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:7px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:7px;background:#ef4444"></span><span style="aspect-ratio:1;border-radius:7px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:7px;background:#16a34a"></span><span style="aspect-ratio:1;border-radius:7px;background:#f1f5f9"></span><span style="aspect-ratio:1;border-radius:7px;background:#f1f5f9"></span></div>
+        </div>
+      </div>
+      <span style="font:700 11px ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase;color:#94a3b8">Mobil · oy almashtirish interaktiv</span>
+    </div>
+
+    <!-- ===================== SCREEN B — Reyting ===================== -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;font-weight:800;font-size:14px;font-family:ui-monospace,Menlo,monospace;color:#15803d;background:#dcfce7;border-radius:9px">B</span>
+      <h2 style="margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em;color:#0f172a">Reyting</h2>
+      <span style="font-size:14px;font-weight:500;color:#94a3b8">Leaderboard</span>
+    </div>
+
+    <div data-screen-label="Reyting desktop" style="background:#fff;border-radius:24px;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);padding:32px;margin-bottom:24px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+        <div style="display:inline-flex;padding:5px;background:#f1f5f9;border-radius:13px;gap:4px">
+          <button onClick="{{ setScopeGroup }}" style="{{ scopeGroupStyle }}">Guruhim</button>
+          <button onClick="{{ setScopeBranch }}" style="{{ scopeBranchStyle }}">Filial</button>
+          <button onClick="{{ setScopeAll }}" style="{{ scopeAllStyle }}">Umumiy</button>
+        </div>
+        <div style="display:inline-flex;padding:5px;background:#f1f5f9;border-radius:13px;gap:4px">
+          <button onClick="{{ setPeriodWeek }}" style="{{ periodWeekStyle }}">Bu hafta</button>
+          <button onClick="{{ setPeriodMonth }}" style="{{ periodMonthStyle }}">Bu oy</button>
+          <button onClick="{{ setPeriodAll }}" style="{{ periodAllStyle }}">Umumiy</button>
+        </div>
+      </div>
+
+      <!-- podium -->
+      <div style="display:flex;align-items:flex-end;justify-content:center;gap:20px;padding:20px 0 8px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px"><div style="width:64px;height:64px;border-radius:50%;background:#94a3b8;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;border:3px solid #fff;box-shadow:0 6px 16px rgba(15,23,42,.14)">SK</div><div style="text-align:center"><div style="font-size:14px;font-weight:700;color:#0f172a">Sardor Karimov</div><div style="font-size:15px;font-weight:800;color:#64748b;margin-top:2px">2 210 ball</div></div><div style="width:110px;height:76px;background:#f1f5f9;border-radius:14px 14px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;font-size:22px;font-weight:800;color:#94a3b8">2</div></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px"><span style="font-size:26px">👑</span><div style="width:78px;height:78px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:26px;border:3px solid #fff;box-shadow:0 10px 24px rgba(22,163,74,.3)">MY</div><div style="text-align:center"><div style="font-size:15px;font-weight:800;color:#0f172a">Malika Yusupova</div><div style="font-size:17px;font-weight:800;color:#16a34a;margin-top:2px">2 450 ball</div></div><div style="width:120px;height:100px;background:#f0fdf4;border-radius:14px 14px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;font-size:26px;font-weight:800;color:#16a34a">1</div></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px"><div style="width:64px;height:64px;border-radius:50%;background:#ea8c3c;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;border:3px solid #fff;box-shadow:0 6px 16px rgba(15,23,42,.14)">NT</div><div style="text-align:center"><div style="font-size:14px;font-weight:700;color:#0f172a">Nilufar Toʻxtayeva</div><div style="font-size:15px;font-weight:800;color:#64748b;margin-top:2px">1 980 ball</div></div><div style="width:110px;height:58px;background:#fdf1e5;border-radius:14px 14px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;font-size:22px;font-weight:800;color:#ea8c3c">3</div></div>
+      </div>
+
+      <div style="margin-top:22px;display:flex;flex-direction:column;gap:7px">
+        <div style="display:flex;align-items:center;gap:14px;padding:11px 16px"><span style="width:26px;font-weight:800;font-size:14px;color:#94a3b8;text-align:center">4</span><div style="width:36px;height:36px;border-radius:50%;background:#0f172a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none">BE</div><span style="flex:1;font-size:14.5px;font-weight:700;color:#0f172a">Bekzod Ergashev</span><span style="font-size:12px;font-weight:700;color:#15803d;background:#dcfce7;padding:3px 9px;border-radius:8px">B2</span><span style="font-weight:800;font-size:14.5px;color:#0f172a;font-variant-numeric:tabular-nums">1 870</span></div>
+        <div style="display:flex;align-items:center;gap:14px;padding:11px 16px"><span style="width:26px;font-weight:800;font-size:14px;color:#94a3b8;text-align:center">5</span><div style="width:36px;height:36px;border-radius:50%;background:#1e293b;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none">SA</div><span style="flex:1;font-size:14.5px;font-weight:700;color:#0f172a">Sevinch Aliyeva</span><span style="font-size:12px;font-weight:700;color:#15803d;background:#dcfce7;padding:3px 9px;border-radius:8px">B1</span><span style="font-weight:800;font-size:14.5px;color:#0f172a;font-variant-numeric:tabular-nums">1 790</span></div>
+        <div style="display:flex;align-items:center;gap:14px;padding:11px 16px"><span style="width:26px;font-weight:800;font-size:14px;color:#94a3b8;text-align:center">6</span><div style="width:36px;height:36px;border-radius:50%;background:#64748b;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none">DY</div><span style="flex:1;font-size:14.5px;font-weight:700;color:#0f172a">Davron Yusupov</span><span style="font-size:12px;font-weight:700;color:#15803d;background:#dcfce7;padding:3px 9px;border-radius:8px">B1</span><span style="font-weight:800;font-size:14.5px;color:#0f172a;font-variant-numeric:tabular-nums">1 705</span></div>
+        <div style="display:flex;align-items:center;gap:14px;padding:11px 16px"><span style="width:26px;font-weight:800;font-size:14px;color:#94a3b8;text-align:center">7</span><div style="width:36px;height:36px;border-radius:50%;background:#ea8c3c;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none">ZT</div><span style="flex:1;font-size:14.5px;font-weight:700;color:#0f172a">Zarina Tosheva</span><span style="font-size:12px;font-weight:700;color:#15803d;background:#dcfce7;padding:3px 9px;border-radius:8px">A2</span><span style="font-weight:800;font-size:14.5px;color:#0f172a;font-variant-numeric:tabular-nums">1 660</span></div>
+        <div style="display:flex;align-items:center;gap:14px;padding:11px 16px"><span style="width:26px;font-weight:800;font-size:14px;color:#94a3b8;text-align:center">8</span><div style="width:36px;height:36px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none">IN</div><span style="flex:1;font-size:14.5px;font-weight:700;color:#0f172a">Ibrohim Nazarov</span><span style="font-size:12px;font-weight:700;color:#15803d;background:#dcfce7;padding:3px 9px;border-radius:8px">B1</span><span style="font-weight:800;font-size:14.5px;color:#0f172a;font-variant-numeric:tabular-nums">1 590</span></div>
+        <div style="text-align:center;padding:8px 0;color:#cbd5e1;font-weight:800;letter-spacing:.2em">···</div>
+      </div>
+
+      <!-- pinned current user -->
+      <div style="position:sticky;bottom:0;margin-top:8px;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;background:#f0fdf4;border:1.5px solid #16a34a">
+        <span style="width:26px;font-weight:800;font-size:14px;color:#166534;text-align:center">12</span>
+        <div style="width:38px;height:38px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex:none">JR</div>
+        <span style="flex:1;font-size:14.5px;font-weight:800;color:#0f172a">Jasur Rahimov <span style="font-weight:700;font-size:11.5px;color:#15803d;background:#dcfce7;padding:2px 8px;border-radius:99px;margin-left:6px">Siz</span></span>
+        <span style="font-size:12px;font-weight:700;color:#15803d;background:#fff;padding:3px 9px;border-radius:8px;border:1px solid #bbf7d0">B1</span>
+        <span style="font-weight:800;font-size:15px;color:#166534;font-variant-numeric:tabular-nums">1 390</span>
+      </div>
+    </div>
+
+    <!-- Reyting mobile -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:64px">
+      <div data-screen-label="Reyting mobile" style="width:375px;max-width:100%;min-height:700px;background:#fff;border-radius:34px;overflow:hidden;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);display:flex;flex-direction:column">
+        <div style="padding:16px 18px 0">
+          <h3 style="margin:0 0 12px;font-size:20px;font-weight:800;color:#0f172a">Reyting</h3>
+          <div class="bw-scroll" style="display:flex;gap:4px;background:#f1f5f9;border-radius:11px;padding:4px;overflow-x:auto">
+            <button onClick="{{ setScopeGroup }}" style="{{ scopeGroupStyleSm }}">Guruhim</button>
+            <button onClick="{{ setScopeBranch }}" style="{{ scopeBranchStyleSm }}">Filial</button>
+            <button onClick="{{ setScopeAll }}" style="{{ scopeAllStyleSm }}">Umumiy</button>
+          </div>
+        </div>
+        <div class="bw-scroll" style="flex:1;overflow-y:auto;padding:14px 18px">
+          <div style="display:flex;align-items:flex-end;justify-content:center;gap:12px;padding:8px 0">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:48px;height:48px;border-radius:50%;background:#94a3b8;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px">SK</div><span style="font-size:11.5px;font-weight:700;color:#0f172a">2 210</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span style="font-size:18px">👑</span><div style="width:58px;height:58px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:19px">MY</div><span style="font-size:12.5px;font-weight:800;color:#16a34a">2 450</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:48px;height:48px;border-radius:50%;background:#ea8c3c;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px">NT</div><span style="font-size:11.5px;font-weight:700;color:#0f172a">1 980</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px">
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 10px"><span style="width:20px;font-weight:800;font-size:13px;color:#94a3b8">4</span><div style="width:30px;height:30px;border-radius:50%;background:#0f172a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex:none">BE</div><span style="flex:1;font-size:13.5px;font-weight:700;color:#0f172a">Bekzod Ergashev</span><span style="font-weight:800;font-size:13px;color:#0f172a">1 870</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 10px"><span style="width:20px;font-weight:800;font-size:13px;color:#94a3b8">5</span><div style="width:30px;height:30px;border-radius:50%;background:#1e293b;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex:none">SA</div><span style="flex:1;font-size:13.5px;font-weight:700;color:#0f172a">Sevinch Aliyeva</span><span style="font-weight:800;font-size:13px;color:#0f172a">1 790</span></div>
+            <div style="text-align:center;padding:6px 0;color:#cbd5e1;font-weight:800;letter-spacing:.2em">···</div>
+          </div>
+        </div>
+        <div style="padding:12px 18px 20px;background:#f0fdf4;border-top:1.5px solid #16a34a;display:flex;align-items:center;gap:10px"><span style="width:20px;font-weight:800;font-size:13px;color:#166534">12</span><div style="width:32px;height:32px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex:none">JR</div><span style="flex:1;font-size:13.5px;font-weight:800;color:#0f172a">Siz</span><span style="font-weight:800;font-size:13.5px;color:#166534">1 390</span></div>
+      </div>
+      <span style="font:700 11px ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase;color:#94a3b8">Mobil · yorliqlar interaktiv</span>
+    </div>
+
+    <!-- ===================== SCREEN C — Profil ===================== -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;font-weight:800;font-size:14px;font-family:ui-monospace,Menlo,monospace;color:#15803d;background:#dcfce7;border-radius:9px">C</span>
+      <h2 style="margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em;color:#0f172a">Profil</h2>
+      <span style="font-size:14px;font-weight:500;color:#94a3b8">Profile</span>
+    </div>
+
+    <div data-screen-label="Profil desktop" style="background:#fff;border-radius:24px;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);padding:32px;margin-bottom:24px">
+      <div style="display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding-bottom:26px;border-bottom:1px solid #f1f5f9">
+        <div style="position:relative;flex:none"><div style="width:96px;height:96px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:34px">JR</div><button aria-label="Avatarni tahrirlash" style="position:absolute;right:-2px;bottom:-2px;width:32px;height:32px;border-radius:50%;background:#0f172a;color:#fff;border:3px solid #fff;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#1e293b"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"></path></svg></button></div>
+        <div style="flex:1;min-width:220px"><div style="font-size:24px;font-weight:800;color:#0f172a;letter-spacing:-.01em">Jasur Rahimov</div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px"><span style="font-weight:700;font-size:13px;color:#15803d;background:#dcfce7;padding:5px 12px;border-radius:99px">Intermediate (B1)</span><span style="font-weight:700;font-size:13px;color:#334155;background:#f1f5f9;padding:5px 12px;border-radius:99px">Guruh INT-3</span></div><div style="font-size:13px;color:#94a3b8;font-weight:500;margin-top:9px">Aʼzo boʻlgan: 12-sentabr, 2025</div></div>
+      </div>
+
+      <div style="display:flex;gap:28px;margin-top:26px;flex-wrap:wrap">
+        <div style="flex:1;min-width:400px">
+          <div style="font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin-bottom:14px">Yutuqlar</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px">
+            <div style="border:1px solid #f1f5f9;border-radius:16px;padding:16px;text-align:center;background:#fdf1e5"><div style="width:48px;height:48px;margin:0 auto;border-radius:14px;background:#ea8c3c;color:#fff;display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5Z"></path></svg></div><div style="font-size:13px;font-weight:700;color:#0f172a;margin-top:10px;line-height:1.3">7 kunlik streak</div></div>
+            <div style="border:1px solid #f1f5f9;border-radius:16px;padding:16px;text-align:center;background:#f0fdf4"><div style="width:48px;height:48px;margin:0 auto;border-radius:14px;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div><div style="font-size:13px;font-weight:700;color:#0f172a;margin-top:10px;line-height:1.3">Birinchi 100%</div></div>
+            <div style="border:1px solid #f1f5f9;border-radius:16px;padding:16px;text-align:center;background:#f8fafc;position:relative;opacity:.75"><div style="width:48px;height:48px;margin:0 auto;border-radius:14px;background:#e2e8f0;color:#94a3b8;display:flex;align-items:center;justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></div><div style="font-size:13px;font-weight:700;color:#64748b;margin-top:10px;line-height:1.3">50 soʻz yodlandi</div></div>
+            <div style="border:1px solid #f1f5f9;border-radius:16px;padding:16px;text-align:center;background:#f8fafc;position:relative;opacity:.75"><div style="width:48px;height:48px;margin:0 auto;border-radius:14px;background:#e2e8f0;color:#94a3b8;display:flex;align-items:center;justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></div><div style="font-size:13px;font-weight:700;color:#64748b;margin-top:10px;line-height:1.3">10 ta test yakunlandi</div></div>
+            <div style="border:1px solid #f1f5f9;border-radius:16px;padding:16px;text-align:center;background:#f8fafc;position:relative;opacity:.75"><div style="width:48px;height:48px;margin:0 auto;border-radius:14px;background:#e2e8f0;color:#94a3b8;display:flex;align-items:center;justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></div><div style="font-size:13px;font-weight:700;color:#64748b;margin-top:10px;line-height:1.3">IELTS Mock ishtirokchisi</div></div>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:320px">
+          <div style="font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin-bottom:14px">Sozlamalar</div>
+          <div style="border:1px solid #f1f5f9;border-radius:16px;overflow:hidden">
+            <button style="width:100%;display:flex;align-items:center;gap:13px;padding:15px 16px;background:#fff;border:none;border-bottom:1px solid #f1f5f9;cursor:pointer;font-family:inherit;text-align:left" style-hover="background:#f8fafc"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M6 21v-1a6 6 0 0 1 12 0v1"></path></svg><span style="flex:1;font-size:14.5px;font-weight:600;color:#0f172a">Shaxsiy maʼlumotlar</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg></button>
+            <button style="width:100%;display:flex;align-items:center;gap:13px;padding:15px 16px;background:#fff;border:none;border-bottom:1px solid #f1f5f9;cursor:pointer;font-family:inherit;text-align:left" style-hover="background:#f8fafc"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><span style="flex:1;font-size:14.5px;font-weight:600;color:#0f172a">Parolni oʻzgartirish</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg></button>
+            <div style="width:100%;display:flex;align-items:center;gap:13px;padding:15px 16px;background:#fff;border-bottom:1px solid #f1f5f9"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg><span style="flex:1;font-size:14.5px;font-weight:600;color:#0f172a">Bildirishnomalar</span><button onClick="{{ toggleNotif }}" aria-label="Bildirishnomalar" style="{{ notifTrackStyle }}"><span style="{{ notifThumbStyle }}"></span></button></div>
+            <button style="width:100%;display:flex;align-items:center;gap:13px;padding:15px 16px;background:#fff;border:none;border-bottom:1px solid #f1f5f9;cursor:pointer;font-family:inherit;text-align:left" style-hover="background:#f8fafc"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20Z"></path></svg><span style="flex:1;font-size:14.5px;font-weight:600;color:#0f172a">Til</span><span style="font-size:13.5px;color:#94a3b8;font-weight:600">Oʻzbek</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg></button>
+            <button style="width:100%;display:flex;align-items:center;gap:13px;padding:15px 16px;background:#fff;border:none;border-bottom:1px solid #f1f5f9;cursor:pointer;font-family:inherit;text-align:left" style-hover="background:#f8fafc"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><span style="flex:1;font-size:14.5px;font-weight:600;color:#0f172a">Yordam</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg></button>
+            <button style="width:100%;display:flex;align-items:center;gap:13px;padding:15px 16px;background:#fff;border:none;cursor:pointer;font-family:inherit;text-align:left" style-hover="background:#fef2f2"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path></svg><span style="flex:1;font-size:14.5px;font-weight:700;color:#ef4444">Chiqish</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profil mobile -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+      <div data-screen-label="Profil mobile" style="width:375px;max-width:100%;background:#fff;border-radius:34px;overflow:hidden;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04)">
+        <div class="bw-scroll" style="max-height:812px;overflow-y:auto;padding:20px 18px 22px">
+          <div style="text-align:center"><div style="position:relative;display:inline-block"><div style="width:80px;height:80px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px">JR</div><span style="position:absolute;right:-2px;bottom:-2px;width:26px;height:26px;border-radius:50%;background:#0f172a;color:#fff;border:2.5px solid #fff;display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"></path></svg></span></div>
+            <div style="font-size:19px;font-weight:800;color:#0f172a;margin-top:12px">Jasur Rahimov</div>
+            <div style="display:flex;gap:8px;justify-content:center;margin-top:8px;flex-wrap:wrap"><span style="font-weight:700;font-size:12px;color:#15803d;background:#dcfce7;padding:4px 10px;border-radius:99px">Intermediate (B1)</span><span style="font-weight:700;font-size:12px;color:#334155;background:#f1f5f9;padding:4px 10px;border-radius:99px">INT-3</span></div>
+            <div style="font-size:12px;color:#94a3b8;font-weight:500;margin-top:8px">Aʼzo boʻlgan: 12-sentabr, 2025</div>
+          </div>
+          <div style="font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin:22px 0 12px">Yutuqlar</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            <div style="border:1px solid #f1f5f9;border-radius:14px;padding:12px;text-align:center;background:#fdf1e5"><div style="width:38px;height:38px;margin:0 auto;border-radius:11px;background:#ea8c3c;color:#fff;display:flex;align-items:center;justify-content:center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5Z"></path></svg></div><div style="font-size:11px;font-weight:700;color:#0f172a;margin-top:8px;line-height:1.25">7 kunlik streak</div></div>
+            <div style="border:1px solid #f1f5f9;border-radius:14px;padding:12px;text-align:center;background:#f0fdf4"><div style="width:38px;height:38px;margin:0 auto;border-radius:11px;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div><div style="font-size:11px;font-weight:700;color:#0f172a;margin-top:8px;line-height:1.25">Birinchi 100%</div></div>
+            <div style="border:1px solid #f1f5f9;border-radius:14px;padding:12px;text-align:center;background:#f8fafc;opacity:.75"><div style="width:38px;height:38px;margin:0 auto;border-radius:11px;background:#e2e8f0;color:#94a3b8;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></div><div style="font-size:11px;font-weight:700;color:#64748b;margin-top:8px;line-height:1.25">50 soʻz yodlandi</div></div>
+          </div>
+          <div style="font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin:22px 0 12px">Sozlamalar</div>
+          <div style="border:1px solid #f1f5f9;border-radius:16px;overflow:hidden">
+            <div style="width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;background:#fff;border-bottom:1px solid #f1f5f9"><span style="flex:1;font-size:14px;font-weight:600;color:#0f172a">Shaxsiy maʼlumotlar</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg></div>
+            <div style="width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;background:#fff;border-bottom:1px solid #f1f5f9"><span style="flex:1;font-size:14px;font-weight:600;color:#0f172a">Bildirishnomalar</span><button onClick="{{ toggleNotif }}" aria-label="Bildirishnomalar" style="{{ notifTrackStyle }}"><span style="{{ notifThumbStyle }}"></span></button></div>
+            <div style="width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;background:#fff"><span style="flex:1;font-size:14px;font-weight:700;color:#ef4444">Chiqish</span></div>
+          </div>
+        </div>
+      </div>
+      <span style="font:700 11px ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase;color:#94a3b8">Mobil · bildirishnoma toggle interaktiv</span>
+    </div>
+
+    <footer style="text-align:center;padding:44px 0 0;color:#94a3b8;font-size:13px">Best Way LMS · Qoʻshimcha ekranlar · tokenlar «Uslublar tizimi»dan olingan</footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  months = ['Yanvar 2026', 'Fevral 2026', 'Mart 2026'];
+  state = { monthIdx: 1, scope: 'group', period: 'week', notifOn: true };
+
+  pillOn = 'font-family:inherit;font-weight:700;font-size:13.5px;height:38px;padding:0 16px;border-radius:9px;border:none;cursor:pointer;background:#16a34a;color:#fff;box-shadow:0 4px 12px rgba(22,163,74,.24);';
+  pillOff = 'font-family:inherit;font-weight:700;font-size:13.5px;height:38px;padding:0 16px;border-radius:9px;border:none;cursor:pointer;background:transparent;color:#64748b;';
+  pillOnSm = 'font-family:inherit;font-weight:700;font-size:12.5px;height:34px;padding:0 13px;border-radius:8px;border:none;cursor:pointer;white-space:nowrap;flex:none;background:#16a34a;color:#fff;';
+  pillOffSm = 'font-family:inherit;font-weight:700;font-size:12.5px;height:34px;padding:0 13px;border-radius:8px;border:none;cursor:pointer;white-space:nowrap;flex:none;background:transparent;color:#64748b;';
+
+  renderVals() {
+    const s = this.state;
+    return {
+      monthLabel: this.months[s.monthIdx],
+      prevMonth: () => this.setState(p => ({ monthIdx: Math.max(0, p.monthIdx - 1) })),
+      nextMonth: () => this.setState(p => ({ monthIdx: Math.min(this.months.length - 1, p.monthIdx + 1) })),
+
+      setScopeGroup: () => this.setState({ scope: 'group' }),
+      setScopeBranch: () => this.setState({ scope: 'branch' }),
+      setScopeAll: () => this.setState({ scope: 'all' }),
+      scopeGroupStyle: s.scope === 'group' ? this.pillOn : this.pillOff,
+      scopeBranchStyle: s.scope === 'branch' ? this.pillOn : this.pillOff,
+      scopeAllStyle: s.scope === 'all' ? this.pillOn : this.pillOff,
+      scopeGroupStyleSm: s.scope === 'group' ? this.pillOnSm : this.pillOffSm,
+      scopeBranchStyleSm: s.scope === 'branch' ? this.pillOnSm : this.pillOffSm,
+      scopeAllStyleSm: s.scope === 'all' ? this.pillOnSm : this.pillOffSm,
+
+      setPeriodWeek: () => this.setState({ period: 'week' }),
+      setPeriodMonth: () => this.setState({ period: 'month' }),
+      setPeriodAll: () => this.setState({ period: 'all' }),
+      periodWeekStyle: s.period === 'week' ? this.pillOn : this.pillOff,
+      periodMonthStyle: s.period === 'month' ? this.pillOn : this.pillOff,
+      periodAllStyle: s.period === 'all' ? this.pillOn : this.pillOff,
+
+      toggleNotif: () => this.setState(p => ({ notifOn: !p.notifOn })),
+      notifTrackStyle: 'width:46px;height:27px;border-radius:99px;border:none;cursor:pointer;position:relative;flex:none;transition:background .15s;background:' + (s.notifOn ? '#16a34a' : '#e2e8f0'),
+      notifThumbStyle: 'position:absolute;top:3px;width:21px;height:21px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:left .15s;left:' + (s.notifOn ? '22px' : '3px'),
+    };
+  }
+}
+</script>
+</body>
+</html>

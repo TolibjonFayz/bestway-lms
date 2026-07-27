@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;background:#eef2f7;color:#0f172a;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:#16a34a;text-decoration:none}
+  a:hover{color:#15803d}
+  .bw-scroll{scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent}
+  .bw-scroll::-webkit-scrollbar{height:6px;width:6px}
+  .bw-scroll::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:99px}
+</style>
+</helmet>
+
+<div style="min-height:100vh;padding:44px 24px 96px">
+  <div style="max-width:1320px;margin:0 auto">
+
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+      <div style="position:relative;width:40px;height:40px;border-radius:12px;background:#16a34a;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(22,163,74,.28);flex:none"><span style="color:#fff;font-weight:800;font-size:22px;line-height:1">B</span><span style="position:absolute;right:-4px;top:-4px;width:14px;height:14px;border-radius:50%;background:#ea8c3c;border:3px solid #eef2f7"></span></div>
+      <div style="line-height:1.1"><div style="font-weight:800;font-size:18px;letter-spacing:-.02em">Best Way</div><div style="font-weight:600;font-size:10px;color:#16a34a;letter-spacing:.16em;text-transform:uppercase">Taʼlim markazi</div></div>
+    </div>
+    <h1 style="margin:0;font-size:30px;font-weight:800;letter-spacing:-.02em;color:#0f172a">Darsni oʻzlashtirish</h1>
+    <p style="margin:8px 0 40px;font-size:16px;color:#64748b;font-weight:500">Video dars → Lugʻat mashqi → Test → Natija. Desktop va mobil.</p>
+
+    <!-- ===================== SCREEN A — Video player ===================== -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;font-weight:800;font-size:14px;font-family:ui-monospace,Menlo,monospace;color:#15803d;background:#dcfce7;border-radius:9px">A</span>
+      <h2 style="margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em;color:#0f172a">Video dars</h2>
+      <span style="font-size:14px;font-weight:500;color:#94a3b8">Video lesson player</span>
+    </div>
+
+    <div data-screen-label="Video player desktop" style="background:#fff;border-radius:24px;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);padding:28px;margin-bottom:24px">
+      <div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">
+        <div style="flex:2;min-width:520px">
+          <!-- player -->
+          <div style="position:relative;width:100%;aspect-ratio:16/9;background:#0f172a;border-radius:16px;overflow:hidden">
+            <button onClick="{{ togglePlay }}" aria-label="Ijro" style="position:absolute;inset:0;width:100%;height:100%;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center">
+              <span style="width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,.16);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;color:#fff">
+                <sc-if value="{{ isPaused }}" hint-placeholder-val="{{ true }}"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="m8 5 12 7-12 7V5Z"></path></svg></sc-if>
+                <sc-if value="{{ isPlaying }}"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="5" height="16" rx="1.5"></rect><rect x="13" y="4" width="5" height="16" rx="1.5"></rect></svg></sc-if>
+              </span>
+            </button>
+            <div style="position:absolute;left:0;right:0;bottom:0;padding:14px 16px 12px;background:linear-gradient(180deg,rgba(15,23,42,0),rgba(15,23,42,.86))">
+              <div style="position:relative;height:5px;background:rgba(255,255,255,.24);border-radius:99px;margin-bottom:11px;cursor:pointer">
+                <div style="position:absolute;left:0;top:0;bottom:0;width:85%;background:rgba(255,255,255,.32);border-radius:99px"></div>
+                <div style="position:absolute;left:0;top:0;bottom:0;width:62%;background:#16a34a;border-radius:99px"></div>
+                <div style="position:absolute;left:62%;top:50%;width:13px;height:13px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 2px 6px rgba(0,0,0,.3)"></div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:14px">
+                <div style="display:flex;align-items:center;gap:14px">
+                  <button onClick="{{ togglePlay }}" aria-label="Ijro/pauza" style="width:30px;height:30px;border:none;background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer">
+                    <sc-if value="{{ isPaused }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m8 5 12 7-12 7V5Z"></path></svg></sc-if>
+                    <sc-if value="{{ isPlaying }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="5" height="16" rx="1.5"></rect><rect x="13" y="4" width="5" height="16" rx="1.5"></rect></svg></sc-if>
+                  </button>
+                  <span style="font-size:13px;font-weight:600;color:#fff;font-variant-numeric:tabular-nums">07:49 / 12:40</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <button onClick="{{ cycleSpeed }}" style="height:28px;padding:0 11px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;font-weight:700;font-size:12.5px;cursor:pointer;font-family:inherit">{{ speedLabel }}</button>
+                  <button onClick="{{ toggleCaptions }}" aria-label="Subtitr" style="height:28px;padding:0 10px;border-radius:8px;border:1px solid {{ ccBorder }};background:{{ ccBg }};color:{{ ccColor }};font-weight:800;font-size:11.5px;cursor:pointer;font-family:inherit">CC</button>
+                  <button aria-label="Toʻliq ekran" style="width:28px;height:28px;border:none;background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:18px"><div style="font-size:12px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em">Unit 5.2</div><div style="font-size:22px;font-weight:800;color:#0f172a;letter-spacing:-.01em;margin-top:3px">Present Perfect — video dars</div><div style="display:flex;align-items:center;gap:7px;margin-top:8px;color:#64748b;font-size:14px;font-weight:500"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Aziz Axtamov</div></div>
+
+          <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:20px">
+            <div style="display:flex;flex-direction:column;gap:8px"><button disabled style="display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;font-size:15px;height:50px;padding:0 22px;border-radius:12px;border:none;background:#e2e8f0;color:#94a3b8;cursor:not-allowed">Darsni yakunlash</button><span style="font-size:12px;color:#94a3b8;font-weight:600">62% koʻrildi · 90% talab qilinadi</span></div>
+            <div style="display:flex;flex-direction:column;gap:8px"><button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;font-size:15px;height:50px;padding:0 22px;border-radius:12px;border:none;background:#16a34a;color:#fff;box-shadow:0 10px 26px rgba(22,163,74,.26);cursor:pointer" style-hover="background:#15803d"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Darsni yakunlash</button><span style="font-size:12px;color:#16a34a;font-weight:600">95% koʻrildi · faollashdi</span></div>
+          </div>
+
+          <!-- konspekt -->
+          <div style="margin-top:22px;border:1px solid #f1f5f9;border-radius:16px;overflow:hidden">
+            <button onClick="{{ toggleKonspekt }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;background:#fbfdfb;border:none;cursor:pointer;font-family:inherit" style-hover="background:#f8fafc">
+              <span style="display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:#0f172a"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>Konspekt</span>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .15s;transform:{{ konspektRotate }}"><path d="m6 9 6 6 6-6"></path></svg>
+            </button>
+            <sc-if value="{{ konspektOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:6px 18px 18px;font-size:14.5px;line-height:1.7;color:#334155">
+                <div style="display:flex;gap:9px;margin-top:6px"><span style="width:6px;height:6px;border-radius:50%;background:#16a34a;margin-top:9px;flex:none"></span>Present Perfect: <strong>have/has</strong> + feʼlning 3-shakli (V3)</div>
+                <div style="display:flex;gap:9px;margin-top:8px"><span style="width:6px;height:6px;border-radius:50%;background:#16a34a;margin-top:9px;flex:none"></span>Hozirgi natijasi muhim boʻlgan oʻtmish harakatlarini ifodalaydi</div>
+                <div style="display:flex;gap:9px;margin-top:8px"><span style="width:6px;height:6px;border-radius:50%;background:#16a34a;margin-top:9px;flex:none"></span><em>already, yet, just, ever, never</em> soʻzlari bilan qoʻllaniladi</div>
+                <div style="display:flex;gap:9px;margin-top:8px"><span style="width:6px;height:6px;border-radius:50%;background:#16a34a;margin-top:9px;flex:none"></span><em>Since</em> (nuqta) va <em>for</em> (davomiylik) farqi</div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <!-- item list -->
+        <div style="flex:1;min-width:260px">
+          <div style="font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin-bottom:12px">Unit elementlari</div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:14px;background:#f0fdf4;border:1.5px solid #16a34a"><div style="width:36px;height:36px;border-radius:10px;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="m8 5 12 7-12 7V5Z"></path></svg></div><div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;color:#0f172a">Video dars</div><div style="font-size:12px;color:#166534;font-weight:600">Hozir tomosha qilinmoqda</div></div></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:14px;background:#fff;border:1px solid #f1f5f9"><div style="width:36px;height:36px;border-radius:10px;background:#fef6df;color:#f5b301;display:flex;align-items:center;justify-content:center;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div><div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;color:#0f172a">Vocabulary</div><div style="font-size:12px;color:#64748b">39 ta soʻz · 100%</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:14px;background:#fff;border:1px solid #f1f5f9"><div style="width:36px;height:36px;border-radius:10px;background:#f1f5f9;color:#64748b;display:flex;align-items:center;justify-content:center;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></div><div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;color:#0f172a">Test</div><div style="font-size:12px;color:#64748b">10 ta savol · 62%</div></div></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:14px;background:#fff;border:1px solid #f1f5f9"><div style="width:36px;height:36px;border-radius:10px;background:#f1f5f9;color:#64748b;display:flex;align-items:center;justify-content:center;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"></rect><path d="M5 10a7 7 0 0 0 14 0"></path><line x1="12" y1="17" x2="12" y2="21"></line></svg></div><div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;color:#0f172a">Speaking</div><div style="font-size:12px;color:#64748b">Boshlanmagan</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A mobile -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:64px">
+      <div data-screen-label="Video player mobile" style="width:375px;max-width:100%;background:#fff;border-radius:34px;overflow:hidden;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04)">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px 0;font-size:12px;font-weight:700;color:#0f172a"><span>9:41</span><span style="width:20px;height:10px;border:1.5px solid #0f172a;border-radius:3px"></span></div>
+        <div style="position:relative;width:100%;aspect-ratio:16/9;background:#0f172a;margin-top:10px"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><span style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;color:#fff"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="m8 5 12 7-12 7V5Z"></path></svg></span></div><div style="position:absolute;left:0;right:0;bottom:0;padding:9px 12px 9px;background:linear-gradient(180deg,rgba(15,23,42,0),rgba(15,23,42,.86))"><div style="position:relative;height:4px;background:rgba(255,255,255,.24);border-radius:99px;margin-bottom:7px"><div style="position:absolute;left:0;top:0;bottom:0;width:62%;background:#16a34a;border-radius:99px"></div></div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;font-weight:600;color:#fff">07:49 / 12:40</span><span style="font-size:10.5px;font-weight:700;color:#fff;background:rgba(255,255,255,.18);padding:2px 7px;border-radius:6px">1x</span></div></div></div>
+        <div style="padding:16px 20px 20px">
+          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase">Unit 5.2</div>
+          <div style="font-size:18px;font-weight:800;color:#0f172a;margin-top:3px">Present Perfect — video dars</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:7px;color:#64748b;font-size:13px;font-weight:500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"></circle><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path></svg>Aziz Axtamov</div>
+          <button disabled style="display:inline-flex;align-items:center;justify-content:center;width:100%;font-family:inherit;font-weight:700;font-size:15px;height:50px;border-radius:12px;border:none;background:#e2e8f0;color:#94a3b8;margin-top:16px">Darsni yakunlash</button>
+          <div style="text-align:center;font-size:12px;color:#94a3b8;font-weight:600;margin-top:7px">62% koʻrildi · 90% talab qilinadi</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:18px">
+            <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;background:#f0fdf4;border:1.5px solid #16a34a"><div style="width:32px;height:32px;border-radius:9px;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="m8 5 12 7-12 7V5Z"></path></svg></div><div style="font-size:13.5px;font-weight:700;color:#0f172a">Video dars</div></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;background:#fff;border:1px solid #f1f5f9"><div style="width:32px;height:32px;border-radius:9px;background:#fef6df;color:#f5b301;display:flex;align-items:center;justify-content:center;flex:none"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div><div style="flex:1;font-size:13.5px;font-weight:700;color:#0f172a">Vocabulary</div><span style="font-size:11.5px;color:#16a34a;font-weight:700">100%</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;background:#fff;border:1px solid #f1f5f9"><div style="width:32px;height:32px;border-radius:9px;background:#f1f5f9;color:#64748b;display:flex;align-items:center;justify-content:center;flex:none"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></div><div style="flex:1;font-size:13.5px;font-weight:700;color:#0f172a">Test</div><span style="font-size:11.5px;color:#64748b;font-weight:700">62%</span></div>
+          </div>
+        </div>
+      </div>
+      <span style="font:700 11px ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase;color:#94a3b8">Mobil · 375</span>
+    </div>
+
+    <!-- ===================== SCREEN B — Vocabulary trainer ===================== -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;font-weight:800;font-size:14px;font-family:ui-monospace,Menlo,monospace;color:#15803d;background:#dcfce7;border-radius:9px">B</span>
+      <h2 style="margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em;color:#0f172a">Lugʻat mashqi</h2>
+      <span style="font-size:14px;font-weight:500;color:#94a3b8">Vocabulary trainer · flashcard</span>
+    </div>
+
+    <div style="display:flex;gap:28px;flex-wrap:wrap;margin-bottom:24px">
+      <!-- flashcard interactive -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div data-screen-label="Vocabulary flashcard" style="width:375px;max-width:100%;min-height:600px;background:#fff;border-radius:34px;overflow:hidden;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);padding:20px 20px 24px;display:flex;flex-direction:column">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><button aria-label="Yopish" style="width:36px;height:36px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;color:#334155;display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button><span style="font-size:13.5px;font-weight:700;color:#334155">12 / 39</span><span style="width:36px"></span></div>
+          <div style="height:7px;background:#f1f5f9;border-radius:99px;overflow:hidden;margin-top:12px"><div style="width:31%;height:100%;background:#16a34a;border-radius:99px"></div></div>
+
+          <div onClick="{{ toggleFlip }}" role="button" tabIndex="0" style="flex:1;margin-top:22px;background:linear-gradient(160deg,#f0fdf4,#fff);border:1.5px solid #dcfce7;border-radius:22px;padding:28px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;font-family:inherit;min-height:280px">
+            <sc-if value="{{ showFront }}" hint-placeholder-val="{{ true }}">
+              <div style="font-size:34px;font-weight:800;color:#0f172a;letter-spacing:-.01em">achieve</div>
+              <div style="font-size:16px;color:#64748b;font-weight:500;margin-top:8px">/əˈtʃiːv/</div>
+              <span onClick="{{ stopProp }}" role="button" aria-label="Talaffuz" style="width:44px;height:44px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;margin-top:16px;cursor:pointer;box-shadow:0 8px 18px rgba(22,163,74,.28)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 5.5a9 9 0 0 1 0 13"></path></svg></span>
+              <p style="margin:20px 0 0;font-size:15px;color:#334155;line-height:1.55;max-width:280px">She worked hard to <strong>achieve</strong> her goals.</p>
+              <span style="font-size:12.5px;color:#94a3b8;font-weight:600;margin-top:16px">Tarjimasini koʻrish uchun bosing</span>
+            </sc-if>
+            <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:15px;color:#94a3b8;font-weight:600">achieve</div>
+              <div style="font-size:36px;font-weight:800;color:#15803d;letter-spacing:-.01em;margin-top:6px">erishmoq</div>
+              <p style="margin:20px 0 0;font-size:15px;color:#334155;line-height:1.55;max-width:280px">Ular oxir-oqibat maqsadlariga <strong>erishishdi</strong>.</p>
+              <span style="font-size:12.5px;color:#94a3b8;font-weight:600;margin-top:16px">Ortga qaytish uchun bosing</span>
+            </sc-if>
+          </div>
+
+          <div style="display:flex;gap:12px;margin-top:18px">
+            <button style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;font-size:15px;height:52px;border-radius:13px;background:#f1f5f9;color:#475569;border:none;cursor:pointer" style-hover="background:#e2e8f0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>Bilmadim</button>
+            <button style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;font-size:15px;height:52px;border-radius:13px;background:#16a34a;color:#fff;border:none;cursor:pointer;box-shadow:0 10px 24px rgba(22,163,74,.26)" style-hover="background:#15803d"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Bilaman</button>
+          </div>
+        </div>
+        <span style="font:700 11px ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase;color:#94a3b8">Interaktiv · kartaga bosing</span>
+      </div>
+
+      <!-- flipped static reference -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div style="width:375px;max-width:100%;min-height:600px;background:#fff;border-radius:34px;overflow:hidden;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);padding:20px 20px 24px;display:flex;flex-direction:column">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><button aria-label="Yopish" style="width:36px;height:36px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;color:#334155;display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button><span style="font-size:13.5px;font-weight:700;color:#334155">12 / 39</span><span style="width:36px"></span></div>
+          <div style="height:7px;background:#f1f5f9;border-radius:99px;overflow:hidden;margin-top:12px"><div style="width:31%;height:100%;background:#16a34a;border-radius:99px"></div></div>
+          <div style="flex:1;margin-top:22px;background:linear-gradient(160deg,#f0fdf4,#fff);border:1.5px solid #dcfce7;border-radius:22px;padding:28px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:280px">
+            <div style="font-size:15px;color:#94a3b8;font-weight:600">achieve</div>
+            <div style="font-size:36px;font-weight:800;color:#15803d;letter-spacing:-.01em;margin-top:6px">erishmoq</div>
+            <p style="margin:20px 0 0;font-size:15px;color:#334155;line-height:1.55;max-width:280px">Ular oxir-oqibat maqsadlariga <strong>erishishdi</strong>.</p>
+            <span style="font-size:12.5px;color:#94a3b8;font-weight:600;margin-top:16px">Ortga qaytish uchun bosing</span>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:18px">
+            <button style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;font-size:15px;height:52px;border-radius:13px;background:#f1f5f9;color:#475569;border:none">Bilmadim</button>
+            <button style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;font-size:15px;height:52px;border-radius:13px;background:#16a34a;color:#fff;border:none;box-shadow:0 10px 24px rgba(22,163,74,.26)">Bilaman</button>
+          </div>
+        </div>
+        <span style="font:700 11px ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase;color:#94a3b8">Flip holati (statik namuna)</span>
+      </div>
+
+      <!-- word list -->
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div data-screen-label="Vocabulary word list" style="width:420px;max-width:100%;background:#fff;border-radius:24px;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);padding:22px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><h3 style="margin:0;font-size:18px;font-weight:800;color:#0f172a">Soʻzlar roʻyxati</h3><span style="font-size:12.5px;font-weight:600;color:#64748b">39 ta soʻz</span></div>
+          <div style="display:flex;gap:14px;margin-bottom:14px"><span style="display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#64748b"><span style="width:8px;height:8px;border-radius:50%;background:#94a3b8"></span>yangi</span><span style="display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#64748b"><span style="width:8px;height:8px;border-radius:50%;background:#ea8c3c"></span>oʻrganilmoqda</span><span style="display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:#64748b"><span style="width:8px;height:8px;border-radius:50%;background:#16a34a"></span>yodlangan</span></div>
+          <div class="bw-scroll" style="max-height:400px;overflow-y:auto">
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 6px;border-bottom:1px solid #f1f5f9"><span style="width:8px;height:8px;border-radius:50%;background:#16a34a;flex:none"></span><span style="flex:1;font-size:14.5px;font-weight:700;color:#0f172a">achieve</span><span style="font-size:14px;color:#64748b">erishmoq</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 6px;border-bottom:1px solid #f1f5f9"><span style="width:8px;height:8px;border-radius:50%;background:#16a34a;flex:none"></span><span style="flex:1;font-size:14.5px;font-weight:700;color:#0f172a">overcome</span><span style="font-size:14px;color:#64748b">yengib oʻtmoq</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 6px;border-bottom:1px solid #f1f5f9"><span style="width:8px;height:8px;border-radius:50%;background:#ea8c3c;flex:none"></span><span style="flex:1;font-size:14.5px;font-weight:700;color:#0f172a">reluctant</span><span style="font-size:14px;color:#64748b">istamaydigan</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 6px;border-bottom:1px solid #f1f5f9"><span style="width:8px;height:8px;border-radius:50%;background:#ea8c3c;flex:none"></span><span style="flex:1;font-size:14.5px;font-weight:700;color:#0f172a">sustainable</span><span style="font-size:14px;color:#64748b">barqaror</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 6px;border-bottom:1px solid #f1f5f9"><span style="width:8px;height:8px;border-radius:50%;background:#94a3b8;flex:none"></span><span style="flex:1;font-size:14.5px;font-weight:700;color:#0f172a">assess</span><span style="font-size:14px;color:#64748b">baholamoq</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 6px;border-bottom:1px solid #f1f5f9"><span style="width:8px;height:8px;border-radius:50%;background:#94a3b8;flex:none"></span><span style="flex:1;font-size:14.5px;font-weight:700;color:#0f172a">enhance</span><span style="font-size:14px;color:#64748b">yaxshilamoq</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 6px;border-bottom:1px solid #f1f5f9"><span style="width:8px;height:8px;border-radius:50%;background:#94a3b8;flex:none"></span><span style="flex:1;font-size:14.5px;font-weight:700;color:#0f172a">consequence</span><span style="font-size:14px;color:#64748b">oqibat</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 6px"><span style="width:8px;height:8px;border-radius:50%;background:#94a3b8;flex:none"></span><span style="flex:1;font-size:14.5px;font-weight:700;color:#0f172a">emphasize</span><span style="font-size:14px;color:#64748b">taʼkidlamoq</span></div>
+          </div>
+        </div>
+
+        <!-- completion -->
+        <div data-screen-label="Vocabulary completion" style="width:420px;max-width:100%;background:#fff;border-radius:24px;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);padding:36px 28px;text-align:center">
+          <div style="width:88px;height:88px;margin:0 auto;border-radius:50%;background:#f0fdf4;display:flex;align-items:center;justify-content:center;position:relative"><span style="position:absolute;top:-6px;right:-2px;font-size:22px">✨</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><path d="m9 11 3 3L22 4"></path></svg></div>
+          <h3 style="margin:18px 0 0;font-size:24px;font-weight:800;color:#0f172a">Ajoyib!</h3>
+          <p style="margin:8px 0 0;font-size:15px;color:#64748b;font-weight:500">39 tadan 39 ta soʻzni oʻrgandingiz</p>
+          <div style="display:inline-flex;align-items:center;gap:8px;margin-top:18px;background:#fdf1e5;color:#b45309;font-weight:800;font-size:15px;padding:9px 18px;border-radius:99px"><span style="width:26px;height:26px;border-radius:50%;background:#ea8c3c;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px">₮</span>+25 tanga</div>
+          <button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;font-family:inherit;font-weight:700;font-size:15.5px;height:52px;border-radius:12px;border:none;background:#16a34a;color:#fff;box-shadow:0 10px 24px rgba(22,163,74,.26);cursor:pointer;margin-top:22px" style-hover="background:#15803d">Davom etish<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><path d="m12 5 7 7-7 7"></path></svg></button>
+        </div>
+      </div>
+    </div>
+    <p style="margin:0 0 40px;font-size:13px;color:#94a3b8">Karta ustiga bosish tarjimani ochadi/yopadi (interaktiv). Yon nusxa — flip holatining statik namunasi.</p>
+
+    <!-- ===================== SCREEN C — Test ===================== -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;font-weight:800;font-size:14px;font-family:ui-monospace,Menlo,monospace;color:#15803d;background:#dcfce7;border-radius:9px">C</span>
+      <h2 style="margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em;color:#0f172a">Test / Uyga vazifa</h2>
+      <span style="font-size:14px;font-weight:500;color:#94a3b8">Test · savol turlari va tasdiqlash oynasi</span>
+    </div>
+
+    <div data-screen-label="Test desktop" style="position:relative;background:#fff;border-radius:24px;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);padding:28px;margin-bottom:24px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid #f1f5f9">
+        <div><div style="font-size:12px;font-weight:700;color:#94a3b8;text-transform:uppercase">Unit 5.2 — Present Perfect</div><div style="font-size:17px;font-weight:800;color:#0f172a;margin-top:2px">Savol 4 / 10</div></div>
+        <div style="display:flex;align-items:center;gap:18px">
+          <span style="display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:15px;color:#b45309;background:#fdf0e4;padding:8px 14px;border-radius:99px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>08:24</span>
+          <button onClick="{{ openExit }}" style="font-family:inherit;font-weight:700;font-size:14.5px;color:#64748b;background:none;border:none;cursor:pointer" style-hover="color:#0f172a">Chiqish</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:26px;margin-top:22px;flex-wrap:wrap">
+        <div style="flex:2;min-width:480px">
+          <div style="font-size:12px;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Bittasini tanlang</div>
+          <div style="font-size:19px;font-weight:700;color:#0f172a;line-height:1.5;margin-bottom:18px">Ular darsni allaqachon ___ (finish).</div>
+          <div style="display:flex;flex-direction:column;gap:11px">
+            <button onClick="{{ pick0 }}" style="{{ opt0Style }}"><span style="{{ badge0Style }}">A</span><span style="flex:1;text-align:left">finishes</span><sc-if value="{{ opt0Correct }}"><span style="color:#16a34a;flex:none;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></sc-if><sc-if value="{{ opt0Wrong }}"><span style="color:#ef4444;flex:none;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span></sc-if></button>
+            <button onClick="{{ pick1 }}" style="{{ opt1Style }}"><span style="{{ badge1Style }}">B</span><span style="flex:1;text-align:left">have finished</span><sc-if value="{{ opt1Correct }}"><span style="color:#16a34a;flex:none;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></sc-if><sc-if value="{{ opt1Wrong }}"><span style="color:#ef4444;flex:none;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span></sc-if></button>
+            <button onClick="{{ pick2 }}" style="{{ opt2Style }}"><span style="{{ badge2Style }}">C</span><span style="flex:1;text-align:left">finishing</span><sc-if value="{{ opt2Correct }}"><span style="color:#16a34a;flex:none;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></sc-if><sc-if value="{{ opt2Wrong }}"><span style="color:#ef4444;flex:none;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span></sc-if></button>
+            <button onClick="{{ pick3 }}" style="{{ opt3Style }}"><span style="{{ badge3Style }}">D</span><span style="flex:1;text-align:left">will finish</span><sc-if value="{{ opt3Correct }}"><span style="color:#16a34a;flex:none;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></sc-if><sc-if value="{{ opt3Wrong }}"><span style="color:#ef4444;flex:none;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span></sc-if></button>
+          </div>
+
+          <!-- fill in blank -->
+          <div style="margin-top:28px;padding-top:24px;border-top:1px solid #f1f5f9">
+            <div style="font-size:12px;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Boʻshliqni toʻldiring</div>
+            <div style="font-size:19px;font-weight:700;color:#0f172a;line-height:1.6">She has <input placeholder="javob" style="width:150px;height:38px;border:1.5px solid #e2e8f0;border-radius:9px;padding:0 10px;font-family:inherit;font-weight:700;font-size:16px;color:#0f172a;outline:none;text-align:center" style-focus="border-color:#16a34a;box-shadow:0 0 0 4px rgba(22,163,74,.15)"> (achieve) her goal already.</div>
+            <div style="display:flex;gap:8px;margin-top:12px"><span style="font-size:12px;font-weight:700;color:#94a3b8;text-transform:uppercase;align-self:center">Soʻz banki:</span><span style="font-weight:600;font-size:13px;color:#334155;background:#f1f5f9;padding:5px 11px;border-radius:99px">achieve</span><span style="font-weight:600;font-size:13px;color:#334155;background:#f1f5f9;padding:5px 11px;border-radius:99px">achieved</span><span style="font-weight:600;font-size:13px;color:#334155;background:#f1f5f9;padding:5px 11px;border-radius:99px">achieving</span></div>
+          </div>
+
+          <!-- matching -->
+          <div style="margin-top:28px;padding-top:24px;border-top:1px solid #f1f5f9">
+            <div style="font-size:12px;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Mos keluvchini tanlang</div>
+            <div style="display:flex;gap:18px">
+              <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+                <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:11px;background:#f0fdf4;border:1.5px solid #16a34a;font-weight:700;font-size:14.5px;color:#0f172a">achieve <span style="margin-left:auto;width:9px;height:9px;border-radius:50%;background:#16a34a"></span></div>
+                <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:11px;background:#f0fdf4;border:1.5px solid #16a34a;font-weight:700;font-size:14.5px;color:#0f172a">overcome <span style="margin-left:auto;width:9px;height:9px;border-radius:50%;background:#16a34a"></span></div>
+                <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:11px;background:#fff;border:1.5px dashed #cbd5e1;font-weight:700;font-size:14.5px;color:#334155">reluctant</div>
+                <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:11px;background:#fff;border:1.5px dashed #cbd5e1;font-weight:700;font-size:14.5px;color:#334155">sustainable</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+                <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:11px;background:#f0fdf4;border:1.5px solid #16a34a;font-weight:600;font-size:14.5px;color:#166534"><span style="width:9px;height:9px;border-radius:50%;background:#16a34a"></span>erishmoq</div>
+                <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:11px;background:#f0fdf4;border:1.5px solid #16a34a;font-weight:600;font-size:14.5px;color:#166534"><span style="width:9px;height:9px;border-radius:50%;background:#16a34a"></span>yengib oʻtmoq</div>
+                <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:11px;background:#fff;border:1.5px dashed #cbd5e1;font-weight:600;font-size:14.5px;color:#334155">barqaror</div>
+                <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:11px;background:#fff;border:1.5px dashed #cbd5e1;font-weight:600;font-size:14.5px;color:#334155">istamaydigan</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:28px;padding-top:22px;border-top:1px solid #f1f5f9">
+            <button style="display:inline-flex;align-items:center;gap:8px;font-family:inherit;font-weight:700;font-size:15px;height:48px;padding:0 22px;border-radius:11px;background:transparent;color:#15803d;border:none;cursor:pointer" style-hover="background:#f0fdf4"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>Orqaga</button>
+            <button style="display:inline-flex;align-items:center;gap:8px;font-family:inherit;font-weight:700;font-size:15px;height:48px;padding:0 24px;border-radius:11px;background:#16a34a;color:#fff;border:none;cursor:pointer;box-shadow:0 8px 20px rgba(22,163,74,.24)" style-hover="background:#15803d">Keyingi<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg></button>
+          </div>
+          <div style="text-align:right;margin-top:8px"><span style="font-size:12px;color:#94a3b8;font-weight:600">Oxirgi savolda «Keyingi» oʻrniga «Topshirish» tugmasi chiqadi</span></div>
+        </div>
+
+        <!-- navigator -->
+        <div style="flex:1;min-width:220px">
+          <div style="font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin-bottom:12px">Savollar</div>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:9px">
+            <div style="aspect-ratio:1;border-radius:11px;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">1</div>
+            <div style="aspect-ratio:1;border-radius:11px;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">2</div>
+            <div style="aspect-ratio:1;border-radius:11px;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">3</div>
+            <div style="aspect-ratio:1;border-radius:11px;background:#fff;border:2.5px solid #16a34a;color:#16a34a;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">4</div>
+            <div style="aspect-ratio:1;border-radius:11px;background:#f1f5f9;border:1px solid #e2e8f0;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">5</div>
+            <div style="aspect-ratio:1;border-radius:11px;background:#f1f5f9;border:1px solid #e2e8f0;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">6</div>
+            <div style="aspect-ratio:1;border-radius:11px;background:#f1f5f9;border:1px solid #e2e8f0;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">7</div>
+            <div style="aspect-ratio:1;border-radius:11px;background:#f1f5f9;border:1px solid #e2e8f0;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">8</div>
+            <div style="aspect-ratio:1;border-radius:11px;background:#f1f5f9;border:1px solid #e2e8f0;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">9</div>
+            <div style="aspect-ratio:1;border-radius:11px;background:#f1f5f9;border:1px solid #e2e8f0;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">10</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+            <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#64748b"><span style="width:14px;height:14px;border-radius:5px;background:#16a34a"></span>Javob berilgan</span>
+            <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#64748b"><span style="width:14px;height:14px;border-radius:5px;background:#fff;border:2px solid #16a34a"></span>Joriy savol</span>
+            <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#64748b"><span style="width:14px;height:14px;border-radius:5px;background:#f1f5f9;border:1px solid #e2e8f0"></span>Javobsiz</span>
+          </div>
+        </div>
+      </div>
+
+      <sc-if value="{{ showExit }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;background:rgba(15,23,42,.5);border-radius:24px;display:flex;align-items:center;justify-content:center;padding:24px">
+          <div style="background:#fff;border-radius:20px;box-shadow:0 24px 60px rgba(15,23,42,.3);padding:28px;max-width:360px;width:100%;text-align:center">
+            <div style="width:52px;height:52px;margin:0 auto;border-radius:50%;background:#fef2f2;color:#ef4444;display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+            <h3 style="margin:16px 0 0;font-size:19px;font-weight:800;color:#0f172a">Testni tark etasizmi?</h3>
+            <p style="margin:8px 0 0;font-size:14.5px;color:#64748b;line-height:1.5">Javoblaringiz saqlanmaydi. Chiqishga ishonchingiz komilmi?</p>
+            <div style="display:flex;gap:10px;margin-top:22px">
+              <button onClick="{{ closeExit }}" style="flex:1;font-family:inherit;font-weight:700;font-size:14.5px;height:46px;border-radius:11px;background:#f1f5f9;color:#334155;border:none;cursor:pointer">Bekor qilish</button>
+              <button onClick="{{ closeExit }}" style="flex:1;font-family:inherit;font-weight:700;font-size:14.5px;height:46px;border-radius:11px;background:#ef4444;color:#fff;border:none;cursor:pointer">Ha, chiqish</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <!-- test mobile -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:64px">
+      <div data-screen-label="Test mobile" style="width:375px;max-width:100%;min-height:700px;background:#fff;border-radius:34px;overflow:hidden;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);display:flex;flex-direction:column">
+        <div style="padding:14px 18px 0;display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:#0f172a"><span>9:41</span><span style="width:20px;height:10px;border:1.5px solid #0f172a;border-radius:3px"></span></div>
+        <div style="padding:12px 18px 0;display:flex;align-items:center;justify-content:space-between"><div><div style="font-size:10.5px;font-weight:700;color:#94a3b8;text-transform:uppercase">Savol 4/10</div></div><span style="display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:13px;color:#b45309;background:#fdf0e4;padding:5px 10px;border-radius:99px">08:24</span><button onClick="{{ openExit }}" style="font-family:inherit;font-weight:700;font-size:13px;color:#64748b;background:none;border:none">Chiqish</button></div>
+        <div class="bw-scroll" style="flex:1;overflow-y:auto;padding:16px 18px">
+          <div style="font-size:16.5px;font-weight:700;color:#0f172a;line-height:1.5;margin-bottom:14px">Ular darsni allaqachon ___ (finish).</div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <button onClick="{{ pick0 }}" style="{{ opt0StyleSm }}"><span style="{{ badge0Style }}">A</span><span style="flex:1;text-align:left">finishes</span><sc-if value="{{ opt0Correct }}"><span style="color:#16a34a;flex:none;display:flex"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></sc-if><sc-if value="{{ opt0Wrong }}"><span style="color:#ef4444;flex:none;display:flex"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span></sc-if></button>
+            <button onClick="{{ pick1 }}" style="{{ opt1StyleSm }}"><span style="{{ badge1Style }}">B</span><span style="flex:1;text-align:left">have finished</span><sc-if value="{{ opt1Correct }}"><span style="color:#16a34a;flex:none;display:flex"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></sc-if><sc-if value="{{ opt1Wrong }}"><span style="color:#ef4444;flex:none;display:flex"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span></sc-if></button>
+            <button onClick="{{ pick2 }}" style="{{ opt2StyleSm }}"><span style="{{ badge2Style }}">C</span><span style="flex:1;text-align:left">finishing</span><sc-if value="{{ opt2Correct }}"><span style="color:#16a34a;flex:none;display:flex"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></sc-if><sc-if value="{{ opt2Wrong }}"><span style="color:#ef4444;flex:none;display:flex"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span></sc-if></button>
+            <button onClick="{{ pick3 }}" style="{{ opt3StyleSm }}"><span style="{{ badge3Style }}">D</span><span style="flex:1;text-align:left">will finish</span><sc-if value="{{ opt3Correct }}"><span style="color:#16a34a;flex:none;display:flex"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></sc-if><sc-if value="{{ opt3Wrong }}"><span style="color:#ef4444;flex:none;display:flex"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span></sc-if></button>
+          </div>
+          <div class="bw-scroll" style="display:flex;gap:8px;overflow-x:auto;margin-top:18px;padding-bottom:4px">
+            <span style="min-width:34px;height:34px;border-radius:9px;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none">1</span>
+            <span style="min-width:34px;height:34px;border-radius:9px;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none">2</span>
+            <span style="min-width:34px;height:34px;border-radius:9px;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none">3</span>
+            <span style="min-width:34px;height:34px;border-radius:9px;background:#fff;border:2px solid #16a34a;color:#16a34a;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none">4</span>
+            <span style="min-width:34px;height:34px;border-radius:9px;background:#f1f5f9;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none">5</span>
+            <span style="min-width:34px;height:34px;border-radius:9px;background:#f1f5f9;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none">6</span>
+            <span style="min-width:34px;height:34px;border-radius:9px;background:#f1f5f9;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none">7</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;padding:14px 18px 22px;border-top:1px solid #f1f5f9">
+          <button style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-family:inherit;font-weight:700;font-size:14.5px;height:48px;border-radius:11px;background:#f1f5f9;color:#15803d;border:none">Orqaga</button>
+          <button style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-family:inherit;font-weight:700;font-size:14.5px;height:48px;border-radius:11px;background:#16a34a;color:#fff;border:none;box-shadow:0 8px 20px rgba(22,163,74,.24)">Keyingi</button>
+        </div>
+      </div>
+      <span style="font:700 11px ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase;color:#94a3b8">Mobil · savolni tanlash interaktiv</span>
+    </div>
+
+    <!-- ===================== SCREEN D — Result ===================== -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;font-weight:800;font-size:14px;font-family:ui-monospace,Menlo,monospace;color:#15803d;background:#dcfce7;border-radius:9px">D</span>
+      <h2 style="margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em;color:#0f172a">Natija</h2>
+      <span style="font-size:14px;font-weight:500;color:#94a3b8">Result</span>
+    </div>
+
+    <div data-screen-label="Result desktop" style="background:#fff;border-radius:24px;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);padding:32px;margin-bottom:24px">
+      <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start">
+        <div style="flex:none;text-align:center;width:260px">
+          <div style="position:relative;width:190px;height:190px;margin:0 auto"><svg width="190" height="190" viewBox="0 0 190 190" style="transform:rotate(-90deg)"><circle cx="95" cy="95" r="80" fill="none" stroke="#f1f5f9" stroke-width="14"></circle><circle cx="95" cy="95" r="80" fill="none" stroke="#16a34a" stroke-width="14" stroke-linecap="round" stroke-dasharray="502.7" stroke-dashoffset="100.5"></circle></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="font-size:40px;font-weight:800;color:#0f172a;font-variant-numeric:tabular-nums;line-height:1">8/10</div><div style="font-size:15px;font-weight:700;color:#16a34a;margin-top:4px">80%</div></div></div>
+          <div style="display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap">
+            <span style="display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13.5px;color:#b45309;background:#fef6df;padding:7px 13px;border-radius:99px"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>+40 ball</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13.5px;color:#b45309;background:#fdf1e5;padding:7px 13px;border-radius:99px"><span style="width:16px;height:16px;border-radius:50%;background:#ea8c3c;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px">₮</span>+30 tanga</span>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:400px">
+          <div style="font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin-bottom:12px">Savollar boʻyicha koʻrib chiqish</div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:13px;background:#f0fdf4"><span style="width:26px;height:26px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="flex:1;font-size:14px;font-weight:600;color:#0f172a">1-savol — Present Perfect shakli</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:13px;background:#f0fdf4"><span style="width:26px;height:26px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="flex:1;font-size:14px;font-weight:600;color:#0f172a">2-savol — Already / yet qoʻllanilishi</span></div>
+
+            <div style="border-radius:13px;background:#fef2f2;overflow:hidden">
+              <button onClick="{{ toggleRev3 }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:12px 14px;background:none;border:none;cursor:pointer;font-family:inherit;text-align:left">
+                <span style="width:26px;height:26px;border-radius:50%;background:#ef4444;color:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span>
+                <span style="flex:1;font-size:14px;font-weight:600;color:#0f172a">3-savol — Since / for farqi</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ rev3Rotate }};transition:transform .15s"><path d="m6 9 6 6 6-6"></path></svg>
+              </button>
+              <sc-if value="{{ rev3Open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:0 14px 14px 52px;font-size:13.5px;color:#7f1d1d;line-height:1.55"><strong>Toʻgʻri javob:</strong> since 2020 (aniq nuqta) — for oʻzi davomiylikni bildiradi, aniq sanaga ergashmaydi.</div>
+              </sc-if>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:13px;background:#f0fdf4"><span style="width:26px;height:26px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="flex:1;font-size:14px;font-weight:600;color:#0f172a">4-savol — Have finished shakli</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:13px;background:#f0fdf4"><span style="width:26px;height:26px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="flex:1;font-size:14px;font-weight:600;color:#0f172a">6-savol — Ever / never qoʻllanilishi</span></div>
+
+            <div style="border-radius:13px;background:#fef2f2;overflow:hidden">
+              <button onClick="{{ toggleRev8 }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:12px 14px;background:none;border:none;cursor:pointer;font-family:inherit;text-align:left">
+                <span style="width:26px;height:26px;border-radius:50%;background:#ef4444;color:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span>
+                <span style="flex:1;font-size:14px;font-weight:600;color:#0f172a">8-savol — Boʻshliqni toʻldirish</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ rev8Rotate }};transition:transform .15s"><path d="m6 9 6 6 6-6"></path></svg>
+              </button>
+              <sc-if value="{{ rev8Open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:0 14px 14px 52px;font-size:13.5px;color:#7f1d1d;line-height:1.55"><strong>Toʻgʻri javob:</strong> achieved — feʼlning 3-shakli (Present Perfect qurilishida).</div>
+              </sc-if>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:13px;background:#f0fdf4"><span style="width:26px;height:26px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="flex:1;font-size:14px;font-weight:600;color:#0f172a">9-savol — Soʻz mosligi (matching)</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:13px;background:#f0fdf4"><span style="width:26px;height:26px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="flex:1;font-size:14px;font-weight:600;color:#0f172a">10-savol — Umumiy takrorlash</span></div>
+          </div>
+
+          <div style="display:flex;gap:14px;margin-top:24px">
+            <button style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;font-size:15px;height:50px;border-radius:12px;background:#fff;color:#15803d;border:1.5px solid #16a34a;cursor:pointer" style-hover="background:#f0fdf4">Qayta topshirish</button>
+            <button style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;font-size:15px;height:50px;border-radius:12px;background:#16a34a;color:#fff;border:none;cursor:pointer;box-shadow:0 10px 24px rgba(22,163,74,.26)" style-hover="background:#15803d">Keyingi darsga<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><path d="m12 5 7 7-7 7"></path></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- result mobile -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+      <div data-screen-label="Result mobile" style="width:375px;max-width:100%;background:#fff;border-radius:34px;overflow:hidden;box-shadow:0 24px 60px rgba(15,23,42,.14),0 0 0 1px rgba(15,23,42,.04);padding:24px 20px 26px">
+        <div style="text-align:center">
+          <div style="position:relative;width:150px;height:150px;margin:0 auto"><svg width="150" height="150" viewBox="0 0 150 150" style="transform:rotate(-90deg)"><circle cx="75" cy="75" r="63" fill="none" stroke="#f1f5f9" stroke-width="11"></circle><circle cx="75" cy="75" r="63" fill="none" stroke="#16a34a" stroke-width="11" stroke-linecap="round" stroke-dasharray="395.8" stroke-dashoffset="79.2"></circle></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="font-size:30px;font-weight:800;color:#0f172a;line-height:1">8/10</div><div style="font-size:13px;font-weight:700;color:#16a34a;margin-top:3px">80%</div></div></div>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:16px"><span style="font-weight:700;font-size:12.5px;color:#b45309;background:#fef6df;padding:6px 11px;border-radius:99px">+40 ball</span><span style="font-weight:700;font-size:12.5px;color:#b45309;background:#fdf1e5;padding:6px 11px;border-radius:99px">+30 tanga</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:20px">
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;background:#f0fdf4"><span style="width:22px;height:22px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="flex:1;font-size:13px;font-weight:600;color:#0f172a">1-savol</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;background:#fef2f2"><span style="width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span><span style="flex:1;font-size:13px;font-weight:600;color:#0f172a">3-savol</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;background:#f0fdf4"><span style="width:22px;height:22px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="flex:1;font-size:13px;font-weight:600;color:#0f172a">4-savol</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
+          <button style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;font-size:15px;height:50px;border-radius:12px;background:#16a34a;color:#fff;border:none;box-shadow:0 10px 24px rgba(22,163,74,.26)">Keyingi darsga</button>
+          <button style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;font-size:15px;height:50px;border-radius:12px;background:#fff;color:#15803d;border:1.5px solid #16a34a">Qayta topshirish</button>
+        </div>
+      </div>
+      <span style="font:700 11px ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase;color:#94a3b8">Mobil · 375</span>
+    </div>
+
+    <footer style="text-align:center;padding:44px 0 0;color:#94a3b8;font-size:13px">Best Way LMS · Darsni oʻzlashtirish · tokenlar «Uslublar tizimi»dan olingan</footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { playing: false, speedIdx: 0, captionsOn: true, konspektOpen: false, flipped: false, selected: null, showExit: false, rev3Open: false, rev8Open: false };
+  speeds = [1, 1.25, 1.5, 2];
+  correctIdx = 1;
+
+  optStyle(i, small) {
+    const s = this.state;
+    const base = 'display:flex;align-items:center;gap:14px;width:100%;text-align:left;font-family:inherit;padding:' + (small ? '13px 14px' : '15px 18px') + ';border-radius:14px;cursor:pointer;font-size:' + (small ? '14.5px' : '15.5px') + ';font-weight:600;transition:border-color .15s,background .15s;';
+    if (s.selected === null) return base + 'border:1.5px solid #e2e8f0;background:#fff;color:#0f172a;';
+    if (i === this.correctIdx) return base + 'border:1.5px solid #16a34a;background:#f0fdf4;color:#166534;';
+    if (i === s.selected) return base + 'border:1.5px solid #ef4444;background:#fef2f2;color:#991b1b;';
+    return base + 'border:1.5px solid #e2e8f0;background:#fff;color:#94a3b8;';
+  }
+
+  badgeStyle(i) {
+    const s = this.state;
+    const base = 'width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex:none;';
+    if (s.selected === null) return base + 'background:#f1f5f9;color:#334155;';
+    if (i === this.correctIdx) return base + 'background:#16a34a;color:#fff;';
+    if (i === s.selected) return base + 'background:#ef4444;color:#fff;';
+    return base + 'background:#f1f5f9;color:#94a3b8;';
+  }
+
+  renderVals() {
+    const s = this.state;
+    return {
+      isPlaying: s.playing, isPaused: !s.playing,
+      togglePlay: () => this.setState(p => ({ playing: !p.playing })),
+      speedLabel: this.speeds[s.speedIdx] + 'x',
+      cycleSpeed: () => this.setState(p => ({ speedIdx: (p.speedIdx + 1) % this.speeds.length })),
+      captionsOn: s.captionsOn,
+      toggleCaptions: () => this.setState(p => ({ captionsOn: !p.captionsOn })),
+      ccBorder: s.captionsOn ? '#16a34a' : 'rgba(255,255,255,.3)',
+      ccBg: s.captionsOn ? '#16a34a' : 'rgba(255,255,255,.08)',
+      ccColor: '#fff',
+      konspektOpen: s.konspektOpen,
+      toggleKonspekt: () => this.setState(p => ({ konspektOpen: !p.konspektOpen })),
+      konspektRotate: s.konspektOpen ? 'rotate(180deg)' : 'none',
+
+      showFront: !s.flipped, showBack: s.flipped,
+      toggleFlip: () => this.setState(p => ({ flipped: !p.flipped })),
+      stopProp: (e) => e.stopPropagation(),
+
+      pick0: () => this.setState({ selected: 0 }), pick1: () => this.setState({ selected: 1 }),
+      pick2: () => this.setState({ selected: 2 }), pick3: () => this.setState({ selected: 3 }),
+      opt0Style: this.optStyle(0, false), opt1Style: this.optStyle(1, false), opt2Style: this.optStyle(2, false), opt3Style: this.optStyle(3, false),
+      opt0StyleSm: this.optStyle(0, true), opt1StyleSm: this.optStyle(1, true), opt2StyleSm: this.optStyle(2, true), opt3StyleSm: this.optStyle(3, true),
+      badge0Style: this.badgeStyle(0), badge1Style: this.badgeStyle(1), badge2Style: this.badgeStyle(2), badge3Style: this.badgeStyle(3),
+      opt0Correct: s.selected !== null && this.correctIdx === 0, opt0Wrong: s.selected === 0 && this.correctIdx !== 0,
+      opt1Correct: s.selected !== null && this.correctIdx === 1, opt1Wrong: s.selected === 1 && this.correctIdx !== 1,
+      opt2Correct: s.selected !== null && this.correctIdx === 2, opt2Wrong: s.selected === 2 && this.correctIdx !== 2,
+      opt3Correct: s.selected !== null && this.correctIdx === 3, opt3Wrong: s.selected === 3 && this.correctIdx !== 3,
+
+      showExit: s.showExit,
+      openExit: () => this.setState({ showExit: true }),
+      closeExit: () => this.setState({ showExit: false }),
+
+      rev3Open: s.rev3Open, rev8Open: s.rev8Open,
+      toggleRev3: () => this.setState(p => ({ rev3Open: !p.rev3Open })),
+      toggleRev8: () => this.setState(p => ({ rev8Open: !p.rev8Open })),
+      rev3Rotate: s.rev3Open ? 'rotate(180deg)' : 'none',
+      rev8Rotate: s.rev8Open ? 'rotate(180deg)' : 'none',
+    };
+  }
+}
+</script>
+</body>
+</html>
