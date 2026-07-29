@@ -5,11 +5,12 @@ import { NestFactory } from '@nestjs/core';
 import { Sequelize } from 'sequelize-typescript';
 import { CourseSubject, UserRole } from '@/common/enums';
 import { AppModule } from '@/app.module';
-import { Group, User } from '@/database/models';
+import { Announcement, Enrollment, Group, User } from '@/database/models';
 import { LessonItemsService } from '@/modules/lessons/lesson-items.service';
 import { UsersService } from '@/modules/users/users.service';
 import { seedAttendance, seedStudentActivity } from './activity';
 import { seedCourses, SeededCourse } from './content';
+import { SEED_ANNOUNCEMENTS } from './data/announcements';
 import {
   SEED_ADMIN,
   SEED_GROUPS,
@@ -21,6 +22,8 @@ import { Rng } from './rng';
 /* Tables are wiped in dependency order; RESTART IDENTITY keeps ids stable
    between runs so bookmarked URLs still point at the same records. */
 const TABLES = [
+  'announcements',
+  'enrollments',
   'attendance',
   'submissions',
   'progress',
@@ -118,6 +121,7 @@ async function run(): Promise<void> {
     const students: User[] = [];
     const groupIndexByStudentId = new Map<number, number>();
     const studentsByGroupId = new Map<number, User[]>();
+    const freshEnrolmentIds = new Set<number>();
 
     for (const spec of SEED_STUDENTS) {
       const group = groups[spec.groupIndex];
@@ -134,6 +138,7 @@ async function run(): Promise<void> {
       } as Partial<User> as User);
 
       students.push(student);
+      if (spec.freshEnrolment) freshEnrolmentIds.add(student.id);
       groupIndexByStudentId.set(student.id, spec.groupIndex);
       const bucket = studentsByGroupId.get(group.id) ?? [];
       bucket.push(student);
@@ -141,7 +146,12 @@ async function run(): Promise<void> {
     }
 
     logger.log('Creating courses, units and lesson items…');
-    const courses = await seedCourses(lessonItems, rng);
+    /* Aziz owns the IELTS course; Nigora owns maths and science. */
+    const courses = await seedCourses(lessonItems, rng, [
+      teachers[0].id,
+      teachers[1].id,
+      teachers[1].id,
+    ]);
     const courseBySubject = new Map<CourseSubject, SeededCourse>(
       courses.map((course) => [course.subject, course]),
     );
@@ -151,9 +161,48 @@ async function run(): Promise<void> {
       if (course) courseByGroupIndex.set(index, course);
     });
 
+    logger.log('Creating enrolments…');
+    /* Every student takes the course their group studies. The IELTS stream
+       also takes Tabiiy fanlar, which is how a student ends up with the
+       several course tabs the lessons screen is built around. */
+    const enrolmentRows: Partial<Enrollment>[] = [];
+    for (const student of students) {
+      const groupIndex = groupIndexByStudentId.get(student.id);
+      if (groupIndex === undefined) continue;
+      const own = courseBySubject.get(COURSE_SUBJECT_BY_GROUP[groupIndex]);
+      const extras =
+        COURSE_SUBJECT_BY_GROUP[groupIndex] === CourseSubject.Ielts
+          ? [courseBySubject.get(CourseSubject.Science)]
+          : [];
+      for (const course of [own, ...extras]) {
+        if (!course) continue;
+        enrolmentRows.push({
+          studentId: student.id,
+          courseId: course.id,
+          enrolledAt: new Date(),
+          active: true,
+        });
+      }
+    }
+    /* Jasur is the demo account the screens are checked against, so he also
+       takes maths — that is what puts all three tabs on his lessons page. */
+    const jasur = students.find((student) => student.phone === '901547812');
+    const mathCourse = courseBySubject.get(CourseSubject.Math);
+    if (jasur && mathCourse) {
+      enrolmentRows.push({
+        studentId: jasur.id,
+        courseId: mathCourse.id,
+        enrolledAt: new Date(),
+        active: true,
+      });
+    }
+    await Enrollment.bulkCreate(enrolmentRows as unknown as Enrollment[]);
+
     logger.log('Creating progress and submissions…');
     const activity = await seedStudentActivity(
-      students.filter((student) => student.active),
+      students.filter(
+        (student) => student.active && !freshEnrolmentIds.has(student.id),
+      ),
       courseByGroupIndex,
       groupIndexByStudentId,
       teachers.map((teacher) => teacher.id),
@@ -162,6 +211,19 @@ async function run(): Promise<void> {
 
     logger.log('Creating attendance…');
     const attendanceRows = await seedAttendance(groups, studentsByGroupId, rng);
+
+    logger.log('Creating announcements…');
+    await Announcement.bulkCreate(
+      SEED_ANNOUNCEMENTS.map((spec, index) => ({
+        title: spec.title,
+        icon: spec.icon,
+        tone: spec.tone,
+        body: spec.body,
+        orderIndex: index,
+        publishedAt: new Date(Date.now() - spec.daysAgo * 86_400_000),
+        active: true,
+      })) as unknown as Announcement[],
+    );
 
     const lessonItemCount = courses.reduce((sum, c) => sum + c.items.length, 0);
     logger.log('─'.repeat(56));

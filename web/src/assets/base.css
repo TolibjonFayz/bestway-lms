@@ -124,6 +124,18 @@ textarea {
   }
 }
 
+/* The halo that marks the unit the student is on. */
+@keyframes bw-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
 @keyframes bw-shimmer {
   to {
     background-position: -200% 0;

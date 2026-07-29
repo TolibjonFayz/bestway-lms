@@ -9,6 +9,9 @@ const props = defineProps({
   label: { type: String, default: '' },
   helper: { type: String, default: '' },
   error: { type: String, default: '' },
+  /* Error styling without a message of its own — for fields that share one
+     message with a sibling, as the login screen's phone and password do. */
+  invalid: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   /* "spaced" is the design system mockup, "parens" the (90) 123-45-67 form. */
   format: {
@@ -16,8 +19,18 @@ const props = defineProps({
     default: 'spaced',
     validator: (v) => ['spaced', 'parens'].includes(v),
   },
-  /* The mockup shows the bare +998 prefix; the flag is opt-in. */
+  /* The design system shows the bare +998 prefix; the auth screens add the
+     flag, so it is opt-in. */
   flag: { type: Boolean, default: false },
+  /* lg is the taller control the auth screens use (design/02-auth.html). */
+  size: {
+    type: String,
+    default: 'md',
+    validator: (v) => ['md', 'lg'].includes(v),
+  },
+  /* The auth screens hint the bare digits even though the field masks to
+     "(90) 123-45-67", so the placeholder is overridable. */
+  placeholder: { type: String, default: '' },
   name: { type: String, default: undefined },
   autocomplete: { type: String, default: 'tel-national' },
 })
@@ -33,9 +46,11 @@ const inputEl = ref(null)
 const focused = ref(false)
 
 const display = computed(() => phone.format(props.modelValue, props.format))
-const placeholder = computed(() =>
-  phone.format('901234567', props.format),
+const hint = computed(
+  () => props.placeholder || phone.format('901234567', props.format),
 )
+/* The mask never exceeds the fully formatted number's width. */
+const maxlength = computed(() => phone.format('901234567', props.format).length)
 const hasMessage = computed(() => Boolean(props.error || props.helper))
 
 async function onInput(event) {
@@ -67,14 +82,14 @@ function onBlur(event) {
 </script>
 
 <template>
-  <div class="bw-field" :class="{ 'is-disabled': disabled }">
+  <div class="bw-field" :class="[`bw-field--${size}`, { 'is-disabled': disabled }]">
     <label v-if="label" class="bw-field__label" :for="inputId">{{ label }}</label>
 
     <div
       class="bw-phone"
       :class="{
         'is-focused': focused,
-        'is-error': Boolean(error),
+        'is-error': Boolean(error) || invalid,
         'is-disabled': disabled,
       }"
     >
@@ -103,12 +118,13 @@ function onBlur(event) {
         type="tel"
         inputmode="tel"
         :value="display"
-        :placeholder="placeholder"
+        :placeholder="hint"
         :disabled="disabled"
         :name="name"
         :autocomplete="autocomplete"
-        :maxlength="placeholder.length"
-        :aria-invalid="error ? 'true' : undefined"
+        :maxlength="maxlength"
+        :aria-label="label || undefined"
+        :aria-invalid="error || invalid ? 'true' : undefined"
         :aria-describedby="hasMessage ? messageId : undefined"
         @input="onInput"
         @focus="onFocus"
@@ -117,7 +133,11 @@ function onBlur(event) {
     </div>
 
     <div v-if="error" :id="messageId" class="bw-field__error" role="alert">
-      <BwIcon name="alert-circle" :size="15" />{{ error }}
+      <BwIcon
+        name="alert-circle"
+        :size="size === 'lg' ? 16 : 15"
+        :stroke-width="size === 'lg' ? 2 : undefined"
+      />{{ error }}
     </div>
     <div v-else-if="helper" :id="messageId" class="bw-field__helper">
       {{ helper }}
@@ -212,6 +232,38 @@ function onBlur(event) {
   cursor: not-allowed;
 }
 
+/* ── lg: the auth screens' control size ─────────────────────────────── */
+
+.bw-field--lg .bw-phone {
+  height: 52px;
+  border-radius: 12px;
+}
+
+.bw-field--lg .bw-phone__prefix {
+  padding: 0 12px 0 14px;
+  font-size: 16px;
+  gap: 8px;
+  /* The auth mockup drops the tinted prefix panel. */
+  background: transparent;
+}
+
+.bw-field--lg .bw-phone__input {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.bw-field--lg .bw-phone__flag {
+  width: 21px;
+  height: 15px;
+  border-radius: 3px;
+}
+
+/* The divider softens to match the red border rather than cutting across it. */
+.bw-phone.is-error .bw-phone__prefix {
+  border-right-color: var(--danger-line);
+}
+
 .bw-field__error {
   display: flex;
   align-items: center;
@@ -220,6 +272,13 @@ function onBlur(event) {
   color: var(--danger);
   font-size: 12.5px;
   font-weight: 500;
+}
+
+.bw-field--lg .bw-field__error {
+  margin-top: 11px;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .bw-field__helper {

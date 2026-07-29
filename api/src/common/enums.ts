@@ -32,6 +32,19 @@ export enum SubmissionStatus {
   Returned = 'returned',
 }
 
+/* multiple_choice and fill_blank both use question_options as their answer
+   set — fill_blank differs only in that the client shows a text input and
+   grading compares typed text to the correct option, not an id. matching
+   reuses the same rows as pairs (text = left term, matchText = right term).
+   open has no options at all — there is no machine-checkable answer, so it
+   never contributes to autoScore and always waits for a teacher. */
+export enum QuestionType {
+  MultipleChoice = 'multiple_choice',
+  FillBlank = 'fill_blank',
+  Matching = 'matching',
+  Open = 'open',
+}
+
 /* Attendance is recorded in Uzbek because that is what the register says and
    what teachers pick from — translating it in the UI would only add a mapping. */
 export enum AttendanceStatus {

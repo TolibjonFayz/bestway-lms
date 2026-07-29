@@ -54,6 +54,11 @@ export class User extends Model<User> {
   @Column(DataType.BOOLEAN)
   declare active: boolean;
 
+  @AllowNull(false)
+  @Default(true)
+  @Column({ type: DataType.BOOLEAN, field: 'notifications_enabled' })
+  declare notificationsEnabled: boolean;
+
   @BelongsTo(() => Group, { foreignKey: 'groupId', as: 'group' })
   declare group?: Group;
 

@@ -14,6 +14,15 @@ const props = defineProps({
   placeholder: { type: String, default: '' },
   helper: { type: String, default: '' },
   error: { type: String, default: '' },
+  /* Error styling without a message of its own — for fields that share one
+     message with a sibling, as the login screen's phone and password do. */
+  invalid: { type: Boolean, default: false },
+  /* lg is the taller control the auth screens use (design/02-auth.html). */
+  size: {
+    type: String,
+    default: 'md',
+    validator: (v) => ['md', 'lg'].includes(v),
+  },
   disabled: { type: Boolean, default: false },
   readonly: { type: Boolean, default: false },
   autocomplete: { type: String, default: undefined },
@@ -37,14 +46,17 @@ const hasMessage = computed(() => Boolean(props.error || props.helper))
 </script>
 
 <template>
-  <div class="bw-field" :class="{ 'is-disabled': disabled }">
+  <div class="bw-field" :class="[`bw-field--${size}`, { 'is-disabled': disabled }]">
     <label v-if="label" class="bw-field__label" :for="inputId">{{ label }}</label>
 
     <div class="bw-field__control">
       <input
         :id="inputId"
         class="bw-input"
-        :class="{ 'bw-input--error': error, 'bw-input--password': isPassword }"
+        :class="{
+          'bw-input--error': error || invalid,
+          'bw-input--password': isPassword,
+        }"
         :type="resolvedType"
         :value="modelValue"
         :placeholder="placeholder"
@@ -54,8 +66,9 @@ const hasMessage = computed(() => Boolean(props.error || props.helper))
         :inputmode="inputmode"
         :name="name"
         :required="required"
-        :aria-invalid="error ? 'true' : undefined"
+        :aria-invalid="error || invalid ? 'true' : undefined"
         :aria-describedby="hasMessage ? messageId : undefined"
+        :aria-label="label ? undefined : placeholder || undefined"
         @input="emit('update:modelValue', $event.target.value)"
         @blur="emit('blur', $event)"
         @focus="emit('focus', $event)"
@@ -70,12 +83,16 @@ const hasMessage = computed(() => Boolean(props.error || props.helper))
         :disabled="disabled"
         @click="revealed = !revealed"
       >
-        <BwIcon :name="revealed ? 'eye-off' : 'eye'" :size="20" />
+        <BwIcon :name="revealed ? 'eye-off' : 'eye'" :size="size === 'lg' ? 21 : 20" />
       </button>
     </div>
 
     <div v-if="error" :id="messageId" class="bw-field__error" role="alert">
-      <BwIcon name="alert-circle" :size="15" />{{ error }}
+      <BwIcon
+        name="alert-circle"
+        :size="size === 'lg' ? 16 : 15"
+        :stroke-width="size === 'lg' ? 2 : undefined"
+      />{{ error }}
     </div>
     <div v-else-if="helper" :id="messageId" class="bw-field__helper">
       {{ helper }}
@@ -166,6 +183,33 @@ const hasMessage = computed(() => Boolean(props.error || props.helper))
 
 .bw-field__reveal:disabled {
   cursor: not-allowed;
+}
+
+/* ── lg: the auth screens' control size ─────────────────────────────── */
+
+.bw-field--lg .bw-input {
+  height: 52px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.bw-field--lg .bw-input--password {
+  padding: 0 50px 0 14px;
+}
+
+.bw-field--lg .bw-field__reveal {
+  right: 7px;
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+}
+
+.bw-field--lg .bw-field__error {
+  margin-top: 11px;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .bw-field__error {

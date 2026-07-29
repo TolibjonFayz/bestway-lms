@@ -12,6 +12,8 @@ import { UsersModule } from '../users/users.module';
   imports: [SequelizeModule.forFeature([RefreshToken]), UsersModule, JwtModule.register({})],
   controllers: [AuthController],
   providers: [AuthService],
-  exports: [AuthService],
+  /* JwtModule is re-exported because the app-wide JwtAuthGuard is constructed
+     in AppModule's context, where JwtService would otherwise be unresolvable. */
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

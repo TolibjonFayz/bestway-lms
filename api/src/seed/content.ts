@@ -1,4 +1,4 @@
-import { CourseSubject, LessonItemType } from '@/common/enums';
+import { CourseSubject, LessonItemType, QuestionType } from '@/common/enums';
 import {
   Course,
   LessonItem,
@@ -19,10 +19,26 @@ import { SEED_COURSES } from './data/curriculum';
 import { IELTS_WORD_BANKS } from './data/ielts-vocabulary';
 import { Rng } from './rng';
 
+/** One seeded question plus whatever an answer sheet needs to fake a plausible
+    right or wrong response for it, in a shape specific to its type. */
+export interface SeededQuestion {
+  id: number;
+  type: QuestionType;
+  points: number;
+  /** multiple_choice / fill_blank (as option ids). */
+  correctOptionId?: number;
+  wrongOptionIds?: number[];
+  /** fill_blank, as the literal text a student would type. */
+  correctText?: string;
+  wrongTexts?: string[];
+  /** matching: every left option id with the right-hand text it pairs with. */
+  pairs?: { leftOptionId: number; rightText: string }[];
+}
+
 /** A test item plus the ids an answer sheet needs to reference. */
 export interface SeededTest {
   lessonItemId: number;
-  questions: { id: number; correctOptionId: number; wrongOptionIds: number[] }[];
+  questions: SeededQuestion[];
 }
 
 export interface SeededCourse {
@@ -36,15 +52,18 @@ export interface SeededCourse {
 export async function seedCourses(
   lessonItems: LessonItemsService,
   rng: Rng,
+  /* Course owners, in the order SEED_COURSES declares them. */
+  teacherIds: (number | null)[] = [],
 ): Promise<SeededCourse[]> {
   const seeded: SeededCourse[] = [];
 
-  for (const courseSpec of SEED_COURSES) {
+  for (const [courseIndex, courseSpec] of SEED_COURSES.entries()) {
     const course = await Course.create({
       name: courseSpec.name,
       subject: courseSpec.subject,
       description: courseSpec.description,
       coverUrl: null,
+      teacherId: teacherIds[courseIndex] ?? null,
       active: true,
     } as Partial<Course> as Course);
 
@@ -75,6 +94,7 @@ export async function seedCourses(
         url: unitSpec.videoUrl,
         durationSeconds: unitSpec.videoDurationSeconds,
         thumbnailUrl: null,
+        konspekt: unitSpec.konspekt ?? [],
       } as Partial<Video> as Video);
       items.push({ id: videoItem.id, type: LessonItemType.Video, unitIndex });
 
@@ -160,36 +180,68 @@ async function writeTest(
     attemptsAllowed: 2,
   } as Partial<Test> as Test);
 
-  const recorded: SeededTest['questions'] = [];
+  const recorded: SeededQuestion[] = [];
 
   for (const [index, spec] of questions.entries()) {
     const question = await Question.create({
       testId: test.id,
+      type: spec.type,
       orderIndex: index + 1,
       prompt: spec.prompt,
+      explanation: spec.explanation ?? null,
       points: 1,
     } as Partial<Question> as Question);
 
-    /* The correct answer must not always be option A. */
-    const shuffled = rng.shuffle(spec.options);
+    /* Matching keeps its pairs in a fixed order — order carries no answer
+       information there, since left and right are shown decorrelated at
+       serve time. Multiple choice and fill_blank shuffle so the correct
+       answer is not always first. */
+    const ordered =
+      spec.type === QuestionType.Matching ? spec.options : rng.shuffle(spec.options);
     const options = await QuestionOption.bulkCreate(
-      shuffled.map((option, optionIndex) => ({
+      ordered.map((option, optionIndex) => ({
         questionId: question.id,
         orderIndex: optionIndex + 1,
         text: option.text,
         isCorrect: option.isCorrect,
+        matchText: option.matchText ?? null,
       })) as unknown as QuestionOption[],
       { returning: true },
     );
+
+    if (spec.type === QuestionType.Matching) {
+      recorded.push({
+        id: question.id,
+        type: spec.type,
+        points: question.points,
+        pairs: options.map((o) => ({
+          leftOptionId: o.id,
+          rightText: o.matchText!,
+        })),
+      });
+      continue;
+    }
+
+    /* No options at all — nothing for an answer sheet to reference, and
+       nothing for the auto-grader to check. */
+    if (spec.type === QuestionType.Open) {
+      recorded.push({ id: question.id, type: spec.type, points: question.points });
+      continue;
+    }
 
     const correct = options.find((option) => option.isCorrect);
     if (!correct) {
       throw new Error(`Question ${question.id} has no correct option`);
     }
+    const wrong = options.filter((o) => !o.isCorrect);
     recorded.push({
       id: question.id,
+      type: spec.type,
+      points: question.points,
       correctOptionId: correct.id,
-      wrongOptionIds: options.filter((o) => !o.isCorrect).map((o) => o.id),
+      wrongOptionIds: wrong.map((o) => o.id),
+      correctText: correct.text,
+      wrongTexts: wrong.map((o) => o.text),
     });
   }
 

@@ -19,6 +19,8 @@ const props = defineProps({
   },
   disabled: { type: Boolean, default: false },
   loading: { type: Boolean, default: false },
+  /* Fills its container — the auth screens' full-width CTAs. */
+  block: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['click'])
@@ -35,7 +37,11 @@ function onClick(event) {
 <template>
   <button
     class="bw-btn"
-    :class="[`bw-btn--${variant}`, `bw-btn--${size}`, { 'is-loading': loading }]"
+    :class="[
+      `bw-btn--${variant}`,
+      `bw-btn--${size}`,
+      { 'is-loading': loading, 'bw-btn--block': block },
+    ]"
     :type="type"
     :disabled="inert"
     :aria-busy="loading || undefined"
@@ -105,6 +111,10 @@ function onClick(event) {
   height: 56px;
   padding: 0 28px;
   border-radius: 12px;
+}
+
+.bw-btn--block {
+  width: 100%;
 }
 
 /* Ghost sits 2px tighter than the bordered variants at every size. */

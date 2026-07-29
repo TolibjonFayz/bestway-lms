@@ -18,7 +18,7 @@ const props = defineProps({
     type: String,
     default: 'green',
     validator: (v) =>
-      ['green', 'orange', 'ink', 'ink-2', 'muted', 'placeholder'].includes(v),
+      ['green', 'orange', 'ink', 'ink-2', 'gray', 'gray-2', 'muted', 'placeholder'].includes(v),
   },
   /* Adds the white ring the stacked group uses. */
   ringed: { type: Boolean, default: false },
@@ -101,6 +101,16 @@ const showImage = computed(() => Boolean(props.src) && !failed.value)
 
 .bw-avatar--ink-2 {
   background: var(--ink-2);
+  color: var(--white);
+}
+
+.bw-avatar--gray {
+  background: var(--gray);
+  color: var(--white);
+}
+
+.bw-avatar--gray-2 {
+  background: var(--gray-2);
   color: var(--white);
 }
 

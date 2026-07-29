@@ -89,6 +89,68 @@
   --overlay-white: rgba(255, 255, 255, 0.4);
   --surface-blur: rgba(255, 255, 255, 0.9); /* sticky header */
 
+  /* ── Student shell + dashboard (design/03-student-home.html) ────────── */
+
+  /* Readable green on the --ink sidebar and the dark next-lesson card. */
+  --green-300: #4ade80;
+
+  /* Announcement story tones */
+  --sky-pale: #e0f2fe;
+  --sky-ink: #0369a1;
+
+  /* Translucent layers over --ink and over --green */
+  --layer-w-05: rgba(255, 255, 255, 0.05);
+  --layer-w-06: rgba(255, 255, 255, 0.06);
+  --layer-w-10: rgba(255, 255, 255, 0.1);
+  --layer-w-20: rgba(255, 255, 255, 0.2);
+  --layer-w-28: rgba(255, 255, 255, 0.28);
+  --layer-w-32: rgba(255, 255, 255, 0.32);
+  --layer-w-85: rgba(255, 255, 255, 0.85);
+  --layer-green-14: rgba(22, 163, 74, 0.14);
+  --layer-green-16: rgba(22, 163, 74, 0.16);
+  --layer-green-22: rgba(22, 163, 74, 0.22);
+  --layer-orange-14: rgba(234, 140, 60, 0.14);
+
+  /* Elevation specific to this screen */
+  --sh-nav-active: 0 10px 24px rgba(22, 163, 74, 0.35);
+  --sh-join: 0 14px 34px rgba(22, 163, 74, 0.4);
+  --sh-join-sm: 0 12px 30px rgba(22, 163, 74, 0.4);
+  --sh-continue: 0 10px 26px rgba(22, 163, 74, 0.26);
+  --sh-continue-sm: 0 10px 24px rgba(22, 163, 74, 0.26);
+  --sh-day: 0 8px 18px rgba(22, 163, 74, 0.24);
+  --sh-hw-sm: 0 12px 28px rgba(22, 163, 74, 0.28);
+  --sh-thumb: 0 8px 20px rgba(15, 23, 42, 0.14);
+  --sh-thumb-sm: 0 6px 14px rgba(15, 23, 42, 0.14);
+
+  /* ── Lessons: roadmap + unit drawer (design/04-lessons.html) ────────── */
+
+  --layer-ink-42: rgba(15, 23, 42, 0.42); /* drawer scrim */
+  --layer-black-55: rgba(0, 0, 0, 0.55); /* video duration badge */
+  --layer-w-94: rgba(255, 255, 255, 0.94); /* video play button */
+
+  --sh-drawer: -24px 0 48px rgba(15, 23, 42, 0.18);
+  --sh-node: 0 6px 16px rgba(22, 163, 74, 0.3);
+  --sh-unit-hover: 0 8px 20px rgba(22, 163, 74, 0.1);
+  --sh-unit-current: 0 10px 26px rgba(22, 163, 74, 0.14);
+  --sh-tab-active: 0 4px 12px rgba(22, 163, 74, 0.24);
+  --sh-tooltip: 0 8px 20px rgba(15, 23, 42, 0.24);
+  --sh-vocab-tile: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --sh-vocab-list: 0 2px 8px rgba(15, 23, 42, 0.05);
+
+  /* ── Video player + vocabulary trainer (design/05-video-vocab-test.html) ─ */
+
+  --layer-w-08: rgba(255, 255, 255, 0.08); /* speed chip */
+  --layer-w-16: rgba(255, 255, 255, 0.16); /* centre play button */
+  --layer-w-18: rgba(255, 255, 255, 0.18); /* mobile speed chip */
+  --layer-w-24: rgba(255, 255, 255, 0.24); /* timeline track */
+  --layer-w-30: rgba(255, 255, 255, 0.3); /* speed chip border */
+  /* The control bar fades the frame out from transparent to near-ink. */
+  --layer-ink-00: rgba(15, 23, 42, 0);
+  --layer-ink-86: rgba(15, 23, 42, 0.86);
+
+  --sh-scrub: 0 2px 6px rgba(0, 0, 0, 0.3);
+  --sh-speak: 0 8px 18px rgba(22, 163, 74, 0.28);
+
   /* Type */
   --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, Menlo, monospace;

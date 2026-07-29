@@ -31,6 +31,11 @@ export class QuestionOption extends Model<QuestionOption> {
   @Column({ type: DataType.BOOLEAN, field: 'is_correct' })
   declare isCorrect: boolean;
 
+  /* Matching questions only: the right-hand term `text` must be paired with.
+     Never serialised before grading, same as isCorrect. */
+  @Column({ type: DataType.TEXT, field: 'match_text' })
+  declare matchText: string | null;
+
   @BelongsTo(() => Question, { foreignKey: 'questionId', as: 'question' })
   declare question?: Question;
 }

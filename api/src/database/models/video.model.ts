@@ -3,6 +3,7 @@ import {
   BelongsTo,
   Column,
   DataType,
+  Default,
   ForeignKey,
   Model,
   Table,
@@ -30,6 +31,12 @@ export class Video extends Model<Video> {
 
   @Column({ type: DataType.STRING(1024), field: 'thumbnail_url' })
   declare thumbnailUrl: string | null;
+
+  /* Lesson summary bullets, plain text — rendered as text, never as markup. */
+  @AllowNull(false)
+  @Default([])
+  @Column(DataType.JSONB)
+  declare konspekt: string[];
 
   @BelongsTo(() => LessonItem, { foreignKey: 'lessonItemId', as: 'lessonItem' })
   declare lessonItem?: LessonItem;

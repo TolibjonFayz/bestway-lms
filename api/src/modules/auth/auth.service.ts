@@ -108,6 +108,12 @@ export class AuthService {
     return toPublicUser(await this.users.getActiveById(userId));
   }
 
+  /** Ends every session for this user — used after a password change so a
+      stolen-but-not-yet-used session cannot outlive the new password. */
+  revokeAllSessions(userId: number): Promise<void> {
+    return this.revokeAll(userId);
+  }
+
   private async issueTokens(user: User, userAgent?: string): Promise<AuthTokens> {
     const accessPayload: JwtPayload = {
       sub: user.id,

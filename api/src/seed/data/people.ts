@@ -10,6 +10,9 @@ export interface SeedStudent extends SeedPerson {
   level: StudentLevel;
   /** Index into SEED_GROUPS. */
   groupIndex: number;
+  /* Just enrolled: no progress, no submissions. Keeps the dashboard's empty
+     state reachable with real data instead of a mocked payload. */
+  freshEnrolment?: boolean;
 }
 
 export const SEED_ADMIN: SeedPerson = {
@@ -93,4 +96,11 @@ export const SEED_STUDENTS: SeedStudent[] = [
   { phone: '946073281', fullName: 'Javohir Umarov', level: StudentLevel.A1, groupIndex: 3 },
   { phone: '911562047', fullName: 'Madina Rasulova', level: StudentLevel.A1, groupIndex: 3 },
   { phone: '977409513', fullName: 'Firdavs Xudoyberdiyev', level: StudentLevel.A1, groupIndex: 3 },
+  {
+    phone: '901005511',
+    fullName: 'Shahzod Umarov',
+    level: StudentLevel.A2,
+    groupIndex: 2,
+    freshEnrolment: true,
+  },
 ];

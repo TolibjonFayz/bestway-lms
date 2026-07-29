@@ -31,3 +31,6 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Generated dev lesson videos — rebuild with: npm run media --prefix web
+web/public/media/
