@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { AppConfig } from './config/configuration';
 
@@ -30,6 +31,17 @@ async function bootstrap(): Promise<void> {
     credentials: true,
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
   });
+
+  const swaggerDoc = SwaggerModule.createDocument(
+    app,
+    new DocumentBuilder()
+      .setTitle('Best Way LMS API')
+      .setDescription('Auth: /auth/login orqali token oling, "Authorize" tugmasi bilan qo\'ying.')
+      .setVersion('0.1.0')
+      .addBearerAuth()
+      .build(),
+  );
+  SwaggerModule.setup('docs', app, swaggerDoc);
 
   const port = config.getOrThrow<number>('port');
   await app.listen(port);

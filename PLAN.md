@@ -1,7 +1,9 @@
 # Bestway LMS — Reja (v0.1, qoralama)
 
 > Namuna: Inter Nation platformasi (login.inter-nation.uz, web-student.inter-nation.uz)
-> Holat: Ustozdan (Akhtamov) batafsil texnik topshiriq (TZ) kutilmoqda. Kelganda shu hujjat yangilanadi.
+> Holat: 8 ta kod bosqichi tugadi va tekshirildi (2026-07-30), GitHub'ga push qilindi.
+> Deploy jarayonida — Railway (backend) + Vercel (frontend), qadamlar [DEPLOY.md](DEPLOY.md) da.
+> Ustozdan hali batafsil texnik topshiriq (TZ) kutilmoqda — demo shu holatda ko'rsatiladi.
 > Dizayn promptlari: [DESIGN-BRIEF.md](DESIGN-BRIEF.md) — Claude Design uchun 7 ta bosqichli prompt.
 > Kod yozish promptlari: [BUILD-PROMPTS.md](BUILD-PROMPTS.md) — Claude Code uchun 9 ta bosqich.
 > Loyiha qoidalari: [CLAUDE.md](CLAUDE.md) — Claude Code avtomatik o'qiydi (stack, tokenlar, DoD).
