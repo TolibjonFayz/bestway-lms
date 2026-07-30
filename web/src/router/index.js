@@ -107,21 +107,53 @@ const routes = [
     meta: { requiresAuth: true, roles: ['student'] },
   })),
 
-  /* Staff homes. Stages 7 and 8 replace these. */
+  /* Staff: teacher. */
   {
     path: '/staff',
     name: 'staff',
-    component: PlaceholderView,
-    props: { title: uz.pages.staff },
+    component: () => import('@/views/staff/teacher/TeacherDashboardView.vue'),
     meta: { requiresAuth: true, roles: ['teacher'] },
   },
   {
-    path: '/admin',
-    name: 'admin',
+    path: '/staff/review',
+    name: 'staff-review',
+    component: () => import('@/views/staff/teacher/HomeworkReviewView.vue'),
+    meta: { requiresAuth: true, roles: ['teacher'] },
+  },
+  /* Nav destinations not built this round — flagged in the build summary. */
+  ...['groups', 'tasks', 'attendance', 'students'].map((segment) => ({
+    path: `/staff/${segment}`,
+    name: `staff-${segment}`,
     component: PlaceholderView,
-    props: { title: uz.pages.admin },
+    props: { title: uz.staffNav[segment] },
+    meta: { requiresAuth: true, roles: ['teacher'] },
+  })),
+
+  /* Staff: admin. */
+  {
+    path: '/admin',
+    redirect: '/admin/courses',
+  },
+  {
+    path: '/admin/courses',
+    name: 'admin-courses',
+    component: () => import('@/views/staff/admin/AdminCourseBuilderView.vue'),
     meta: { requiresAuth: true, roles: ['admin'] },
   },
+  {
+    path: '/admin/students',
+    name: 'admin-students',
+    component: () => import('@/views/staff/admin/AdminStudentsView.vue'),
+    meta: { requiresAuth: true, roles: ['admin'] },
+  },
+  /* Nav destinations not built this round — flagged in the build summary. */
+  ...['home', 'teachers', 'settings'].map((segment) => ({
+    path: `/admin/${segment}`,
+    name: `admin-${segment}`,
+    component: PlaceholderView,
+    props: { title: uz.staffNav[segment === 'home' ? 'home' : segment] },
+    meta: { requiresAuth: true, roles: ['admin'] },
+  })),
 
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ]

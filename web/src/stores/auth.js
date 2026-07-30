@@ -9,7 +9,7 @@ const STORAGE_KEY = 'bw.auth'
 const HOME_BY_ROLE = {
   student: '/dashboard',
   teacher: '/staff',
-  admin: '/admin',
+  admin: '/admin/courses',
 }
 
 function readStored() {

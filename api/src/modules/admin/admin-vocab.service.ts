@@ -65,7 +65,10 @@ export class AdminVocabService {
       .filter((line) => line.length > 0);
     if (!lines.length) throw new BadRequestException('CSV boʻsh');
 
-    const startIndex = /^[a-zA-Z]/.test(lines[0].split(',')[0]?.trim() ?? '') ? 0 : 1;
+    /* "english,uzbek[,transcription[,example]]" — the only header we expect.
+       Any other first cell, including a real English word, is data. */
+    const firstCell = lines[0].split(',')[0]?.trim().toLowerCase() ?? '';
+    const startIndex = firstCell === 'english' || firstCell === 'word' ? 1 : 0;
     const maxOrder = (await this.vocabWords.max<number, VocabWord>('orderIndex', { where: { lessonItemId } })) ?? 0;
 
     let created = 0;

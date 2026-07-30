@@ -112,7 +112,7 @@ export class AdminStudentsService {
     const rows = await this.sequelize.query<{ student_id: number; avg_score: string }>(
       `SELECT student_id, AVG(COALESCE(manual_score, auto_score)) AS avg_score
          FROM submissions
-        WHERE status IN ('graded', 'returned') AND student_id = ANY(:ids)
+        WHERE status IN ('graded', 'returned') AND student_id IN (:ids)
         GROUP BY student_id`,
       { type: QueryTypes.SELECT, replacements: { ids: studentIds } },
     );
@@ -125,7 +125,7 @@ export class AdminStudentsService {
       `SELECT student_id,
               ROUND(100.0 * SUM(CASE WHEN status IN ('kelgan', 'kechikkan') THEN 1 ELSE 0 END) / COUNT(*)) AS pct
          FROM attendance
-        WHERE student_id = ANY(:ids)
+        WHERE student_id IN (:ids)
         GROUP BY student_id`,
       { type: QueryTypes.SELECT, replacements: { ids: studentIds } },
     );
