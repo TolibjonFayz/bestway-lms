@@ -41,7 +41,9 @@ async function bootstrap(): Promise<void> {
       .addBearerAuth()
       .build(),
   );
-  SwaggerModule.setup('docs', app, swaggerDoc);
+  /* SwaggerModule does not inherit the global prefix on this Nest version,
+     so the docs path is spelled out in full to land at /api/docs. */
+  SwaggerModule.setup(`${prefix}/docs`, app, swaggerDoc);
 
   const port = config.getOrThrow<number>('port');
   await app.listen(port);
