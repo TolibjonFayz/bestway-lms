@@ -378,55 +378,70 @@ When done: screenshot the review split view and the course builder, and paste th
 ## 9-BOSQICH — Jonli dars MVP: ko'p tomonlama video (ustozning asosiy talabi)
 
 > Kirish fayli: `design/08-live-lesson.html`
-> Texnik kontekst va nega LiveKit tanlangani: [LIVE-LESSON.md](LIVE-LESSON.md)
-> **Oldindan kerak:** LiveKit Cloud'da bepul akkaunt (`livekit.io` → Build tier,
-> karta talab qilinmaydi) va undan olingan `LIVEKIT_URL`, `LIVEKIT_API_KEY`,
-> `LIVEKIT_API_SECRET`.
+> Texnik kontekst va nega Zoom Video SDK tanlangani: [LIVE-LESSON.md](LIVE-LESSON.md)
+> **Oldindan kerak:** Zoom App Marketplace'da developer account, Video SDK app
+> yaratib olingan `ZOOM_VIDEO_SDK_KEY` va `ZOOM_VIDEO_SDK_SECRET`. To'lov kartasi
+> ishlashini kichik summa bilan oldindan sinab ko'rish tavsiya etiladi
+> (LIVE-LESSON.md dagi "Aniqlashtirish kerak — to'lov" bo'limi).
 > Ustoz aniq so'radi: **hamma bir vaqtda ko'rishib gaplashadi** (real Zoom kabi),
 > faqat ustoz emas. Max 12 o'quvchi + 1 ustoz = 13 ta ishtirokchi bitta xonada.
 
 ```
 Read CLAUDE.md and LIVE-LESSON.md, then read design/08-live-lesson.html completely.
 
-Build the live lesson MVP with LiveKit as a real multi-party video conference.
+Build the live lesson MVP with Zoom Video SDK as a real multi-party video conference
+— NOT the Zoom Meeting SDK, which embeds Zoom's own branded UI. Video SDK is a raw
+video/audio primitive; every screen is built from scratch in our own design.
 Every participant — teacher and up to 12 students — publishes and subscribes to
 video and audio, self-controlled. This is a gallery grid, not a one-way broadcast.
 
-1. Backend — session model and token endpoint:
+Before writing code, fetch the current Zoom Video SDK Web docs
+(https://developers.zoom.us/docs/video-sdk/web/) for the exact current API surface —
+method names on the Client/Stream objects and the JWT payload shape may have moved
+since this prompt was written. Treat the shapes below as the general model to
+implement, not literal method names to copy blind.
+
+1. Backend — session model and signature endpoint:
    - New table lesson_sessions: group_id, teacher_id, scheduled_start, started_at,
-     ended_at, status (scheduled|live|ended), livekit_room name.
+     ended_at, status (scheduled|live|ended), zoom_session_name (the "tpc" — a
+     unique, non-guessable room name, e.g. derived from the session's DB id + a
+     random suffix, never just the group id).
    - POST /live/sessions/:groupId/start — teacher only, and only for their OWN group.
      Creates or resumes the session, marks it live.
-   - POST /live/sessions/:id/end — teacher only, marks it ended, disconnects everyone.
-   - GET  /live/sessions/:id/token — returns a LiveKit access token whose grants are
-     derived from the caller's role, NEVER from the request body:
-       teacher → canPublish: true, canPublishData: true, roomAdmin: true (can mute/remove others)
-       student → canPublish: true, canPublishData: true, roomAdmin: false
-     Both roles can publish camera/mic — the difference is roomAdmin, which gates the
-     moderation API (see stage 10), not media publishing. Verify with a real request
-     and show the decoded token grants for both roles.
+   - POST /live/sessions/:id/end — teacher only, marks it ended.
+   - GET  /live/sessions/:id/signature — returns a Video SDK JWT signed server-side
+     with ZOOM_VIDEO_SDK_SECRET (HS256), whose role_type is derived from the caller's
+     role, NEVER from the request body:
+       teacher → role_type: 1 (host)
+       student → role_type: 0 (participant)
+     Payload includes app_key (ZOOM_VIDEO_SDK_KEY), tpc (the session's zoom_session_name),
+     role_type, version: 1, iat (now minus ~30s for clock skew), exp (short-lived —
+     long enough for one lesson, not indefinite). Verify with a real request and
+     decode the JWT for both roles to show role_type differs and nothing else about
+     the session (like other students' identities) leaks into it.
    - GET /live/sessions/current — what the logged-in user can join right now
      (their group's live session, or the next scheduled one with its start time).
-   - Students may only join a session belonging to their own group. A request for
-     another group's session returns 403.
+   - Students may only request a signature for a session belonging to their own
+     group. A request for another group's session returns 403.
    - A session hard-caps at 13 participants (1 teacher + 12 students) — reject a 14th
      join attempt with a clear error rather than silently degrading everyone's quality.
 
-2. Env: LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET in api/.env.example
-   with a comment saying where to get them. Never commit real values.
-   Use the livekit-server-sdk package for token minting.
+2. Env: ZOOM_VIDEO_SDK_KEY, ZOOM_VIDEO_SDK_SECRET in api/.env.example with a comment
+   on where to get them (Zoom App Marketplace → Build App → Video SDK). Never commit
+   real values. Sign the JWT with the `jsonwebtoken` package (HS256) — no need for
+   Zoom's own signing library on the backend.
 
-3. Frontend — use the livekit-client SDK, build our OWN gallery-grid UI from the
-   design file. Do not use any prebuilt LiveKit UI components or embed an iframe.
+3. Frontend — use the `@zoom/videosdk` package, build our OWN gallery-grid UI from
+   the design file. Do not use any prebuilt Zoom UI components or embed an iframe.
    - /live/:sessionId — shared view for teacher and students (the design file's
      Screen A), with the four states: waiting, live, reconnecting, ended.
    - Gallery grid: one tile per participant with video or an avatar fallback when
-     camera is off, name label, mic-state icon. Active-speaker tile gets emphasis
-     (LiveKit reports active speakers — use that, don't build custom audio-level
-     detection). Use LiveKit's adaptive stream / simulcast so tile quality degrades
-     under bad network instead of freezing the whole call.
+     camera is off, name label, mic-state icon. Active-speaker tile gets emphasis —
+     use the SDK's active-speaker event, don't build custom audio-level detection.
+     Rely on the SDK's built-in adaptive video quality so tiles degrade under bad
+     network instead of freezing the whole call.
    - Everyone gets camera/mic toggle buttons that control their OWN track — this
-     needs no server round-trip, it's local publish/unpublish.
+     needs no server round-trip, it's local start/stop of the local audio/video.
    - Screen share: when the teacher shares, the shared track becomes a large hero
      area and the grid collapses to a slim strip (per the design).
    - Wire up the dashboard "Keyingi dars" card and the teacher's "Darsni boshlash"
@@ -452,8 +467,7 @@ When done: run at least three browser sessions side by side — the teacher (Azi
 Axtamov) and two students in his group. Show all three seeing and hearing each
 other in the gallery grid, one of them toggling camera off, the teacher sharing
 their screen, then ending the lesson. Screenshot each step, and paste the decoded
-tokens for both a teacher and a student proving canPublish is true for both and
-roomAdmin differs.
+JWTs for both a teacher and a student proving role_type differs (1 vs 0).
 ```
 
 ---
@@ -470,22 +484,29 @@ Add teacher host controls and interactivity to the live lesson built in stage 9.
 With 12 students free to talk at once, the teacher needs real moderation tools —
 this is standard Zoom "host controls" behaviour, not optional polish.
 
-1. Host controls (teacher only, gated by the roomAdmin grant from stage 9):
-   - Mute an individual participant — call LiveKit's room-admin API server-side
-     (never trust a client message claiming "I muted them"). The muted student's
-     mic turns off in their own UI too, so they understand why.
+Before writing code, check the current Zoom Video SDK Web docs for the host-control
+and chat/command-channel API surface (method names may differ from what's sketched
+below by the time this stage is built).
+
+1. Host controls (teacher only — the SDK enforces this server-side via role_type
+   from stage 9, a participant-role client cannot call these even if it tries):
+   - Mute an individual participant's audio. The muted student's mic turns off in
+     their own UI too, so they understand why, not just a silent state change.
    - "Hammani ovozsiz qilish" — mutes every student's audio in one action; students
      can unmute themselves afterwards (this is a bulk convenience, not a lock).
-   - Remove a participant — disconnects them from the room with a confirm dialog;
-     the removed student sees a clear "Ustoz sizni darsdan chiqardi" message, not a
-     silent disconnect or generic error.
-   - Every host action is only callable by the session's own teacher — verify with a
-     real request using a different teacher's token and show it gets rejected.
+   - Remove a participant from the session, with a confirm dialog; the removed
+     student sees a clear "Ustoz sizni darsdan chiqardi" message, not a silent
+     disconnect or generic error.
+   - Confirm these are genuinely host-only by attempting the same action from a
+     student session and showing it is rejected by the SDK/Zoom backend, not just
+     hidden in our own UI.
 
-2. Chat — use LiveKit's data channel, not a separate WebSocket. Messages show sender
-   name and time; the teacher's messages get the --green-pale treatment and "Ustoz"
-   chip from the design. A student joining mid-lesson sees the recent history
-   (persist messages server-side so this works).
+2. Chat — use the Video SDK's built-in chat or command channel (whichever the
+   current docs recommend for in-session messaging), not a separate WebSocket.
+   Messages show sender name and time; the teacher's messages get the --green-pale
+   treatment and "Ustoz" chip from the design. Persist messages server-side too, so
+   a student joining mid-lesson sees recent history even though the SDK channel
+   itself is session-scoped.
 
 3. Automatic attendance — write to the existing attendance table when a student
    joins. Rules: present ("kelgan") if they were connected for at least 60% of the

@@ -6,6 +6,9 @@
 > **Keyingi ustuvor vazifa — jonli dars (to'liq video konferensiya): [LIVE-LESSON.md](LIVE-LESSON.md).**
 > Ustoz aniqlashtirdi (2026-07-31): "Zoomda hamma bir vaqtda ko'rishib gaplashadi" — ya'ni
 > broadcast emas, **hammaning kamerasi/mikrofoni erkin**, max 12 o'quvchi + 1 ustoz.
+> Texnologiya: **Zoom Video SDK** (LiveKit'dan almashtirildi — gallery-konferensiyada
+> ancha arzon, chunki trafik alohida hisoblanmaydi; evaziga o'z serverga hech qachon
+> ko'chib bo'lmaydi — LIVE-LESSON.md dagi "Nimadan voz kechyapmiz" bo'limiga qarang).
 > Dizayn promptlari: [DESIGN-BRIEF.md](DESIGN-BRIEF.md) — Claude Design uchun 8 ta bosqichli prompt.
 > Kod yozish promptlari: [BUILD-PROMPTS.md](BUILD-PROMPTS.md) — Claude Code uchun 11 ta bosqich.
 > Loyiha qoidalari: [CLAUDE.md](CLAUDE.md) — Claude Code avtomatik o'qiydi (stack, tokenlar, DoD).
