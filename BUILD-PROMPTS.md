@@ -375,113 +375,133 @@ When done: screenshot the review split view and the course builder, and paste th
 
 ---
 
-## 9-BOSQICH — Jonli dars MVP (ustozning asosiy talabi)
+## 9-BOSQICH — Jonli dars MVP: ko'p tomonlama video (ustozning asosiy talabi)
 
 > Kirish fayli: `design/08-live-lesson.html`
 > Texnik kontekst va nega LiveKit tanlangani: [LIVE-LESSON.md](LIVE-LESSON.md)
 > **Oldindan kerak:** LiveKit Cloud'da bepul akkaunt (`livekit.io` → Build tier,
 > karta talab qilinmaydi) va undan olingan `LIVEKIT_URL`, `LIVEKIT_API_KEY`,
 > `LIVEKIT_API_SECRET`.
+> Ustoz aniq so'radi: **hamma bir vaqtda ko'rishib gaplashadi** (real Zoom kabi),
+> faqat ustoz emas. Max 12 o'quvchi + 1 ustoz = 13 ta ishtirokchi bitta xonada.
 
 ```
 Read CLAUDE.md and LIVE-LESSON.md, then read design/08-live-lesson.html completely.
 
-Build the live lesson MVP with LiveKit. The teacher broadcasts; students watch.
-This is a broadcast, not a conference — do not build a Zoom-style equal grid.
+Build the live lesson MVP with LiveKit as a real multi-party video conference.
+Every participant — teacher and up to 12 students — publishes and subscribes to
+video and audio, self-controlled. This is a gallery grid, not a one-way broadcast.
 
 1. Backend — session model and token endpoint:
    - New table lesson_sessions: group_id, teacher_id, scheduled_start, started_at,
      ended_at, status (scheduled|live|ended), livekit_room name.
    - POST /live/sessions/:groupId/start — teacher only, and only for their OWN group.
      Creates or resumes the session, marks it live.
-   - POST /live/sessions/:id/end — teacher only, marks it ended.
+   - POST /live/sessions/:id/end — teacher only, marks it ended, disconnects everyone.
    - GET  /live/sessions/:id/token — returns a LiveKit access token whose grants are
      derived from the caller's role, NEVER from the request body:
-       teacher → canPublish: true, canPublishData: true, roomAdmin: true
-       student → canPublish: false, canSubscribe: true, canPublishData: true
-     A student must not be able to publish video or audio even by crafting the
-     request. Verify this with a real request and show the decoded token grants.
+       teacher → canPublish: true, canPublishData: true, roomAdmin: true (can mute/remove others)
+       student → canPublish: true, canPublishData: true, roomAdmin: false
+     Both roles can publish camera/mic — the difference is roomAdmin, which gates the
+     moderation API (see stage 10), not media publishing. Verify with a real request
+     and show the decoded token grants for both roles.
    - GET /live/sessions/current — what the logged-in user can join right now
      (their group's live session, or the next scheduled one with its start time).
    - Students may only join a session belonging to their own group. A request for
      another group's session returns 403.
+   - A session hard-caps at 13 participants (1 teacher + 12 students) — reject a 14th
+     join attempt with a clear error rather than silently degrading everyone's quality.
 
 2. Env: LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET in api/.env.example
    with a comment saying where to get them. Never commit real values.
    Use the livekit-server-sdk package for token minting.
 
-3. Frontend — use the livekit-client SDK, build our OWN UI from the design file.
-   Do not use any prebuilt LiveKit UI components or embed an iframe.
-   - /live/:sessionId student view: the four states from the design (waiting, live,
-     reconnecting, ended). Video element for the teacher's track, participant count,
-     connection quality indicator.
-   - /staff/live/:groupId teacher view: the pre-flight screen (device pickers, camera
-     and mic preview, level meter) then the live view with mic/camera/screen-share
-     controls and "Darsni yakunlash".
-   - Screen share: when the teacher shares, the shared track becomes the main stage
-     and the camera moves to a small floating tile.
+3. Frontend — use the livekit-client SDK, build our OWN gallery-grid UI from the
+   design file. Do not use any prebuilt LiveKit UI components or embed an iframe.
+   - /live/:sessionId — shared view for teacher and students (the design file's
+     Screen A), with the four states: waiting, live, reconnecting, ended.
+   - Gallery grid: one tile per participant with video or an avatar fallback when
+     camera is off, name label, mic-state icon. Active-speaker tile gets emphasis
+     (LiveKit reports active speakers — use that, don't build custom audio-level
+     detection). Use LiveKit's adaptive stream / simulcast so tile quality degrades
+     under bad network instead of freezing the whole call.
+   - Everyone gets camera/mic toggle buttons that control their OWN track — this
+     needs no server round-trip, it's local publish/unpublish.
+   - Screen share: when the teacher shares, the shared track becomes a large hero
+     area and the grid collapses to a slim strip (per the design).
    - Wire up the dashboard "Keyingi dars" card and the teacher's "Darsni boshlash"
      card as the entry points, replacing the current inert button.
 
 4. Robustness — this is the part that decides whether the teacher trusts it:
-   - Automatic reconnection on network drop, with the amber banner from the design.
-     Never show a full-screen blocker for a temporary drop.
-   - Leaving the page (or closing the tab) disconnects cleanly — no ghost participants.
+   - Automatic reconnection on network drop, with the amber banner from the design,
+     scoped to your own tile — other participants' tiles keep working.
+   - Leaving the page (or closing the tab) disconnects cleanly — no ghost participants
+     left showing a frozen tile to everyone else.
    - The teacher ending the lesson disconnects every student and routes them to the
      ended state.
    - Media permission denial (camera/mic blocked in the browser) shows a clear Uzbek
-     explanation of how to allow it, not a raw browser error.
+     explanation of how to allow it, not a raw browser error — and still lets that
+     person join audio/video-off rather than blocking them entirely.
    - A student joining before the teacher starts sees the waiting state, and moves to
-     live automatically when the teacher goes live — without a manual refresh.
+     live automatically when the teacher joins — without a manual refresh.
 
-Do NOT build in this stage: chat, raise-hand, moderation, attendance, recording.
-They are stage 10. Keep this stage focused on a rock-solid one-way broadcast.
+Do NOT build in this stage: chat, host mute/remove controls, attendance, recording.
+They are stage 10. Keep this stage focused on rock-solid many-to-many video/audio.
 
-When done: run two browsers side by side — one logged in as teacher Aziz Axtamov,
-one as a student in his group. Start the lesson, show the student receiving video,
-share the screen, then end the lesson. Screenshot each step, and paste the decoded
-student token proving canPublish is false.
+When done: run at least three browser sessions side by side — the teacher (Aziz
+Axtamov) and two students in his group. Show all three seeing and hearing each
+other in the gallery grid, one of them toggling camera off, the teacher sharing
+their screen, then ending the lesson. Screenshot each step, and paste the decoded
+tokens for both a teacher and a student proving canPublish is true for both and
+roomAdmin differs.
 ```
 
 ---
 
-## 10-BOSQICH — Jonli dars: interaktivlik va davomat
+## 10-BOSQICH — Jonli dars: nazorat, chat va davomat
 
-> Kirish fayli: `design/08-live-lesson.html` (chat, qo'l ko'tarish, moderatsiya qismlari)
+> Kirish fayli: `design/08-live-lesson.html` (host controls, chat qismlari)
 > 9-bosqich to'liq ishlab, real darsda sinovdan o'tgach boshlanadi.
 
 ```
 Read CLAUDE.md and LIVE-LESSON.md, then re-read design/08-live-lesson.html.
 
-Add interactivity to the live lesson built in stage 9.
+Add teacher host controls and interactivity to the live lesson built in stage 9.
+With 12 students free to talk at once, the teacher needs real moderation tools —
+this is standard Zoom "host controls" behaviour, not optional polish.
 
-1. Chat — use LiveKit's data channel, not a separate WebSocket. Messages show sender
+1. Host controls (teacher only, gated by the roomAdmin grant from stage 9):
+   - Mute an individual participant — call LiveKit's room-admin API server-side
+     (never trust a client message claiming "I muted them"). The muted student's
+     mic turns off in their own UI too, so they understand why.
+   - "Hammani ovozsiz qilish" — mutes every student's audio in one action; students
+     can unmute themselves afterwards (this is a bulk convenience, not a lock).
+   - Remove a participant — disconnects them from the room with a confirm dialog;
+     the removed student sees a clear "Ustoz sizni darsdan chiqardi" message, not a
+     silent disconnect or generic error.
+   - Every host action is only callable by the session's own teacher — verify with a
+     real request using a different teacher's token and show it gets rejected.
+
+2. Chat — use LiveKit's data channel, not a separate WebSocket. Messages show sender
    name and time; the teacher's messages get the --green-pale treatment and "Ustoz"
    chip from the design. A student joining mid-lesson sees the recent history
    (persist messages server-side so this works).
 
-2. Raise hand — student toggles it, the teacher sees a queue with a count badge.
-   "Mikrofon berish" grants that student publish-audio rights for this session only;
-   revoking takes it back. Rights are changed server-side via the LiveKit admin API —
-   never by trusting a client message.
-
-3. Teacher moderation: mute a student who was granted a mic, and remove a student
-   from the lesson. A removed student sees a clear message, not a silent disconnect.
-
-4. Automatic attendance — write to the existing attendance table when a student
+3. Automatic attendance — write to the existing attendance table when a student
    joins. Rules: present ("kelgan") if they were connected for at least 60% of the
    lesson duration; late ("kechikkan") if they joined more than 10 minutes after the
    start; absent ("kelmagan") if they never joined. Compute this when the teacher
    ends the lesson, and make it idempotent — re-running must not duplicate rows.
    The teacher can override any student's status afterwards from the staff panel.
 
-5. Lesson reminder: a notification 10 minutes before the scheduled start, for both
+4. Lesson reminder: a notification 10 minutes before the scheduled start, for both
    the students of that group and the teacher.
 
 When done: run a lesson with two student browsers — one joining on time and staying,
-one joining 15 minutes late. End the lesson and show the attendance rows that were
-written, proving the late one was marked "kechikkan". Screenshot the chat and the
-raise-hand queue.
+one joining 15 minutes late. Have the teacher mute one student and remove the other,
+and show both experiencing the correct UI. End the lesson and show the attendance
+rows that were written, proving the late one was marked "kechikkan". Screenshot the
+chat and a mute/remove action in progress.
 ```
 
 ---

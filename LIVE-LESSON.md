@@ -1,103 +1,134 @@
 # Jonli dars (Zoom kabi) — texnik qaror va reja
 
 > Ustoz talabi (2026-07-30): *"menga bu saytdagi eng asosiy narsa — imkon bo'lsa Zoomga
-> o'xshagan dars o'tadigan platforma kerak. Ustoz dars o'tadi, boshqa bolalar esa
-> ustozni kuzatib turadi."*
+> o'xshagan dars o'tadigan platforma kerak."*
+> Aniqlashtiruv (2026-07-31): *"Zoomda hamma bir vaqtda ko'rishib gaplashadi."* — ya'ni
+> **to'liq konferensiya**: barcha o'quvchilarning kamerasi/mikrofoni erkin, hech kim
+> ustoz ruxsatiga muhtoj emas. Bir darsda maksimal **12 kishi**. Ustoz kompyuterdan
+> o'tadi. Ingliz tilida qoida tushuntirishda foydali bo'lishi mumkin (2-band) va
+> davomat oson bo'lsa yaxshi (3-band) — ikkalasi ham "shart emas, bo'lsa yaxshi".
 
-## Talab nima aslida
+## Talab nima
 
-Bu **to'liq konferensiya emas** — bu **broadcast** (bir kishi gapiradi, ko'pchilik ko'radi).
-Bu farq muhim, chunki broadcast ancha arzon va barqaror ishlaydi:
+**To'liq ko'p tomonlama video konferensiya** — Zoom/Google Meet kabi. 12 tagacha
+o'quvchi + 1 ustoz, hammaning kamerasi va mikrofoni **o'zi boshqaradigan**, istalgan
+payt yoqib-o'chira oladi. Ustozda esa qo'shimcha **host huquqlari** bo'ladi: birortasini
+ovozini o'chirish, darsdan chiqarish, hammani birdek ovozsiz qilish — chunki 12 bola
+nazoratsiz bo'lsa, real darsda tartibsizlik chiqishi tabiiy.
 
-| | Konferensiya (Zoom meeting) | Broadcast (bizga kerak) |
-|---|---|---|
-| Kim video yuboradi | Hamma | Faqat ustoz |
-| Server yuki | Yuqori | Past |
-| Internet talabi (o'quvchi) | Yuqori (yuklash+yuborish) | Past (faqat yuklash) |
-| Narx | Qimmat | Arzon |
+Bu avvalgi rejadagi "broadcast" (faqat ustoz yuboradi) g'oyasidan farq qiladi — o'sha
+yondashuv arzon va oddiy edi, lekin ustoz aniq boshqasini so'radi. Narx va murakkablik
+oshadi, lekin bu ustozning bevosita talabi.
 
-O'quvchi kamerasi kerak emas — u faqat **ko'radi va eshitadi**, savolni **chat** orqali
-yoki **qo'l ko'tarib** (ustoz ruxsat bersa mikrofon ochiladi) beradi.
+## Texnologiya tanlovi: LiveKit (o'zgarishsiz qoladi)
 
-## Texnologiya tanlovi: LiveKit
+To'liq konferensiyaga o'tish texnologiya tanlovini o'zgartirmaydi — LiveKit aynan shu
+turdagi ko'p tomonlama video uchun mo'ljallangan SFU (Selective Forwarding Unit), broadcast
+ham, konferensiya ham bir xil infratuzilmada ishlaydi, farq faqat kimga "yuborish huquqi"
+(`canPublish`) berilishida.
 
-**Qaror: LiveKit.** Sabablari:
+1. **Custom UI** — bizning gallery-grid ekranimiz Bw* dizayn tizimida bo'ladi, Jitsi yoki
+   Zoom'ning tayyor (begona ko'rinishdagi) oynasi emas.
+2. **Host huquqlari serverda beriladi** — "ustoz birovni ovozsiz qilishi/chiqarib
+   yuborishi mumkin, oddiy o'quvchi qila olmaydi" — bu LiveKit'ning room-admin API'si
+   orqali, token ichida, brauzerdan buzib bo'lmaydigan tarzda amalga oshadi.
+3. **Ko'chib o'tish yo'li ochiq** — bugun bulutda bepul boshlaymiz, keyin xohlasak
+   xuddi shu dasturni o'z serverimizga ko'chiramiz.
 
-1. **Custom UI** — LiveKit tayyor oyna bermaydi, SDK beradi. Ya'ni jonli dars ekrani
-   bizning dizaynimizda bo'ladi (yashil Bw* komponentlar), Zoom logotipi yoki begona
-   iframe emas. Jitsi'ning tayyor oynasini embed qilsak, u butunlay boshqa ko'rinishda
-   bo'lardi.
-2. **Rol tizimi tug'ma** — "ustoz yuboradi, o'quvchi faqat oladi" cheklovi server
-   tomonda token orqali beriladi. O'quvchi brauzer konsolidan turib kamerasini yoqa
-   olmaydi. Bu bizning mavjud rol tizimimizga (`teacher` / `student`) tabiiy tushadi.
-3. **Ko'chib o'tish yo'li ochiq** — LiveKit Cloud'dagi bir xil dasturni keyinchalik
-   o'z serverimizga o'rnatib olsa bo'ladi. Kod o'zgarmaydi, faqat manzil o'zgaradi.
-   Ya'ni bugun bepul boshlaymiz, kerak bo'lsa keyin arzonlashtiramiz — qulflanib
-   qolmaymiz.
+Ko'rib chiqilgan, lekin tanlanmagan: **Jitsi** — aynan shu (hammaning kamerasi ochiq)
+stsenariy uchun qutidan chiqqan holda mos, lekin tayyor UI'si bizning Bw* dizaynimizga
+mos kelmaydi va uni o'zimizniki qilib qayta qurish LiveKit ustiga o'z ekranimizni
+qurishdan qiyinroq (Jitsi'ning butun web-klientini forklashga to'g'ri keladi).
 
-Ko'rib chiqilgan, lekin tanlanmagan:
-- **Jitsi (iframe embed)** — eng tez ishga tushadi, lekin dizayn butunlay begona
-  ko'rinadi va o'quvchi huquqlarini cheklash ishonchsiz.
-- **Zoom SDK** — litsenziya puli, o'zbek kartalari bilan to'lov muammosi.
-- **YouTube Live / Telegram efir** — 10-30 soniya kechikish, savol-javob amaliy emas.
+## Narx — halol hisob (yangilangan, konferensiya uchun)
 
-## Narx — halol hisob
+Broadcast'da faqat 1 kishi (ustoz) video yuboradi, qolgani qabul qiladi — server yuki
+kam. **To'liq konferensiyada 13 kishining hammasi video yuboradi VA qabul qiladi** —
+bu server orqali o'tadigan trafikni sezilarli oshiradi (har kim boshqa 12 kishining
+oqimini oladi).
 
-LiveKit Cloud bepul tier (**Build**): 5,000 WebRTC daqiqa + 50GB trafik/oy, karta talab
-qilinmaydi. WebRTC daqiqa = **ishtirokchi × daqiqa**, ya'ni 13 kishilik 90 daqiqalik
-dars = 1,170 daqiqa.
+LiveKit Cloud bepul tier (**Build**): 5,000 WebRTC daqiqa + **50GB trafik**/oy.
 
-Real hisob (12 o'quvchi + 1 ustoz, 90 daqiqalik dars):
+- **Ishtirokchi-daqiqa** (kim nechchi daqiqa ulanib turdi) — bu deyarli o'zgarmaydi:
+  13 kishi × 90 daqiqa = 1,170 daqiqa/dars, avvalgidek.
+- **Trafik (GB)** — bu keskin oshadi. Kichik gallery-plitka sifatida (~200–300 kbps/oqim,
+  Zoom galereya darajasida, HD emas) taxminiy hisob: har bir ishtirokchi qolgan 12
+  kishining oqimini oladi → 90 daqiqalik darsda **bitta ishtirokchi uchun ~1.5–2.5 GB**,
+  13 kishilik dars uchun jami **~20–30 GB bitta darsda**.
 
-| Stsenariy | Oyiga daqiqa | Bepul tierga sig'adimi |
-|---|---|---|
-| 1 guruh, haftada 3 dars | ~15,000 | ❌ yo'q (5,000 chegara) |
-| Dev/test paytida | ~2,000 | ✅ ha, bemalol |
+Ya'ni **bitta to'liq konferensiya darsi bepul tierning oylik 50GB chegarasining
+yarmini yeb qo'yishi mumkin**. Haftada 3 dars — birinchi haftadayoq bepul tier tugaydi.
 
-Ya'ni **ishlab chiqish va sinov uchun bepul tier to'liq yetarli**, lekin markaz haqiqiy
-darslarni boshlagach yetmaydi.
+**Xulosa:** avvalgidek "avval bepulda sinaymiz" degan reja endi yetarli emas —
+sinov darslaridan keyin tezroq pullik tarifga yoki o'z serverga o'tish kerak bo'ladi.
+Buni ustozga oldindan aytib qo'yish kerak (server xarajati kim zimmasida — bu
+narx-navo suhbatida allaqachon "markaz to'laydi" deb kelishilgan edi).
 
-Shu sababli reja: **avval Cloud'da bepul quramiz va sinaymiz → ishlagach o'z serverimizga
-ko'chiramiz.** O'z serverida (Hetzner VPS ~€8/oy, 20TB trafik) daqiqa cheklovi umuman
-bo'lmaydi — faqat serverning o'zi to'lanadi. Broadcast rejimida 13 kishilik dars serverga
-deyarli yuk bermaydi (server videoni qayta ishlamaydi, faqat uzatadi).
+O'z serverga ko'chirish endi ancha muhimroq va tezroq kerak bo'ladi: Hetzner/Contabo
+VPS'da trafik cheklovi deyarli yo'q (masalan Hetzner CX-turlarida 20TB/oy), faqat
+serverning CPU quvvati muhim — 13 kishilik SFU routing o'rtacha VPS'da (4 CPU) bemalol
+ishlaydi.
 
-⚠️ Muhim: **jonli dars serveri Railway'da ishlamaydi** — LiveKit UDP portlarni talab
-qiladi, Railway esa faqat HTTP beradi. Shuning uchun o'z serveriga ko'chganda alohida
-VPS kerak bo'ladi (Hetzner, Contabo yoki shunga o'xshash). Railway'dagi backend o'z
-o'rnida qoladi — u faqat token beradi, bu oddiy HTTP.
+⚠️ Bir xil eslatma qoladi: **LiveKit media serveri Railway'da ishlamaydi** (UDP kerak).
+O'z serverga ko'chganda alohida VPS kerak; Railway'dagi backend faqat token/moderatsiya
+so'rovlarini beradi — bu oddiy HTTP, joyida qoladi.
 
-## Bosqichlar
+## Amaliy ehtiyot choralari (kod darajasida, alohida qaror emas)
 
-### 9-bosqich — Jonli dars MVP
-Ustoz dars boshlaydi, o'quvchilar qo'shilib ko'radi. Eng kam, lekin ishlaydigan holat.
-- Backend: `lesson_sessions` jadvali, LiveKit token endpoint (rolga qarab huquq beradi)
-- Ustoz: kamera, mikrofon, **ekran ulashish** (IELTS darsida slayd ko'rsatish uchun shart)
-- O'quvchi: ko'radi/eshitadi, kamerasi yo'q
-- Ustoz darsni boshlaydi va tugatadi; tugagach hamma chiqadi
-- Ulanish uzilsa avtomatik qayta ulanish
-- Ishtirokchilar ro'yxati (kim onlayn)
+To'liq konferensiya qarori bilan birga keladigan texnik xavflar — bularni build
+promptlarida hisobga olamiz, qayta so'ramaymiz:
 
-### 10-bosqich — Interaktivlik va nazorat
-- Chat (savol berish)
-- "Qo'l ko'tarish" → ustoz ruxsat bersa o'quvchi mikrofoni ochiladi
-- Ustoz moderatsiyasi: mikrofonni o'chirish, darsdan chiqarish
-- **Avtomatik davomat** — kim qo'shildi, qancha turdi (mavjud `attendance` jadvaliga yoziladi)
-- Dars eslatmasi (dars boshlanishiga 10 daqiqa qolganda bildirishnoma)
+- **Ustozning o'z interneti** — 12 kishining oqimini bir vaqtda qabul qilish talab
+  qiladi. LiveKit'ning simulcast/adaptiv sifat funksiyasini yoqib, tarmoq sekin bo'lsa
+  kichik plitkalar avtomatik pastroq sifatga tushishi kerak.
+  "Faol so'zlovchi" katta, qolganlari kichik va past sifatli plitkalarda ko'rinadi —
+  bu real Zoom ham shunday qiladi, tasodifiy emas.
+- **Ovoz aralashishi** — 12 mikrofon ochiq bo'lsa, aks-sado/shovqin xavfi bor.
+  Brauzerning o'ziga xos aks-sado bostirish (echo cancellation) buni katta qismini
+  hal qiladi, lekin darsda o'quvchilarga quloqchin tavsiya qilish amaliy maslahat
+  sifatida UI'da (masalan birinchi kirishda) ko'rsatilsa foydali.
+- **Ustoz nazorati shart** — hatto "hamma erkin" desa ham, ustozda albatta birovni
+  ovozsiz qilish/chiqarib yuborish tugmasi bo'ladi — bu Zoom'da ham standart va
+  sinfda tartib uchun zarur.
+
+## Bosqichlar (yangilangan)
+
+### 9-bosqich — Ko'p tomonlama video MVP
+Hamma (ustoz + 12 o'quvchigacha) bir xonada, kamera/mikrofon o'zi boshqaradi.
+- Backend: `lesson_sessions` jadvali, LiveKit token endpoint — **hamma uchun**
+  `canPublish: true`, ustoz uchun qo'shimcha `roomAdmin: true`
+- Gallery-grid UI: har kim o'z plitkasida, faol so'zlovchi katталashadi
+- Kamera/mikrofon yoqish-o'chirish tugmalari (har kim o'ziniki uchun)
+- Ustoz: **ekran ulashish** (qoida tushuntirish uchun, ustoz "bo'lsa yaxshi" degan)
+- Ustoz darsni boshlaydi/tugatadi; tugagach hamma chiqadi
+- Ulanish uzilsa avtomatik qayta ulanish (adaptiv sifat bilan)
+
+### 10-bosqich — Nazorat va interaktivlik
+- Ustoz host paneli: birontasini ovozsiz qilish, hammani ovozsiz qilish, darsdan chiqarish
+- Chat (matn orqali savol)
+- **Avtomatik davomat** — kim qo'shildi, qancha turdi (mavjud `attendance` jadvaliga)
+  — ustoz "bo'lsa yaxshi" degan, shart emas, lekin infratuzilma tayyor bo'lgani uchun
+  qo'shish qiyin emas
+- Dars eslatmasi (boshlanishiga 10 daqiqa qolganda bildirishnoma)
 
 ### 11-bosqich — Yozib olish (ixtiyoriy, keyinroq)
-Darsni yozib olib, kelolmagan o'quvchi keyin ko'rishi. Bu **saqlash joyi** talab qiladi
-(1.5 soatlik dars ~700MB–1GB), shuning uchun alohida qaror va byudjet kerak.
-Ustoz bu haqda so'ramaguncha qilmaymiz.
+Ustoz "qiyin bo'lmasa yaxshi bo'lardi" degan — talab emas, xohish. Darsni yozib olib,
+kelolmagan o'quvchi keyin ko'rishi mumkin bo'ladi. Bu **saqlash joyi** talab qiladi
+(1.5 soatlik 12 kishilik dars, hammasi birga yozilsa ancha katta hajm bo'ladi — aniq
+hajm yozib olish formatiga bog'liq), shuning uchun alohida narx-navo va qaror kerak.
+Boshqa hamma narsa (9, 10-bosqich) ishlab, sinovdan o'tgach ko'rib chiqiladi.
 
-## Ustozdan aniqlashtirish kerak bo'lgan savollar
+## Ustoz javob bergan savollar (2026-07-31)
 
-Bularni bilmasdan turib ham 9-bosqichni boshlash mumkin, lekin javoblar rejani aniqlashtiradi:
+1. **Bir darsda nechta o'quvchi?** → Maksimal 12
+2. **Ustoz ekran ulashishi kerakmi?** → "Bo'lsa yaxshi" — qoida tushuntirish uchun,
+   ingliz tilida ham
+3. **Darsni yozib olish kerakmi?** → "Qiyin bo'lmasa yaxshi bo'lardi" — xohish, shart emas
+4. **Ustozlar qaysi qurilmadan dars o'tadi?** → Kompyuterdan
 
-1. **Bir darsda nechta o'quvchi bo'ladi?** (12 tami, 30 tami — narx va server tanloviga ta'sir qiladi)
-2. **Ustoz ekran ulashishi kerakmi?** (slayd, kitob sahifasi ko'rsatish — deyarli aniq "ha")
-3. **O'quvchi gapira olishi kerakmi?** (Speaking mashqi uchun — "qo'l ko'tarish" orqali)
-4. **Darsni yozib olish kerakmi?** (kelolmaganlar keyin ko'rishi uchun)
-5. **Doska (whiteboard) kerakmi?** (matematika darsida yozib tushuntirish uchun)
-6. **Ustozlar qaysi qurilmadan dars o'tadi?** (kompyuter/noutbukmi — telefondan ekran ulashish qiyin)
-7. **O'quvchilarning interneti qanday?** (mobil internetda video sifatini pasaytirish kerak bo'ladi)
+## Hali ochiq qolgan savollar
+
+- **Doska (whiteboard) kerakmi?** — matematika darsida yozib tushuntirish uchun.
+  Ustozdan so'ralmagan, keyinroq kerak bo'lsa alohida qo'shiladi.
+- **O'quvchilarning interneti qanday?** — mobil internetda bo'lsa, past sifat rejimi
+  muhim bo'ladi (yuqoridagi "amaliy ehtiyot choralari" qismida shu hisobga olingan).

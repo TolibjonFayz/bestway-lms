@@ -3,10 +3,11 @@
 > Namuna: Inter Nation platformasi (login.inter-nation.uz, web-student.inter-nation.uz)
 > Holat: 8 ta kod bosqichi tugadi, deploy qilindi va **ustozga ko'rsatildi — ma'qullandi** (2026-07-30).
 > Jonli: https://bestway-lms.vercel.app · API: https://bestway-lms-production.up.railway.app/api
-> **Keyingi ustuvor vazifa — jonli dars (Zoom kabi): [LIVE-LESSON.md](LIVE-LESSON.md).**
-> Ustoz buni "eng asosiy narsa" dedi: ustoz dars o'tadi, o'quvchilar kuzatadi.
-> Dizayn promptlari: [DESIGN-BRIEF.md](DESIGN-BRIEF.md) — Claude Design uchun 7 ta bosqichli prompt.
-> Kod yozish promptlari: [BUILD-PROMPTS.md](BUILD-PROMPTS.md) — Claude Code uchun 9 ta bosqich.
+> **Keyingi ustuvor vazifa — jonli dars (to'liq video konferensiya): [LIVE-LESSON.md](LIVE-LESSON.md).**
+> Ustoz aniqlashtirdi (2026-07-31): "Zoomda hamma bir vaqtda ko'rishib gaplashadi" — ya'ni
+> broadcast emas, **hammaning kamerasi/mikrofoni erkin**, max 12 o'quvchi + 1 ustoz.
+> Dizayn promptlari: [DESIGN-BRIEF.md](DESIGN-BRIEF.md) — Claude Design uchun 8 ta bosqichli prompt.
+> Kod yozish promptlari: [BUILD-PROMPTS.md](BUILD-PROMPTS.md) — Claude Code uchun 11 ta bosqich.
 > Loyiha qoidalari: [CLAUDE.md](CLAUDE.md) — Claude Code avtomatik o'qiydi (stack, tokenlar, DoD).
 
 ## Maqsad
@@ -67,10 +68,12 @@ Batafsil promptlar: [BUILD-PROMPTS.md](BUILD-PROMPTS.md). Har bosqich alohida se
 
 ### 1.5-bosqich — Jonli dars (ustozning asosiy talabi, [LIVE-LESSON.md](LIVE-LESSON.md))
 
-- [ ] Dizayn: DESIGN-BRIEF.md 8-prompt → `design/08-live-lesson.html`
-- [ ] 9: jonli dars MVP (LiveKit, ustoz broadcast qiladi, o'quvchi ko'radi, ekran ulashish)
-- [ ] 10: chat, qo'l ko'tarish, moderatsiya, avtomatik davomat
-- [ ] 11: yozib olish (ixtiyoriy — ustoz so'rasa)
+To'liq video konferensiya (Zoom kabi) — hammaning kamerasi/mikrofoni erkin, max 12+1 kishi.
+
+- [ ] Dizayn: DESIGN-BRIEF.md 8-prompt → `design/08-live-lesson.html` (gallery grid)
+- [ ] 9: ko'p tomonlama video MVP (LiveKit, hamma ko'rinadi/eshitiladi, ekran ulashish)
+- [ ] 10: ustoz host nazorati (ovozsiz qilish/chiqarish), chat, avtomatik davomat
+- [ ] 11: yozib olish (ixtiyoriy — ustoz "qiyin bo'lmasa yaxshi" degan, majburiy emas)
 
 Asosiy funksional talablar:
 - [ ] Auth: telefon (+998) + parol, JWT, rol asosida yo'naltirish

@@ -375,7 +375,7 @@ Include the table's empty state and loading skeleton.
 
 ---
 
-## 8-PROMPT — Jonli dars (Zoom kabi)
+## 8-PROMPT — Jonli dars (to'liq video konferensiya, Zoom kabi)
 
 > Bu ustozning eng muhim talabi. Texnik kontekst: [LIVE-LESSON.md](LIVE-LESSON.md)
 > Natijani `design/08-live-lesson.html` deb saqla.
@@ -383,61 +383,74 @@ Include the table's empty state and loading skeleton.
 ```
 [MASTER CONTEXT]
 
-TASK: Design the live lesson experience — the teacher broadcasts, students watch.
+TASK: Design the live lesson experience — a real multi-party video conference,
+Zoom-style. Everyone — the teacher and up to 12 students — has their own camera
+and microphone, self-controlled, on at all times unless they turn it off themselves.
+The teacher additionally has host controls (mute anyone, remove anyone, end for all).
 
-This is NOT a Zoom-style grid of equal boxes. Only the teacher sends video and audio.
-Students watch, and ask questions by chat or by raising a hand. Design accordingly:
-the teacher's video is the hero, everything else is secondary.
+This IS a gallery grid of participant tiles, not a single hero stage. Design it like
+a real classroom video call: every face matters, but the active speaker should stand
+out so a 12-person grid doesn't feel chaotic.
 
-SCREEN A — Student live lesson view (design mobile 375px AND desktop 1280px)
-  - The teacher's video fills the main stage, 16:9, rounded --r-lg, on a dark
-    (--ink) backdrop so the video is the focus. Teacher name badge overlaid
-    bottom-left with a small live audio-level indicator.
-  - A red "JONLI" pill with a pulsing dot, top-left of the stage, plus elapsed
-    time "24:15".
-  - Participant count "18 ta o'quvchi" with a people icon.
-  - Right rail on desktop (bottom sheet on mobile): tabs "Chat" and "Ishtirokchilar".
-      * Chat: message rows with avatar, name, time, text. Teacher messages get a
-        --green-pale background and a "Ustoz" chip. Input at the bottom with a
-        send button.
-      * Ishtirokchilar: scrollable list, teacher pinned at top with a "Ustoz" chip,
-        students below with a muted-mic icon; a raised hand shows an --orange hand icon.
-  - Bottom control bar for the STUDENT — deliberately minimal:
-      "Qo'l ko'tarish" (toggle, turns --orange when active),
-      mic button (DISABLED by default, with a tooltip "Ustoz ruxsat bergach ochiladi"),
-      fullscreen, and "Chiqish" in --danger.
-  - Connection quality indicator: 3 bars, green/amber/red, with a tooltip.
+SCREEN A — Live lesson view, shared by everyone but teacher sees extra controls
+(design mobile 375px AND desktop 1280px)
+  - Gallery grid of participant tiles. Each tile: video (or an avatar + initials on
+    a --green-pale tinted background when camera is off), name label bottom-left,
+    a small mic icon (crossed-out when muted) bottom-right, --r-md rounded corners,
+    on a dark (--ink) backdrop.
+  - Grid layout rules: up to 13 tiles (12 students + teacher). When someone is
+    speaking, their tile gets a --green glowing border and grows slightly relative
+    to the others (active-speaker emphasis), everyone else stays same-size and
+    smaller. On mobile, show a horizontally scrollable strip of small tiles plus
+    one large focused tile.
+  - Teacher's tile always has a small "Ustoz" chip, distinguishing it in the grid.
+  - A red "JONLI" pill with a pulsing dot, top-left, plus elapsed time "24:15" and
+    participant count "13/13" with a people icon.
+  - Connection quality indicator per tile: a tiny 3-bar icon that turns amber/red
+    when that participant's connection is degraded (not just your own).
+  - Bottom control bar, available to EVERYONE:
+      camera toggle (on by default, --green when on, gray when off),
+      mic toggle (on by default, --green when on, --danger crossed-out when off),
+      "Ishtirokchilar" (opens the participant list), "Chat", fullscreen,
+      and "Chiqish" in --danger.
+  - Chat and Ishtirokchilar open as a right rail on desktop, bottom sheet on mobile:
+      * Chat: message rows with avatar, name, time, text; teacher's messages get a
+        --green-pale background and "Ustoz" chip; input with send button at bottom.
+      * Ishtirokchilar: scrollable list, teacher pinned at top with "Ustoz" chip and
+        a small crown/host icon, students below each with mic-state icon.
   - States to include, each as a separate labelled block:
-      1. Waiting — "Dars hali boshlanmadi", scheduled time, teacher name,
-         a countdown, and a note that it starts automatically.
-      2. Live — the main design above.
-      3. Reconnecting — a non-blocking amber banner "Ulanish tiklanmoqda…"
-         over a frozen last frame, NOT a full-screen blocker.
+      1. Waiting — "Dars hali boshlanmadi", scheduled time, teacher name, countdown,
+         note that it starts automatically when the teacher joins.
+      2. Live — the main gallery grid design above.
+      3. Reconnecting — a non-blocking amber banner "Ulanish tiklanmoqda…" over your
+         own frozen tile only, NOT a full-screen blocker — everyone else keeps working.
       4. Ended — "Dars yakunlandi", duration, "Darslarga qaytish" button.
 
-SCREEN B — Teacher live lesson view (desktop 1280px primary, but must work at 768px)
-  - Same stage, but showing the teacher's own camera preview with a subtle
-    "Siz" label, and a screen-share preview area when sharing is active
-    (when sharing, the shared screen becomes the hero and the camera shrinks
-    to a small floating tile bottom-right).
-  - Full control bar: mikrofon, kamera, "Ekranni ulashish" (turns --green when
-    active), "Qo'l ko'targanlar (3)" with a badge, ishtirokchilar, chat,
-    and "Darsni yakunlash" in --danger.
-  - Raised-hands queue: a compact list where each row has the student name and
-    two actions — "Mikrofon berish" (--green) and "Rad etish" (ghost).
+SCREEN B — Teacher-only additions (desktop 1280px primary, must work at 768px)
+  - Screen-share: when the teacher shares, the shared screen becomes a large hero
+    area and the participant grid collapses to a slim strip along the bottom or side
+    (small tiles), matching how Zoom reflows during a share.
+  - Extra control bar items visible only to the teacher: "Ekranni ulashish" (turns
+    --green when active), "Hammani ovozsiz qilish", and "Darsni yakunlash" in --danger
+    (ends the session for everyone, with a confirm dialog).
+  - Per-participant host actions: hovering/tapping a student's tile or their row in
+    "Ishtirokchilar" reveals two icon actions — mute (mic-off icon) and remove
+    (person-x icon, opens a confirm dialog "Chiqarib yuborilsinmi?").
   - A pre-flight screen shown BEFORE going live: camera and mic preview, device
-    picker dropdowns (kamera, mikrofon, dinamik), a mic level meter, the group
-    name and student count, and a big "Darsni boshlash" primary button.
+    picker dropdowns (kamera, mikrofon, dinamik), a mic level meter, the group name
+    and expected student count, and a big "Darsni boshlash" primary button.
 
 SCREEN C — Lesson entry points
   - The dashboard "Keyingi dars" card in three states: too early (button disabled
     with "16:50 da faollashadi"), live now (button --green, pulsing, "Darsga qo'shilish"),
-    and in progress with a "JONLI" indicator.
+    and in progress with a "JONLI" indicator and live participant count.
   - A teacher-side card on the staff dashboard: "Darsni boshlash" for the upcoming
-    slot, showing group, time, and how many students are already waiting.
+    slot, showing group, time, and how many students are already waiting in the
+    lobby/waiting state.
 
-Accessibility: every control has a visible label or a tooltip, the control bar is
-keyboard reachable, and the live/recording indicators are not colour-only.
+Accessibility: every control has a visible label or a tooltip, the control bar and
+per-participant host actions are keyboard reachable, and the live/recording/mute
+indicators are not colour-only (use icons, not just red/green dots).
 ```
 
 ---
