@@ -1,9 +1,10 @@
 # Bestway LMS — Reja (v0.1, qoralama)
 
 > Namuna: Inter Nation platformasi (login.inter-nation.uz, web-student.inter-nation.uz)
-> Holat: 8 ta kod bosqichi tugadi va tekshirildi (2026-07-30), GitHub'ga push qilindi.
-> Deploy jarayonida — Railway (backend) + Vercel (frontend), qadamlar [DEPLOY.md](DEPLOY.md) da.
-> Ustozdan hali batafsil texnik topshiriq (TZ) kutilmoqda — demo shu holatda ko'rsatiladi.
+> Holat: 8 ta kod bosqichi tugadi, deploy qilindi va **ustozga ko'rsatildi — ma'qullandi** (2026-07-30).
+> Jonli: https://bestway-lms.vercel.app · API: https://bestway-lms-production.up.railway.app/api
+> **Keyingi ustuvor vazifa — jonli dars (Zoom kabi): [LIVE-LESSON.md](LIVE-LESSON.md).**
+> Ustoz buni "eng asosiy narsa" dedi: ustoz dars o'tadi, o'quvchilar kuzatadi.
 > Dizayn promptlari: [DESIGN-BRIEF.md](DESIGN-BRIEF.md) — Claude Design uchun 7 ta bosqichli prompt.
 > Kod yozish promptlari: [BUILD-PROMPTS.md](BUILD-PROMPTS.md) — Claude Code uchun 9 ta bosqich.
 > Loyiha qoidalari: [CLAUDE.md](CLAUDE.md) — Claude Code avtomatik o'qiydi (stack, tokenlar, DoD).
@@ -63,6 +64,13 @@ Batafsil promptlar: [BUILD-PROMPTS.md](BUILD-PROMPTS.md). Har bosqich alohida se
 - [ ] 6: test + natija
 - [ ] 7: baholar, reyting, profil
 - [ ] 8: o'qituvchi + admin paneli
+
+### 1.5-bosqich — Jonli dars (ustozning asosiy talabi, [LIVE-LESSON.md](LIVE-LESSON.md))
+
+- [ ] Dizayn: DESIGN-BRIEF.md 8-prompt → `design/08-live-lesson.html`
+- [ ] 9: jonli dars MVP (LiveKit, ustoz broadcast qiladi, o'quvchi ko'radi, ekran ulashish)
+- [ ] 10: chat, qo'l ko'tarish, moderatsiya, avtomatik davomat
+- [ ] 11: yozib olish (ixtiyoriy — ustoz so'rasa)
 
 Asosiy funksional talablar:
 - [ ] Auth: telefon (+998) + parol, JWT, rol asosida yo'naltirish

@@ -375,6 +375,117 @@ When done: screenshot the review split view and the course builder, and paste th
 
 ---
 
+## 9-BOSQICH — Jonli dars MVP (ustozning asosiy talabi)
+
+> Kirish fayli: `design/08-live-lesson.html`
+> Texnik kontekst va nega LiveKit tanlangani: [LIVE-LESSON.md](LIVE-LESSON.md)
+> **Oldindan kerak:** LiveKit Cloud'da bepul akkaunt (`livekit.io` → Build tier,
+> karta talab qilinmaydi) va undan olingan `LIVEKIT_URL`, `LIVEKIT_API_KEY`,
+> `LIVEKIT_API_SECRET`.
+
+```
+Read CLAUDE.md and LIVE-LESSON.md, then read design/08-live-lesson.html completely.
+
+Build the live lesson MVP with LiveKit. The teacher broadcasts; students watch.
+This is a broadcast, not a conference — do not build a Zoom-style equal grid.
+
+1. Backend — session model and token endpoint:
+   - New table lesson_sessions: group_id, teacher_id, scheduled_start, started_at,
+     ended_at, status (scheduled|live|ended), livekit_room name.
+   - POST /live/sessions/:groupId/start — teacher only, and only for their OWN group.
+     Creates or resumes the session, marks it live.
+   - POST /live/sessions/:id/end — teacher only, marks it ended.
+   - GET  /live/sessions/:id/token — returns a LiveKit access token whose grants are
+     derived from the caller's role, NEVER from the request body:
+       teacher → canPublish: true, canPublishData: true, roomAdmin: true
+       student → canPublish: false, canSubscribe: true, canPublishData: true
+     A student must not be able to publish video or audio even by crafting the
+     request. Verify this with a real request and show the decoded token grants.
+   - GET /live/sessions/current — what the logged-in user can join right now
+     (their group's live session, or the next scheduled one with its start time).
+   - Students may only join a session belonging to their own group. A request for
+     another group's session returns 403.
+
+2. Env: LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET in api/.env.example
+   with a comment saying where to get them. Never commit real values.
+   Use the livekit-server-sdk package for token minting.
+
+3. Frontend — use the livekit-client SDK, build our OWN UI from the design file.
+   Do not use any prebuilt LiveKit UI components or embed an iframe.
+   - /live/:sessionId student view: the four states from the design (waiting, live,
+     reconnecting, ended). Video element for the teacher's track, participant count,
+     connection quality indicator.
+   - /staff/live/:groupId teacher view: the pre-flight screen (device pickers, camera
+     and mic preview, level meter) then the live view with mic/camera/screen-share
+     controls and "Darsni yakunlash".
+   - Screen share: when the teacher shares, the shared track becomes the main stage
+     and the camera moves to a small floating tile.
+   - Wire up the dashboard "Keyingi dars" card and the teacher's "Darsni boshlash"
+     card as the entry points, replacing the current inert button.
+
+4. Robustness — this is the part that decides whether the teacher trusts it:
+   - Automatic reconnection on network drop, with the amber banner from the design.
+     Never show a full-screen blocker for a temporary drop.
+   - Leaving the page (or closing the tab) disconnects cleanly — no ghost participants.
+   - The teacher ending the lesson disconnects every student and routes them to the
+     ended state.
+   - Media permission denial (camera/mic blocked in the browser) shows a clear Uzbek
+     explanation of how to allow it, not a raw browser error.
+   - A student joining before the teacher starts sees the waiting state, and moves to
+     live automatically when the teacher goes live — without a manual refresh.
+
+Do NOT build in this stage: chat, raise-hand, moderation, attendance, recording.
+They are stage 10. Keep this stage focused on a rock-solid one-way broadcast.
+
+When done: run two browsers side by side — one logged in as teacher Aziz Axtamov,
+one as a student in his group. Start the lesson, show the student receiving video,
+share the screen, then end the lesson. Screenshot each step, and paste the decoded
+student token proving canPublish is false.
+```
+
+---
+
+## 10-BOSQICH — Jonli dars: interaktivlik va davomat
+
+> Kirish fayli: `design/08-live-lesson.html` (chat, qo'l ko'tarish, moderatsiya qismlari)
+> 9-bosqich to'liq ishlab, real darsda sinovdan o'tgach boshlanadi.
+
+```
+Read CLAUDE.md and LIVE-LESSON.md, then re-read design/08-live-lesson.html.
+
+Add interactivity to the live lesson built in stage 9.
+
+1. Chat — use LiveKit's data channel, not a separate WebSocket. Messages show sender
+   name and time; the teacher's messages get the --green-pale treatment and "Ustoz"
+   chip from the design. A student joining mid-lesson sees the recent history
+   (persist messages server-side so this works).
+
+2. Raise hand — student toggles it, the teacher sees a queue with a count badge.
+   "Mikrofon berish" grants that student publish-audio rights for this session only;
+   revoking takes it back. Rights are changed server-side via the LiveKit admin API —
+   never by trusting a client message.
+
+3. Teacher moderation: mute a student who was granted a mic, and remove a student
+   from the lesson. A removed student sees a clear message, not a silent disconnect.
+
+4. Automatic attendance — write to the existing attendance table when a student
+   joins. Rules: present ("kelgan") if they were connected for at least 60% of the
+   lesson duration; late ("kechikkan") if they joined more than 10 minutes after the
+   start; absent ("kelmagan") if they never joined. Compute this when the teacher
+   ends the lesson, and make it idempotent — re-running must not duplicate rows.
+   The teacher can override any student's status afterwards from the staff panel.
+
+5. Lesson reminder: a notification 10 minutes before the scheduled start, for both
+   the students of that group and the teacher.
+
+When done: run a lesson with two student browsers — one joining on time and staying,
+one joining 15 minutes late. End the lesson and show the attendance rows that were
+written, proving the late one was marked "kechikkan". Screenshot the chat and the
+raise-hand queue.
+```
+
+---
+
 ## Bosqichdan keyin: tuzatish promptlari
 
 Agar natija dizayndan farq qilsa, **o'sha sessiyada** aniq ayt:

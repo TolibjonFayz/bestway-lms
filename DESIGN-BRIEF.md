@@ -375,12 +375,80 @@ Include the table's empty state and loading skeleton.
 
 ---
 
+## 8-PROMPT — Jonli dars (Zoom kabi)
+
+> Bu ustozning eng muhim talabi. Texnik kontekst: [LIVE-LESSON.md](LIVE-LESSON.md)
+> Natijani `design/08-live-lesson.html` deb saqla.
+
+```
+[MASTER CONTEXT]
+
+TASK: Design the live lesson experience — the teacher broadcasts, students watch.
+
+This is NOT a Zoom-style grid of equal boxes. Only the teacher sends video and audio.
+Students watch, and ask questions by chat or by raising a hand. Design accordingly:
+the teacher's video is the hero, everything else is secondary.
+
+SCREEN A — Student live lesson view (design mobile 375px AND desktop 1280px)
+  - The teacher's video fills the main stage, 16:9, rounded --r-lg, on a dark
+    (--ink) backdrop so the video is the focus. Teacher name badge overlaid
+    bottom-left with a small live audio-level indicator.
+  - A red "JONLI" pill with a pulsing dot, top-left of the stage, plus elapsed
+    time "24:15".
+  - Participant count "18 ta o'quvchi" with a people icon.
+  - Right rail on desktop (bottom sheet on mobile): tabs "Chat" and "Ishtirokchilar".
+      * Chat: message rows with avatar, name, time, text. Teacher messages get a
+        --green-pale background and a "Ustoz" chip. Input at the bottom with a
+        send button.
+      * Ishtirokchilar: scrollable list, teacher pinned at top with a "Ustoz" chip,
+        students below with a muted-mic icon; a raised hand shows an --orange hand icon.
+  - Bottom control bar for the STUDENT — deliberately minimal:
+      "Qo'l ko'tarish" (toggle, turns --orange when active),
+      mic button (DISABLED by default, with a tooltip "Ustoz ruxsat bergach ochiladi"),
+      fullscreen, and "Chiqish" in --danger.
+  - Connection quality indicator: 3 bars, green/amber/red, with a tooltip.
+  - States to include, each as a separate labelled block:
+      1. Waiting — "Dars hali boshlanmadi", scheduled time, teacher name,
+         a countdown, and a note that it starts automatically.
+      2. Live — the main design above.
+      3. Reconnecting — a non-blocking amber banner "Ulanish tiklanmoqda…"
+         over a frozen last frame, NOT a full-screen blocker.
+      4. Ended — "Dars yakunlandi", duration, "Darslarga qaytish" button.
+
+SCREEN B — Teacher live lesson view (desktop 1280px primary, but must work at 768px)
+  - Same stage, but showing the teacher's own camera preview with a subtle
+    "Siz" label, and a screen-share preview area when sharing is active
+    (when sharing, the shared screen becomes the hero and the camera shrinks
+    to a small floating tile bottom-right).
+  - Full control bar: mikrofon, kamera, "Ekranni ulashish" (turns --green when
+    active), "Qo'l ko'targanlar (3)" with a badge, ishtirokchilar, chat,
+    and "Darsni yakunlash" in --danger.
+  - Raised-hands queue: a compact list where each row has the student name and
+    two actions — "Mikrofon berish" (--green) and "Rad etish" (ghost).
+  - A pre-flight screen shown BEFORE going live: camera and mic preview, device
+    picker dropdowns (kamera, mikrofon, dinamik), a mic level meter, the group
+    name and student count, and a big "Darsni boshlash" primary button.
+
+SCREEN C — Lesson entry points
+  - The dashboard "Keyingi dars" card in three states: too early (button disabled
+    with "16:50 da faollashadi"), live now (button --green, pulsing, "Darsga qo'shilish"),
+    and in progress with a "JONLI" indicator.
+  - A teacher-side card on the staff dashboard: "Darsni boshlash" for the upcoming
+    slot, showing group, time, and how many students are already waiting.
+
+Accessibility: every control has a visible label or a tooltip, the control bar is
+keyboard reachable, and the live/recording indicators are not colour-only.
+```
+
+---
+
 ## Tartib bo'yicha maslahat
 
 1. **1-prompt** (design system) birinchi — chiqqan token va komponentlarni saqlab qo'yamiz.
 2. **2 → 3 → 4 → 5** — student oqimi, eng muhimi. MVP shu.
 3. **6** — ikkilamchi student ekranlari.
 4. **7** — admin/teacher, oxirida.
+5. **8** — jonli dars (ustoz talabi bo'yicha eng muhim funksiya, [LIVE-LESSON.md](LIVE-LESSON.md)).
 
 Har bir natijani `design/` papkasiga saqlaymiz, keyin Vue komponentlarga o'giramiz.
 Agar biror ekran yoqmasa: "keep the layout, change X" deb qayta so'ra — noldan
