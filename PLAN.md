@@ -3,12 +3,14 @@
 > Namuna: Inter Nation platformasi (login.inter-nation.uz, web-student.inter-nation.uz)
 > Holat: 8 ta kod bosqichi tugadi, deploy qilindi va **ustozga ko'rsatildi — ma'qullandi** (2026-07-30).
 > Jonli: https://bestway-lms.vercel.app · API: https://bestway-lms-production.up.railway.app/api
-> **Keyingi ustuvor vazifa — jonli dars (to'liq video konferensiya): [LIVE-LESSON.md](LIVE-LESSON.md).**
-> Ustoz aniqlashtirdi (2026-07-31): "Zoomda hamma bir vaqtda ko'rishib gaplashadi" — ya'ni
-> broadcast emas, **hammaning kamerasi/mikrofoni erkin**, max 12 o'quvchi + 1 ustoz.
-> Texnologiya: **Zoom Video SDK** (LiveKit'dan almashtirildi — gallery-konferensiyada
-> ancha arzon, chunki trafik alohida hisoblanmaydi; evaziga o'z serverga hech qachon
-> ko'chib bo'lmaydi — LIVE-LESSON.md dagi "Nimadan voz kechyapmiz" bo'limiga qarang).
+> **Keyingi ustuvor vazifa — jonli dars: [LIVE-LESSON.md](LIVE-LESSON.md).**
+> ⏸️ **TO'XTATILGAN — ustozdan javob kutilmoqda (2026-07-31).** Tolibjon "Zoomni o'zini
+> ishlatsak-chi" deb so'radi. Ikki yo'l bor: (A) Zoom ilova + LMS alohida — arzon
+> ($13-17/oy/ustoz FIKS), tez, lekin dars saytdan chiqib Zoom'da o'tadi; (B) Zoom Video
+> SDK — to'liq saytning ichida, ko'proq qurish ishi, narx hajm bilan o'sadi. Ustozga
+> savol yuborildi: "saytdan Zoom'ga chiqib ketish muammomi, yoki albatta bitta joyda
+> bo'lishi kerakmi?" — **javob kelmaguncha LIVE-LESSON.md/BUILD-PROMPTS.md 9-10
+> bosqichni boshlamaslik kerak**, ular hozir B variant (SDK) bo'yicha yozilgan.
 > Dizayn promptlari: [DESIGN-BRIEF.md](DESIGN-BRIEF.md) — Claude Design uchun 8 ta bosqichli prompt.
 > Kod yozish promptlari: [BUILD-PROMPTS.md](BUILD-PROMPTS.md) — Claude Code uchun 11 ta bosqich.
 > Loyiha qoidalari: [CLAUDE.md](CLAUDE.md) — Claude Code avtomatik o'qiydi (stack, tokenlar, DoD).
