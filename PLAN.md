@@ -3,14 +3,10 @@
 > Namuna: Inter Nation platformasi (login.inter-nation.uz, web-student.inter-nation.uz)
 > Holat: 8 ta kod bosqichi tugadi, deploy qilindi va **ustozga ko'rsatildi — ma'qullandi** (2026-07-30).
 > Jonli: https://bestway-lms.vercel.app · API: https://bestway-lms-production.up.railway.app/api
-> **Keyingi ustuvor vazifa — jonli dars: [LIVE-LESSON.md](LIVE-LESSON.md).**
-> ⏸️ **TO'XTATILGAN — ustozdan javob kutilmoqda (2026-07-31).** Tolibjon "Zoomni o'zini
-> ishlatsak-chi" deb so'radi. Ikki yo'l bor: (A) Zoom ilova + LMS alohida — arzon
-> ($13-17/oy/ustoz FIKS), tez, lekin dars saytdan chiqib Zoom'da o'tadi; (B) Zoom Video
-> SDK — to'liq saytning ichida, ko'proq qurish ishi, narx hajm bilan o'sadi. Ustozga
-> savol yuborildi: "saytdan Zoom'ga chiqib ketish muammomi, yoki albatta bitta joyda
-> bo'lishi kerakmi?" — **javob kelmaguncha LIVE-LESSON.md/BUILD-PROMPTS.md 9-10
-> bosqichni boshlamaslik kerak**, ular hozir B variant (SDK) bo'yicha yozilgan.
+> ✅ **Jonli dars masalasi hal bo'ldi (2026-08-10): Zoom Pro, eng oxirgi bosqichda.**
+> Batafsil va qaror tarixi: [LIVE-LESSON.md](LIVE-LESSON.md).
+> **Keyingi ustuvor vazifa — 9-bosqich: video darslarni YouTube'ga ko'chirish**
+> (hozir production'da video butunlay ishlamaydi).
 > Dizayn promptlari: [DESIGN-BRIEF.md](DESIGN-BRIEF.md) — Claude Design uchun 8 ta bosqichli prompt.
 > Kod yozish promptlari: [BUILD-PROMPTS.md](BUILD-PROMPTS.md) — Claude Code uchun 11 ta bosqich.
 > Loyiha qoidalari: [CLAUDE.md](CLAUDE.md) — Claude Code avtomatik o'qiydi (stack, tokenlar, DoD).
@@ -61,24 +57,35 @@ Manba: `D:\Tolibjon\Programming\best-way-lc` (avval qilingan Bestway landing).
 
 Batafsil promptlar: [BUILD-PROMPTS.md](BUILD-PROMPTS.md). Har bosqich alohida sessiyada.
 
-- [ ] 0: loyiha skeleti + UI kit (`web/`, tokenlar, Bw* komponentlar, /kitchen-sink)
-- [ ] 1: backend DB + auth (`api/`, migratsiyalar, seed)
-- [ ] 2: auth ekranlari (frontend + backend ulanadi)
-- [ ] 3: o'quvchi bosh sahifasi + app shell
-- [ ] 4: darslar (kurslar, unit roadmap, unit detali)
-- [ ] 5: video pleyer + vocabulary trainer
-- [ ] 6: test + natija
-- [ ] 7: baholar, reyting, profil
-- [ ] 8: o'qituvchi + admin paneli
+- [x] 0: loyiha skeleti + UI kit (`web/`, tokenlar, Bw* komponentlar, /kitchen-sink)
+- [x] 1: backend DB + auth (`api/`, migratsiyalar, seed)
+- [x] 2: auth ekranlari (frontend + backend ulanadi)
+- [x] 3: o'quvchi bosh sahifasi + app shell
+- [x] 4: darslar (kurslar, unit roadmap, unit detali)
+- [x] 5: video pleyer + vocabulary trainer
+- [x] 6: test + natija
+- [x] 7: baholar, reyting, profil
+- [x] 8: o'qituvchi + admin paneli
 
-### 1.5-bosqich — Jonli dars (ustozning asosiy talabi, [LIVE-LESSON.md](LIVE-LESSON.md))
+✅ **MVP tugadi, deploy qilindi, ustozga ko'rsatildi va ma'qullandi (2026-07-30).**
 
-To'liq video konferensiya (Zoom kabi) — hammaning kamerasi/mikrofoni erkin, max 12+1 kishi.
+### 1.5-bosqich — Qolgan ishlar (2026-08-10 da tekshiruvdan keyin aniqlangan)
 
-- [ ] Dizayn: DESIGN-BRIEF.md 8-prompt → `design/08-live-lesson.html` (gallery grid)
-- [ ] 9: ko'p tomonlama video MVP (LiveKit, hamma ko'rinadi/eshitiladi, ekran ulashish)
-- [ ] 10: ustoz host nazorati (ovozsiz qilish/chiqarish), chat, avtomatik davomat
-- [ ] 11: yozib olish (ixtiyoriy — ustoz "qiyin bo'lmasa yaxshi" degan, majburiy emas)
+Tekshiruv natijasi: MVP ishlayapti, lekin ikkita bo'shliq bor edi —
+video production'da buzuq va 9 ta sahifa bo'sh (`PlaceholderView`).
+
+- [ ] **9: video darslarni YouTube'ga ko'chirish** ⚠️ ENG MUHIM — hozir production'da
+      video butunlay ishlamaydi (`web/public/media/*.mp4` gitignore'da, Vercel'ga
+      chiqmagan, SPA rewrite HTML qaytaradi). Qaror: YouTube unlisted (bepul, cheksiz)
+- [ ] 10: o'qituvchi sahifalari — Davomat, Guruhlarim (hozir bo'sh)
+- [ ] 11: admin sahifalari — Bosh sahifa, O'qituvchilar (hozir bo'sh)
+- [ ] 12: o'quvchi sahifalari — Mashq, Qo'shimcha dars (hozir bo'sh)
+- [ ] **13: Zoom havolasini ulash** — ENG OXIRGI ([LIVE-LESSON.md](LIVE-LESSON.md))
+
+Zoom haqida: uzoq muhokamadan keyin **Zoom Pro** tanlandi (~$13-17/oy, ustoz boshiga,
+FIKS). Video konferensiya qurilmaydi — LMS faqat dars jadvalini yuritadi va Zoom
+havolasiga yo'naltiradi. Ustoz roziligini berdi va **"oxiriga qo'shsak maylimi"** dedi,
+shuning uchun 13-bosqich — obuna boshlanishi bilan oylik to'lov ketadi.
 
 Asosiy funksional talablar:
 - [ ] Auth: telefon (+998) + parol, JWT, rol asosida yo'naltirish

@@ -1,141 +1,84 @@
-# Jonli dars (Zoom kabi) — texnik qaror va reja
+# Jonli dars — yakuniy qaror: Zoom Pro (ilova orqali)
 
-> Ustoz talabi (2026-07-30): *"menga bu saytdagi eng asosiy narsa — imkon bo'lsa Zoomga
-> o'xshagan dars o'tadigan platforma kerak."*
-> Aniqlashtiruv (2026-07-31): *"Zoomda hamma bir vaqtda ko'rishib gaplashadi."* — ya'ni
-> **to'liq konferensiya**: barcha o'quvchilarning kamerasi/mikrofoni erkin, hech kim
-> ustoz ruxsatiga muhtoj emas. Bir darsda maksimal **12 kishi**. Ustoz kompyuterdan
-> o'tadi. Ingliz tilida qoida tushuntirishda foydali bo'lishi mumkin (2-band) va
-> davomat oson bo'lsa yaxshi (3-band) — ikkalasi ham "shart emas, bo'lsa yaxshi".
-> Texnologiya qarori (2026-07-31): Tolibjon "Zoom'ni o'zini integratsiya qilsak
-> bo'ladimi" deb so'radi → tekshirilib, **Zoom Video SDK** tanlandi (pastda sabab).
+> **Qaror qabul qilindi (2026-08-10).** Ustoz Zoom Pro'ga rozi bo'ldi va **"oxiriga
+> qo'shsak maylimi"** dedi — ya'ni jonli dars integratsiyasi eng oxirgi bosqich,
+> boshqa ishlar tugagach qilinadi. Bu oqilona: Zoom obunasi boshlanishi bilan har
+> oy pul keta boshlaydi, shuning uchun platformaning qolgan qismi tayyor bo'lgach
+> ulash to'g'ri.
 
-## Talab nima
+## Yakuniy qaror
 
-**To'liq ko'p tomonlama video konferensiya** — Zoom/Google Meet kabi. 12 tagacha
-o'quvchi + 1 ustoz, hammaning kamerasi va mikrofoni **o'zi boshqaradigan**, istalgan
-payt yoqib-o'chira oladi. Ustozda esa qo'shimcha **host huquqlari** bo'ladi: birortasini
-ovozini o'chirish, darsdan chiqarish, hammani birdek ovozsiz qilish — chunki 12 bola
-nazoratsiz bo'lsa, real darsda tartibsizlik chiqishi tabiiy.
+Ustoz **Zoom Pro** hisobi orqali dars o'tadi (~$13-17/oy, ustoz boshiga, FIKS narx —
+nechta guruh yoki necha soat dars o'tsa ham o'zgarmaydi). LMS video konferensiyani
+o'zi **qurmaydi** — faqat dars jadvalini yuritadi va "Darsga qo'shilish" tugmasi
+orqali Zoom havolasiga yo'naltiradi.
 
-## Texnologiya tanlovi: Zoom Video SDK
+Bu degani: **jonli dars uchun deyarli hech qanday murakkab kod yozilmaydi.** Bir
+nechta jadval maydoni, bitta tugma, va vaqtga qarab uni yoqish/o'chirish mantiqi.
 
-Ikki xil "Zoom" bor, farqini aniq ajratish kerak:
+## Nima uchun shunday qaror qilindi (yo'l tarixi)
 
-| | **Zoom Meeting SDK** | **Zoom Video SDK** (tanlangan) |
-|---|---|---|
-| Nima beradi | Tayyor Zoom oynasini o'z saytga o'rnatadi | Xom video/audio infratuzilma, UI'ni o'zimiz quramiz |
-| Ko'rinish | Zoom'ning o'z brendi, logotipi | To'liq bizning Bw* dizaynimiz |
-| Bizga mosmi | Yo'q — begona ko'rinadi | Ha — LiveKit bilan bir xil toifada |
+Bu qaror bir necha bosqichda o'zgarib, oxirida shu yerga keldi:
 
-**Qaror: Zoom Video SDK**, LiveKit'dan almashtirildi. Sabablari:
+1. **Avval LiveKit** rejalashtirilgan edi (to'liq saytda o'z dizaynimizda video).
+   Rad etildi: to'liq gallery-konferensiyada trafik (GB) alohida hisoblanadi va
+   ~$77-143/oy chiqardi.
+2. **Keyin Zoom Video SDK** (saytda, lekin Zoom infratuzilmasida). Rad etildi:
+   1 guruh uchun ~$14/oy bo'lsa-da, guruh ko'paygani sari o'sib boradi ($112/3 guruh),
+   va butun video UI'ni o'zimiz qurishimiz kerak edi.
+3. **Jitsi / BigBlueButton** ko'rib chiqildi (ustoz "boshqa tekin servislar bor" degan).
+   Rad etildi: dasturi bepul bo'lsa ham, **server o'zimizniki bo'ladi** ($16-44/oy VPS)
+   va uning ishlab turishiga biz javobgar bo'lamiz — dars vaqtida yiqilsa, kutib
+   turadigan qo'llab-quvvatlash yo'q. Bitta dasturchi uchun bu jiddiy xavf.
+   `meet.jit.si` (bepul umumiy server) ham tekshirildi — shartnomasi tijorat
+   ishlatishni taqiqlaydi, oyiga 25 ta faol ulanish bilan cheklaydi va Jitsi
+   brendini majburiy ko'rsatishni talab qiladi. Bizga mos emas.
+4. **Zoom Business** ko'rib chiqildi ("bitta akkaunt, ko'p ustoz" g'oyasi). Rad etildi:
+   kamida **10 ta litsenziya** sotib olish majburiy ($183/oy) — 2-3 ustoz uchun
+   behuda pul. Pro'da ham bitta kompaniya akkaunti ochib, kerakli ustozlarga
+   litsenziya berish mumkin.
+5. **Zoom Pro** — yakuniy tanlov. Tez ishga tushadi, ishonchli (Zoom javobgar),
+   narxi FIKS va bashorat qilinadigan, murakkab server sozlash yo'q.
 
-1. **Dizayn erkinligi bir xil** — Video SDK ham "xom" SDK, LiveKit kabi o'z UI'imizni
-   quramiz. Bu jihatdan ikkisi teng, avvalgi "Zoom begona ko'rinadi" degan xulosa
-   noto'g'ri edi (u Meeting SDK'ga tegishli edi, Video SDK'ga emas).
-2. **Narx — bu asosiy sabab.** To'liq gallery-konferensiyada (12 kishi bir vaqtda video
-   yuboradi) LiveKit trafikni (GB) alohida hisoblaydi va bu tez o'sib ketadi. Zoom Video
-   SDK faqat ishtirokchi-daqiqa bo'yicha hisoblaydi, trafik uchun qo'shimcha to'lov yo'q —
-   quyidagi hisobga qarang.
-3. Kamchiligi ham bor va bilib turish kerak — pastdagi "Nimadan voz kechyapmiz" bo'limida.
+## Nimadan voz kechildi (halol tan olish)
 
-## Narx — halol hisob (Zoom Video SDK vs LiveKit)
+- **Dars saytdan chiqib, Zoom ilovasida o'tadi** — ustoz aslida "shu saytda bo'lsin"
+  degan edi. Tolibjon buni ustozga tushuntirdi va ustoz rozi bo'ldi.
+- **Avtomatik davomat murakkabroq bo'ladi** — Zoom'ning hisobot API'si orqali kim
+  qachon qo'shilganini tortib olish mumkin, lekin bu qo'shimcha integratsiya. Agar
+  qilinmasa, ustoz davomatni qo'lda belgilaydi (Davomat sahifasi orqali).
+- **Chat/qo'l ko'tarish LMS'da bo'lmaydi** — Zoom'ning o'zida bor, shuning uchun
+  qayta qurish shart emas.
 
-To'liq konferensiyada 13 kishining (12 o'quvchi + ustoz) hammasi video yuboradi VA
-qabul qiladi — bu LiveKit'da alohida hisoblanadigan trafikni (GB) keskin oshiradi,
-Zoom'da esa yo'q.
+## Nima quriladi (13-bosqich, eng oxirida)
 
-**Zoom Video SDK:** 10,000 daqiqa/oy bepul, undan keyin **$0.0035/daqiqa** (daqiqa =
-ishtirokchi × daqiqa, ya'ni 13 kishi 10 daqiqa = 130 daqiqa). Trafik alohida
-hisoblanmaydi.
+Juda kichik hajm:
 
-**LiveKit Cloud** (avvalgi tanlov, taqqoslash uchun): 5,000 daqiqa + 50GB/oy bepul,
-undan keyin daqiqa arzon ($0.0004-0.0005), lekin **trafik $0.10-0.12/GB** — va
-to'liq gallery darsida trafik tez o'sadi (~20-30GB/dars, 13 kishi, 90 daqiqa).
+1. **DB:** `groups` jadvaliga `zoom_join_url` (va ixtiyoriy `zoom_meeting_id`) maydoni.
+   Ustoz Zoom'da bitta **takroriy uchrashuv** (recurring meeting) yaratadi — bitta
+   havola butun guruh uchun, har darsda o'zgarmaydi.
+2. **Admin panel:** guruhni tahrirlashda Zoom havolasini kiritish maydoni.
+3. **O'quvchi tomoni:** dashboard'dagi "Keyingi dars" kartasidagi **"Darsga qo'shilish"**
+   tugmasi — hozir u ishlamaydi (matn xolos). Dars boshlanishiga 10 daqiqa qolganda
+   faollashadi va Zoom havolasini yangi oynada ochadi.
+4. **O'qituvchi tomoni:** staff dashboard'da xuddi shunday tugma (ustoz host sifatida
+   kiradi).
+5. Havola qo'yilmagan guruhda tugma o'rniga tushunarli xabar ko'rsatiladi
+   ("Dars havolasi hali qo'shilmagan").
 
-Real hisob (1 guruh, haftada 3 dars, 90 daqiqa, 12 dars/oy):
+## Boshlashdan oldin tekshirish kerak
 
-| | Ishtirokchi-daqiqa/oy | Bepul limit | Pullik qism/oy (taxminiy) |
-|---|---|---|---|
-| **Zoom Video SDK** | ~14,000 | 10,000 daqiqa | ~4,000 daq × $0.0035 ≈ **$14** |
-| **LiveKit Cloud** | ~14,000 | 5,000 daq + 50GB | daqiqa arzon, lekin ~300GB trafik × $0.11 ≈ **$80-150+** |
+⚠️ **Ustozning kartasi Zoom to'lovini qabul qiladimi** — o'zbek USD kartalari xalqaro
+obunalarda ba'zan rad etiladi. Zoom Pro obunasini ochish **ustozning o'z zimmasida**
+(bu markazning doimiy xarajati, avvalgi kelishuv bo'yicha server/xizmat xarajatlari
+markaz hisobidan). 13-bosqichni boshlashdan oldin obuna ochilgan va havola tayyor
+bo'lishi kerak.
 
-**Xulosa: to'liq gallery-konferensiya uchun Zoom Video SDK ancha arzon** — Zoom
-trafikni alohida hisoblamagani uchun. Markaz kattalashib bir necha guruh bo'lsa ham,
-narx chiziqli o'sadi (masalan 3 guruh ≈ $110-120/oy), kutilmagan sakrash bo'lmaydi.
-
-## Nimadan voz kechyapmiz (halol tan olish)
-
-**LiveKit ochiq kodli — o'z serverimizga ko'chirib, doimiy to'lovdan butunlay
-qutulish mumkin edi.** Zoom Video SDK — Zoom'ning yopiq bulut xizmati, **hech qachon
-o'z serverga ko'chirib bo'lmaydi**. Markaz qancha katta bo'lmasin (10, 20 guruh),
-har doim Zoom'ga daqiqasiga to'lab turiladi — narx chiqib ketish yo'li yo'q.
-
-Bu amaliy qaror: **hozirgi va yaqin kelajakdagi hajm uchun** (1-3 guruh) Zoom sezilarli
-arzon va oddiyroq, shuning uchun tanlandi. Agar markaz kelajakda juda kattalashib
-(10+ guruh bir vaqtda) oylik xarajat sezilarli bo'lib qolsa, LiveKit'ga (yoki o'z
-serverga) qaytib o'tish alohida muhokama mavzusi bo'ladi — bu hozir qaror qilinmaydi.
-
-## Aniqlashtirish kerak — to'lov
-
-⚠️ Zoom Video SDK **Zoom Build Platform** orqali ishlaydi — kredit tizimi ($100/100
-kredit), USD kartasi bilan to'lanadi. **Bu hali tekshirilmagan:** o'zbek bank
-kartalari (UzCard/Humo asosidagi Visa/Mastercard) bunday xalqaro USD to'lovni qabul
-qiladimi — bu Railway/Vercel/LiveKit uchun ham bir xil masala, agar ulardan biri
-uchun kartangiz ishlagan bo'lsa, ehtimol bu yerda ham ishlaydi. Lekin build boshlashdan
-oldin Zoom Marketplace'da hisob ochib, kichik summa bilan sinab ko'rish tavsiya
-etiladi — 9-bosqichni boshlashdan oldin.
-
-## Amaliy ehtiyot choralari (kod darajasida, alohida qaror emas)
-
-- **Ustozning o'z interneti** — 12 kishining oqimini bir vaqtda qabul qilish talab
-  qiladi. Zoom Video SDK'ning avtomatik sifat moslashuvi (simulcast) yoqilishi kerak —
-  tarmoq sekin bo'lsa kichik plitkalar avtomatik pastroq sifatga tushadi.
-- **Ovoz aralashishi** — 12 mikrofon ochiq bo'lsa aks-sado xavfi bor. Brauzerning aks-sado
-  bostirishi buni katta qismini hal qiladi; o'quvchilarga quloqchin tavsiya qilish
-  UI'da ko'rsatilsa foydali.
-- **Ustoz nazorati shart** — "hamma erkin" bo'lsa ham, ustozda birovni ovozsiz qilish/
-  chiqarib yuborish tugmasi bo'lishi shart — sinfda tartib uchun.
-
-## Bosqichlar
-
-### 9-bosqich — Ko'p tomonlama video MVP
-Hamma (ustoz + 12 o'quvchigacha) bir xonada, kamera/mikrofon o'zi boshqaradi.
-- Backend: `lesson_sessions` jadvali, Zoom Video SDK JWT endpoint — ustoz uchun
-  `role_type: 1` (host), o'quvchi uchun `role_type: 0`
-- Gallery-grid UI: har kim o'z plitkasida, faol so'zlovchi katталashadi
-- Kamera/mikrofon yoqish-o'chirish tugmalari (har kim o'ziniki uchun)
-- Ustoz: **ekran ulashish** (qoida tushuntirish uchun, ustoz "bo'lsa yaxshi" degan)
-- Ustoz darsni boshlaydi/tugatadi; tugagach hamma chiqadi
-- Ulanish uzilsa avtomatik qayta ulanish
-
-### 10-bosqich — Nazorat va interaktivlik
-- Ustoz host paneli: birontasini ovozsiz qilish, hammani ovozsiz qilish, darsdan chiqarish
-- Chat (matn orqali savol)
-- **Avtomatik davomat** — kim qo'shildi, qancha turdi (mavjud `attendance` jadvaliga)
-  — ustoz "bo'lsa yaxshi" degan, shart emas, lekin infratuzilma tayyor bo'lgani uchun
-  qo'shish qiyin emas
-- Dars eslatmasi (boshlanishiga 10 daqiqa qolganda bildirishnoma)
-
-### 11-bosqich — Yozib olish (ixtiyoriy, keyinroq)
-Ustoz "qiyin bo'lmasa yaxshi bo'lardi" degan — talab emas, xohish. Zoom Video SDK'da
-**cloud recording** xizmati bor ($4/1,000 daqiqa qo'shimcha), o'z serverga saqlashdan
-ko'ra soddaroq bo'lishi mumkin. Boshqa hamma narsa (9, 10-bosqich) ishlab, sinovdan
-o'tgach ko'rib chiqiladi.
-
-## Ustoz javob bergan savollar (2026-07-31)
+## Ustoz javob bergan savollar
 
 1. **Bir darsda nechta o'quvchi?** → Maksimal 12
-2. **Ustoz ekran ulashishi kerakmi?** → "Bo'lsa yaxshi" — qoida tushuntirish uchun,
-   ingliz tilida ham
-3. **Darsni yozib olish kerakmi?** → "Qiyin bo'lmasa yaxshi bo'lardi" — xohish, shart emas
-4. **Ustozlar qaysi qurilmadan dars o'tadi?** → Kompyuterdan
-
-## Hali ochiq qolgan savollar
-
-- **Zoom hisobiga USD karta bilan to'lov o'tadimi?** — 9-bosqichdan oldin kichik
-  summa bilan sinab ko'rish kerak (yuqoridagi "Aniqlashtirish kerak — to'lov" bo'limi).
-- **Doska (whiteboard) kerakmi?** — matematika darsida yozib tushuntirish uchun.
-  Ustozdan so'ralmagan, keyinroq kerak bo'lsa alohida qo'shiladi.
-- **O'quvchilarning interneti qanday?** — mobil internetda bo'lsa, past sifat rejimi
-  muhim bo'ladi (yuqoridagi "amaliy ehtiyot choralari" qismida shu hisobga olingan).
+2. **Ekran ulashish kerakmi?** → "Bo'lsa yaxshi" — Zoom'da tayyor bor
+3. **Yozib olish kerakmi?** → "Qiyin bo'lmasa yaxshi" — Zoom Pro'da bulutli yozib
+   olish bor (5GB), qo'shimcha ish talab qilmaydi
+4. **Qaysi qurilmadan dars o'tadi?** → Kompyuterdan
+5. **Doska (whiteboard)?** → So'ralmagan, lekin Zoom'da tayyor bor

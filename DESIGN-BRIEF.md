@@ -375,10 +375,19 @@ Include the table's empty state and loading skeleton.
 
 ---
 
-## 8-PROMPT — Jonli dars (to'liq video konferensiya, Zoom kabi)
+## 8-PROMPT — Jonli dars ~~(to'liq video konferensiya)~~ ❌ BEKOR QILINDI
 
-> Bu ustozning eng muhim talabi. Texnik kontekst: [LIVE-LESSON.md](LIVE-LESSON.md)
-> Natijani `design/08-live-lesson.html` deb saqla.
+> ⚠️ **Bu prompt endi kerak emas (2026-08-10).** Yakuniy qaror: jonli dars **Zoom
+> ilovasida** o'tadi, saytning ichida emas ([LIVE-LESSON.md](LIVE-LESSON.md)).
+> Ya'ni gallery-grid, plitkalar, host tugmalari — hech biri qurilmaydi.
+> LMS tomonida faqat **"Darsga qo'shilish" tugmasi** kerak, u esa allaqachon
+> `design/03-student-home.html` dagi "Keyingi dars" kartasida chizilgan.
+>
+> Quyidagi matn faqat tarix uchun saqlanmoqda — Claude Design'ga yubormang.
+>
+> Qolgan bosqichlar (10-12: Davomat, Guruhlarim, admin va o'quvchi sahifalari) uchun
+> ham yangi dizayn generatsiya qilish shart emas — ular mavjud Bw* komponentlar va
+> o'rnatilgan patternlardan (stat-karta, data-jadval, kalendar) quriladi.
 
 ```
 [MASTER CONTEXT]

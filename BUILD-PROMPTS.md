@@ -375,156 +375,230 @@ When done: screenshot the review split view and the course builder, and paste th
 
 ---
 
-## 9-BOSQICH — Jonli dars MVP: ko'p tomonlama video (ustozning asosiy talabi)
+## 9-BOSQICH — Video darslarni YouTube'ga ko'chirish
 
-> Kirish fayli: `design/08-live-lesson.html`
-> Texnik kontekst va nega Zoom Video SDK tanlangani: [LIVE-LESSON.md](LIVE-LESSON.md)
-> **Oldindan kerak:** Zoom App Marketplace'da developer account, Video SDK app
-> yaratib olingan `ZOOM_VIDEO_SDK_KEY` va `ZOOM_VIDEO_SDK_SECRET`. To'lov kartasi
-> ishlashini kichik summa bilan oldindan sinab ko'rish tavsiya etiladi
-> (LIVE-LESSON.md dagi "Aniqlashtirish kerak — to'lov" bo'limi).
-> Ustoz aniq so'radi: **hamma bir vaqtda ko'rishib gaplashadi** (real Zoom kabi),
-> faqat ustoz emas. Max 12 o'quvchi + 1 ustoz = 13 ta ishtirokchi bitta xonada.
+> ⚠️ **Hozir production'da video darslar ishlamaydi.** Lokal generatsiya qilingan
+> `web/public/media/*.mp4` fayllari `.gitignore`da — Vercel'ga deploy qilinmagan.
+> Video so'ralganda SPA rewrite tufayli HTML qaytadi, video emas.
+> Qaror: **YouTube unlisted** — bepul, cheksiz, ishonchli. Keyin kerak bo'lsa pullik
+> xizmatga (Bunny/Cloudflare Stream) o'tish oson, chunki faqat URL o'zgaradi.
 
 ```
-Read CLAUDE.md and LIVE-LESSON.md, then read design/08-live-lesson.html completely.
+Read CLAUDE.md first.
 
-Build the live lesson MVP with Zoom Video SDK as a real multi-party video conference
-— NOT the Zoom Meeting SDK, which embeds Zoom's own branded UI. Video SDK is a raw
-video/audio primitive; every screen is built from scratch in our own design.
-Every participant — teacher and up to 12 students — publishes and subscribes to
-video and audio, self-controlled. This is a gallery grid, not a one-way broadcast.
+Move video lessons from local files to YouTube. Right now videos are broken in
+production: the seeded urls point at /media/lesson-*.mp4, those files are
+gitignored, and Vercel's SPA rewrite returns index.html for them.
 
-Before writing code, fetch the current Zoom Video SDK Web docs
-(https://developers.zoom.us/docs/video-sdk/web/) for the exact current API surface —
-method names on the Client/Stream objects and the JWT payload shape may have moved
-since this prompt was written. Treat the shapes below as the general model to
-implement, not literal method names to copy blind.
+1. Backend — the videos table already has a url column. Widen what it accepts:
+   - Store either a full YouTube URL or a bare YouTube video id.
+   - Add a small helper that normalises whatever the admin pasted (youtube.com/watch?v=,
+     youtu.be/, /embed/, or a bare id) into a canonical video id. Reject anything
+     that isn't a recognisable YouTube reference with a clear Uzbek validation error.
+   - Keep supporting a plain file URL too, so local dev videos still work — the
+     player picks its mode from the stored value. Do not delete the local-file path.
 
-1. Backend — session model and signature endpoint:
-   - New table lesson_sessions: group_id, teacher_id, scheduled_start, started_at,
-     ended_at, status (scheduled|live|ended), zoom_session_name (the "tpc" — a
-     unique, non-guessable room name, e.g. derived from the session's DB id + a
-     random suffix, never just the group id).
-   - POST /live/sessions/:groupId/start — teacher only, and only for their OWN group.
-     Creates or resumes the session, marks it live.
-   - POST /live/sessions/:id/end — teacher only, marks it ended.
-   - GET  /live/sessions/:id/signature — returns a Video SDK JWT signed server-side
-     with ZOOM_VIDEO_SDK_SECRET (HS256), whose role_type is derived from the caller's
-     role, NEVER from the request body:
-       teacher → role_type: 1 (host)
-       student → role_type: 0 (participant)
-     Payload includes app_key (ZOOM_VIDEO_SDK_KEY), tpc (the session's zoom_session_name),
-     role_type, version: 1, iat (now minus ~30s for clock skew), exp (short-lived —
-     long enough for one lesson, not indefinite). Verify with a real request and
-     decode the JWT for both roles to show role_type differs and nothing else about
-     the session (like other students' identities) leaks into it.
-   - GET /live/sessions/current — what the logged-in user can join right now
-     (their group's live session, or the next scheduled one with its start time).
-   - Students may only request a signature for a session belonging to their own
-     group. A request for another group's session returns 403.
-   - A session hard-caps at 13 participants (1 teacher + 12 students) — reject a 14th
-     join attempt with a clear error rather than silently degrading everyone's quality.
+2. Frontend — VideoPlayer.vue currently renders a <video> element. Make it render a
+   YouTube iframe when the source is a YouTube id, and keep the <video> element for
+   file URLs. Requirements for the YouTube mode:
+   - Use the iframe player with the YouTube IFrame Player API so we can still track
+     progress. Load the API script once, lazily, not on every player mount.
+   - Keep our existing progress reporting working: report watched percentage,
+     throttled to at most one call every 10 seconds and once on pause/unmount,
+     exactly as it works today. "Darsni yakunlash" still enables at 90%.
+   - Player params: modestbranding, rel=0 (no unrelated suggested videos at the end),
+     playsinline. Keep the design's own surrounding chrome (unit title, konspekt,
+     item rail) unchanged — only the inner player swaps.
+   - Do not build custom play/pause/seek controls over the iframe; YouTube's own
+     controls are fine and fighting them is not worth it. The design's custom control
+     bar stays only for the file-based <video> path.
 
-2. Env: ZOOM_VIDEO_SDK_KEY, ZOOM_VIDEO_SDK_SECRET in api/.env.example with a comment
-   on where to get them (Zoom App Marketplace → Build App → Video SDK). Never commit
-   real values. Sign the JWT with the `jsonwebtoken` package (HS256) — no need for
-   Zoom's own signing library on the backend.
+3. Admin — in the unit editor's video item form, the URL field should accept a pasted
+   YouTube link, show a small thumbnail preview once a valid id is recognised, and
+   explain in Uzbek that the video must be "Unlisted" (roʻyxatda koʻrsatilmagan) on
+   YouTube so only students with the link can open it.
 
-3. Frontend — use the `@zoom/videosdk` package, build our OWN gallery-grid UI from
-   the design file. Do not use any prebuilt Zoom UI components or embed an iframe.
-   - /live/:sessionId — shared view for teacher and students (the design file's
-     Screen A), with the four states: waiting, live, reconnecting, ended.
-   - Gallery grid: one tile per participant with video or an avatar fallback when
-     camera is off, name label, mic-state icon. Active-speaker tile gets emphasis —
-     use the SDK's active-speaker event, don't build custom audio-level detection.
-     Rely on the SDK's built-in adaptive video quality so tiles degrade under bad
-     network instead of freezing the whole call.
-   - Everyone gets camera/mic toggle buttons that control their OWN track — this
-     needs no server round-trip, it's local start/stop of the local audio/video.
-   - Screen share: when the teacher shares, the shared track becomes a large hero
-     area and the grid collapses to a slim strip (per the design).
-   - Wire up the dashboard "Keyingi dars" card and the teacher's "Darsni boshlash"
-     card as the entry points, replacing the current inert button.
+4. Seed — replace the generated local mp4 references with real public YouTube ids of
+   genuine English-teaching videos so the seeded data is usable in production. Pick
+   videos that actually exist and are embeddable; verify each one loads before
+   committing. Keep the local-file seed path available behind a flag for offline dev.
 
-4. Robustness — this is the part that decides whether the teacher trusts it:
-   - Automatic reconnection on network drop, with the amber banner from the design,
-     scoped to your own tile — other participants' tiles keep working.
-   - Leaving the page (or closing the tab) disconnects cleanly — no ghost participants
-     left showing a frozen tile to everyone else.
-   - The teacher ending the lesson disconnects every student and routes them to the
-     ended state.
-   - Media permission denial (camera/mic blocked in the browser) shows a clear Uzbek
-     explanation of how to allow it, not a raw browser error — and still lets that
-     person join audio/video-off rather than blocking them entirely.
-   - A student joining before the teacher starts sees the waiting state, and moves to
-     live automatically when the teacher joins — without a manual refresh.
+5. Delete web/scripts/make-lesson-videos.mjs and its npm script if nothing else uses
+   them, and drop the now-stale gitignore entry — but only after confirming the
+   file-URL playback path still works for anyone who already has local media.
 
-Do NOT build in this stage: chat, host mute/remove controls, attendance, recording.
-They are stage 10. Keep this stage focused on rock-solid many-to-many video/audio.
-
-When done: run at least three browser sessions side by side — the teacher (Aziz
-Axtamov) and two students in his group. Show all three seeing and hearing each
-other in the gallery grid, one of them toggling camera off, the teacher sharing
-their screen, then ending the lesson. Screenshot each step, and paste the decoded
-JWTs for both a teacher and a student proving role_type differs (1 vs 0).
+When done: deploy is not needed — verify locally in the preview with a real YouTube
+lesson, show the progress calls firing in the network panel at the throttled rate,
+and confirm "Darsni yakunlash" unlocks at 90%. Screenshot the player and the admin
+URL field with its thumbnail preview.
 ```
 
 ---
 
-## 10-BOSQICH — Jonli dars: nazorat, chat va davomat
+## 10-BOSQICH — Oʻqituvchi sahifalari: Davomat va Guruhlarim
 
-> Kirish fayli: `design/08-live-lesson.html` (host controls, chat qismlari)
-> 9-bosqich to'liq ishlab, real darsda sinovdan o'tgach boshlanadi.
+> Hozir bu ikkalasi `PlaceholderView` — nav'da koʻrinadi, bosilsa boʻsh.
+> `attendance` jadvali allaqachon bor (5 holat: kelgan/kelmagan/kechikkan/sababli/dars yoʻq).
 
 ```
-Read CLAUDE.md and LIVE-LESSON.md, then re-read design/08-live-lesson.html.
+Read CLAUDE.md, then look at design/06-marks-rating-profile.html for the attendance
+calendar pattern the student side already uses — the teacher's version should feel
+like the same family, not a different app.
 
-Add teacher host controls and interactivity to the live lesson built in stage 9.
-With 12 students free to talk at once, the teacher needs real moderation tools —
-this is standard Zoom "host controls" behaviour, not optional polish.
+Build the two teacher pages that are currently PlaceholderView stubs.
 
-Before writing code, check the current Zoom Video SDK Web docs for the host-control
-and chat/command-channel API surface (method names may differ from what's sketched
-below by the time this stage is built).
+1. /staff/groups — "Guruhlarim"
+   - List of the groups this teacher owns: name, branch, level, student count,
+     schedule (kun + vaqt), and average attendance for the current month.
+   - Opening a group shows its student roster with each student's average score and
+     attendance percentage, and links through to that student's submissions.
+   - A teacher only ever sees their own groups — enforce server-side and verify with
+     another teacher's token.
 
-1. Host controls (teacher only — the SDK enforces this server-side via role_type
-   from stage 9, a participant-role client cannot call these even if it tries):
-   - Mute an individual participant's audio. The muted student's mic turns off in
-     their own UI too, so they understand why, not just a silent state change.
-   - "Hammani ovozsiz qilish" — mutes every student's audio in one action; students
-     can unmute themselves afterwards (this is a bulk convenience, not a lock).
-   - Remove a participant from the session, with a confirm dialog; the removed
-     student sees a clear "Ustoz sizni darsdan chiqardi" message, not a silent
-     disconnect or generic error.
-   - Confirm these are genuinely host-only by attempting the same action from a
-     student session and showing it is rejected by the SDK/Zoom backend, not just
-     hidden in our own UI.
+2. /staff/attendance — "Davomat"
+   - Group picker, then a month grid: students down the side, days across the top,
+     each cell one of the five states with the same colour language as the student's
+     calendar (kelgan / kelmagan / kechikkan / sababli / dars yoʻq).
+   - Clicking a cell cycles or opens a small picker to set the state. Changes save
+     immediately with an optimistic update and a clear failure rollback.
+   - Bulk action: mark a whole day's column at once ("Hammasi kelgan").
+   - Only days that actually have a scheduled lesson for that group are editable —
+     the rest render as "dars yoʻq" and are not clickable.
+   - Month navigation, and a summary row showing each student's attendance percent.
 
-2. Chat — use the Video SDK's built-in chat or command channel (whichever the
-   current docs recommend for in-session messaging), not a separate WebSocket.
-   Messages show sender name and time; the teacher's messages get the --green-pale
-   treatment and "Ustoz" chip from the design. Persist messages server-side too, so
-   a student joining mid-lesson sees recent history even though the SDK channel
-   itself is session-scoped.
+3. Backend: endpoints for reading and writing attendance, guarded so a teacher can
+   only touch their own groups' records. Writes must be idempotent per
+   (student, date) — setting the same day twice must update, not duplicate.
 
-3. Automatic attendance — write to the existing attendance table when a student
-   joins. Rules: present ("kelgan") if they were connected for at least 60% of the
-   lesson duration; late ("kechikkan") if they joined more than 10 minutes after the
-   start; absent ("kelmagan") if they never joined. Compute this when the teacher
-   ends the lesson, and make it idempotent — re-running must not duplicate rows.
-   The teacher can override any student's status afterwards from the staff panel.
-
-4. Lesson reminder: a notification 10 minutes before the scheduled start, for both
-   the students of that group and the teacher.
-
-When done: run a lesson with two student browsers — one joining on time and staying,
-one joining 15 minutes late. Have the teacher mute one student and remove the other,
-and show both experiencing the correct UI. End the lesson and show the attendance
-rows that were written, proving the late one was marked "kechikkan". Screenshot the
-chat and a mute/remove action in progress.
+When done: screenshot both pages at 1280px and the attendance grid at 768px, set a
+few cells and show them persisting after a reload, and paste the 403 proving another
+teacher cannot write to this group's attendance.
 ```
 
+---
+
+## 11-BOSQICH — Admin sahifalari: Bosh sahifa va Oʻqituvchilar
+
+> Hozir ikkalasi ham `PlaceholderView`.
+
+```
+Read CLAUDE.md. Reuse the stat-card and data-table patterns already built in
+web/src/views/staff/admin/ — do not invent a second visual language for admin.
+
+Build the two admin pages that are currently PlaceholderView stubs.
+
+1. /admin/home — admin dashboard
+   - Stat cards: jami oʻquvchilar, faol guruhlar, oʻqituvchilar soni, oʻrtacha
+     davomat, oʻrtacha ball, tekshirilmagan vazifalar.
+   - A simple activity chart (pure SVG/CSS, no chart library — same approach as the
+     student marks chart) showing submissions per week over the last 8 weeks.
+   - "Diqqat talab qiladi" list: groups with attendance below 70%, students with no
+     activity for 14+ days, units with no lesson items yet. Each row links to the
+     relevant admin page.
+
+2. /admin/teachers — teacher management
+   - Data table: avatar+name, phone, groups they teach, student count, status toggle,
+     actions menu. Same table shell as AdminStudentsView.
+   - "Oʻqituvchi qoʻshish" modal: full name, phone, password, and optional group
+     assignment. Phone uniqueness validated server-side with a clear Uzbek error.
+   - Editing a teacher: change details, reassign groups, deactivate (never hard-delete
+     — same soft-delete rule as students).
+   - Reassigning a group to a different teacher must not orphan that group's existing
+     submissions or attendance rows.
+   - Empty state and loading skeleton, like the students table.
+
+3. Backend: admin-only endpoints, paginated. Creating a teacher hashes the password
+   with the same bcrypt settings as the seed and student creation paths — do not
+   duplicate that logic, reuse it.
+
+When done: screenshot both pages, create a teacher and log in as them to prove the
+account works, and show the group reassignment leaving old submissions intact.
+```
+
+---
+
+## 12-BOSQICH — Oʻquvchi sahifalari: Mashq va Qoʻshimcha dars
+
+> Hozir ikkalasi ham `PlaceholderView`. Bu ikkisi eng kam aniqlangan qism —
+> ustoz ular haqida hech narsa demagan, shuning uchun scope'ni kichik tuting.
+
+```
+Read CLAUDE.md.
+
+Build the two student pages that are currently PlaceholderView stubs. Both should be
+useful but small — the teacher has not specified these, so do not over-build.
+
+1. /practice — "Mashq"
+   Free practice that does not affect grades, drawing on content the student has
+   already unlocked:
+   - "Soʻzlarni takrorlash" — a vocabulary review session built from words the student
+     has already studied, prioritising ones at the lowest mastery level. Reuse the
+     existing FlashCard component and mastery logic; do not write a second trainer.
+   - "Xatolar ustida ishlash" — re-attempt questions the student previously got wrong,
+     pulled from their past submissions. No coins, no score impact — it is practice.
+   - Empty state for a student with no history yet, pointing them at Darslar.
+
+2. /extra-lesson — "Qoʻshimcha dars"
+   A request flow, not a scheduling system:
+   - The student picks a topic (a unit they struggled with, or free text), an optional
+     preferred time, and submits a request.
+   - Their existing requests are listed with status: yuborildi / koʻrib chiqilmoqda /
+     tasdiqlandi / rad etildi, plus the teacher's reply if any.
+   - The teacher sees incoming requests on their dashboard and can approve, reject
+     with a note, or propose a time.
+   - New table: extra_lesson_requests (student_id, unit_id nullable, topic text,
+     preferred_time nullable, status, teacher_note, timestamps).
+
+Keep both pages inside the existing student shell and component kit.
+
+When done: screenshot both pages with real seeded data plus their empty states, and
+show a request moving from yuborildi to tasdiqlandi from the teacher side.
+```
+
+---
+
+## 13-BOSQICH — Zoom havolasini ulash (ENG OXIRGI)
+
+> Texnik kontekst va nega Zoom Pro tanlangani: [LIVE-LESSON.md](LIVE-LESSON.md)
+> ⚠️ **Oldindan kerak:** ustoz Zoom Pro obunasini ochgan va har guruh uchun takroriy
+> uchrashuv (recurring meeting) havolasini olgan boʻlishi kerak.
+> Ustoz aynan shuni **eng oxirida** qilishni soʻradi — obuna boshlanishi bilan
+> oylik toʻlov keta boshlaydi, shuning uchun qolgan hamma narsa tayyor boʻlgach ulanadi.
+
+```
+Read CLAUDE.md and LIVE-LESSON.md.
+
+Wire up live lessons via the teacher's own Zoom Pro account. We are NOT building
+video conferencing — no SDK, no LiveKit, no embedded room. The LMS keeps the
+schedule and hands off to Zoom at the right moment.
+
+1. DB: add zoom_join_url (and optionally zoom_meeting_id) to the groups table.
+   One recurring-meeting link per group — it does not change between lessons.
+   Validate that what is pasted looks like a Zoom join URL.
+
+2. Admin: a field on the group edit form to paste the Zoom link, with a short Uzbek
+   hint explaining it should be a recurring meeting link from the teacher's Zoom
+   account.
+
+3. Student side: the dashboard's "Keyingi dars" card already renders a
+   "Darsga qoʻshilish" button that currently does nothing. Make it real:
+   - Disabled until 10 minutes before the scheduled start (the existing time check
+     is already implemented — reuse it, do not rewrite it).
+   - When enabled, opens the group's Zoom link in a new tab.
+   - If the group has no link set, show "Dars havolasi hali qoʻshilmagan" instead of
+     a dead button.
+
+4. Teacher side: the same button on the staff dashboard for their upcoming lesson,
+   so the teacher joins as host from the same place.
+
+5. That is the whole feature. Do not add chat, attendance sync, or recording — the
+   teacher marks attendance manually on the Davomat page built in stage 10, and Zoom
+   handles everything inside the call.
+
+When done: set a Zoom link on a seeded group, show the student's button enabling at
+the right time and opening the link, and show the "havola qoʻshilmagan" state for a
+group without one.
+```
 ---
 
 ## Bosqichdan keyin: tuzatish promptlari
