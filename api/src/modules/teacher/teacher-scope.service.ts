@@ -22,6 +22,13 @@ export class TeacherScopeService {
     return rows.map((row) => row.id);
   }
 
+  /** True when this group is taught by this teacher — the guard every
+      group-scoped endpoint calls before reading or writing its register. */
+  async ownsGroup(teacherId: number, groupId: number): Promise<boolean> {
+    const group = await this.groups.findByPk(groupId, { attributes: ['teacherId'] });
+    return group?.teacherId === teacherId;
+  }
+
   async studentIdsFor(teacherId: number): Promise<number[]> {
     const groupIds = await this.groupIdsFor(teacherId);
     if (!groupIds.length) return [];

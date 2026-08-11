@@ -1,18 +1,13 @@
 import { ScheduleSlot } from '@/database/models';
-import { fromLocal, localParts, parseWallClock } from '@/common/tashkent';
+import {
+  fromLocal,
+  localParts,
+  parseWallClock,
+  weekdayFromUzbekName,
+} from '@/common/tashkent';
 
 /** The join button unlocks this many minutes before the lesson starts. */
 export const JOIN_GRACE_MINUTES = 10;
-
-const WEEKDAY_BY_UZBEK_NAME: Record<string, number> = {
-  yakshanba: 0,
-  dushanba: 1,
-  seshanba: 2,
-  chorshanba: 3,
-  payshanba: 4,
-  juma: 5,
-  shanba: 6,
-};
 
 export interface ResolvedSlot {
   startsAt: Date;
@@ -39,9 +34,7 @@ export function nextSlot(
     const probeWeekday = localParts(probe).weekday;
 
     for (const slot of schedule) {
-      if (WEEKDAY_BY_UZBEK_NAME[slot.day?.toLowerCase()] !== probeWeekday) {
-        continue;
-      }
+      if (weekdayFromUzbekName(slot.day) !== probeWeekday) continue;
       const startMinutes = parseWallClock(slot.start ?? '');
       const endMinutes = parseWallClock(slot.end ?? '');
       if (startMinutes === null || endMinutes === null) continue;

@@ -74,6 +74,40 @@ export function localWeekKeys(instant: Date): string[] {
   );
 }
 
+/**
+ * "2026-08-11" for a calendar date given as its parts, normalising overflow
+ * (day 32 rolls into the next month).
+ *
+ * Not the same as localDateKey: this takes calendar parts, that takes an
+ * instant. Building the key by shifting through fromLocal() and slicing the
+ * ISO string is wrong — that lands on the UTC instant of local midnight, which
+ * is the previous day.
+ */
+export function calendarDateKey(year: number, month: number, day: number): string {
+  const normalised = new Date(Date.UTC(year, month, day));
+  const mm = String(normalised.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(normalised.getUTCDate()).padStart(2, '0');
+  return `${normalised.getUTCFullYear()}-${mm}-${dd}`;
+}
+
+/* Timetables store the weekday as the Uzbek name the UI shows, so anything
+   reading a schedule has to map it back to JS's 0-Sunday numbering. */
+export const WEEKDAY_BY_UZBEK_NAME: Readonly<Record<string, number>> = {
+  yakshanba: 0,
+  dushanba: 1,
+  seshanba: 2,
+  chorshanba: 3,
+  payshanba: 4,
+  juma: 5,
+  shanba: 6,
+};
+
+/** JS weekday number for an Uzbek weekday name, or null if unrecognised. */
+export function weekdayFromUzbekName(name: string | undefined): number | null {
+  const index = WEEKDAY_BY_UZBEK_NAME[name?.trim().toLowerCase() ?? ''];
+  return index === undefined ? null : index;
+}
+
 /** Parses "17:00" into minutes past local midnight. */
 export function parseWallClock(value: string): number | null {
   const match = /^(\d{1,2}):(\d{2})$/.exec(value.trim());

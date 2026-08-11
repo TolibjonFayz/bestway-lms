@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import { LessonItemType, SubmissionStatus } from '@/common/enums';
-import { fromLocal, localParts } from '@/common/tashkent';
+import { calendarDateKey, fromLocal, localParts } from '@/common/tashkent';
 import { Attendance, LessonItem, Submission, Unit, User } from '@/database/models';
 import { effectiveScore } from '../dashboard/scoring';
 import { MarksQueryDto } from './dto/marks-query.dto';
@@ -72,16 +72,9 @@ export class MarksService {
   }
 
   /** "YYYY-MM-DD" for a plain calendar day — matches Attendance.date, which is
-      stored DATEONLY and carries no time zone of its own. Built with Date.UTC
-      purely as calendar arithmetic (month/day overflow normalisation), never
-      converted through a time-zone offset — doing that would shift the date
-      by the +5 offset and land on the wrong day. */
+      stored DATEONLY and carries no time zone of its own. */
   private dateOnly(year: number, month: number, day: number): string {
-    const normalized = new Date(Date.UTC(year, month, day));
-    const yyyy = normalized.getUTCFullYear();
-    const mm = String(normalized.getUTCMonth() + 1).padStart(2, '0');
-    const dd = String(normalized.getUTCDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
+    return calendarDateKey(year, month, day);
   }
 
   private loadGraded(studentId: number, start: Date, end: Date): Promise<GradedSubmission[]> {
