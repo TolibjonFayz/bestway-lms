@@ -200,7 +200,7 @@ export default {
     completed: 'Dars yakunlandi',
     sourceUnavailableTitle: 'Video hozircha mavjud emas',
     sourceUnavailableText:
-      'Bu dars uchun video fayli hali joylanmagan. Oʻqituvchingizga murojaat qiling.',
+      'Bu dars uchun video hali joylanmagan. Oʻqituvchingizga murojaat qiling.',
     errorTitle: 'Videoni yuklab boʻlmadi',
     errorText: 'Video faylini ochib boʻlmadi. Qaytadan urinib koʻring.',
     youtubeErrorTitle: 'Videoni ochib boʻlmadi',
