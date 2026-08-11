@@ -79,8 +79,8 @@ video production'da buzuq va 9 ta sahifa bo'sh (`PlaceholderView`).
       progress tracking 10 soniyalik throttle bilan saqlanib qoldi, fayl-video rejimi
       ham ishlaydi (regression yo'q). Baza qayta seed qilindi: 10 unit YouTube, 2 tasi
       ataylab bo'sh (ustoz o'zi yozadi)
-- [ ] 10: o'qituvchi sahifalari — Davomat, Guruhlarim (hozir bo'sh)
-- [ ] 11: admin sahifalari — Bosh sahifa, O'qituvchilar (hozir bo'sh)
+- [x] 10: o'qituvchi sahifalari — Davomat, Guruhlarim ✅ (2026-08-11)
+- [x] 11: admin sahifalari — Bosh sahifa, O'qituvchilar ✅ (2026-08-11)
 - [ ] 12: o'quvchi sahifalari — Mashq, Qo'shimcha dars (hozir bo'sh)
 - [ ] **13: Zoom havolasini ulash** — ENG OXIRGI ([LIVE-LESSON.md](LIVE-LESSON.md))
 
