@@ -80,6 +80,26 @@ export function bulkSetAdminStudentStatus(ids, active) {
   return http.patch('/admin/students/bulk-status', { ids, active }).then((r) => r.data)
 }
 
+export function fetchAdminOverview() {
+  return http.get('/admin/overview').then((r) => r.data)
+}
+
+export function fetchAdminTeachers(params = {}) {
+  return http.get('/admin/teachers', { params }).then((r) => r.data)
+}
+
+export function createAdminTeacher(payload) {
+  return http.post('/admin/teachers', payload).then((r) => r.data)
+}
+
+export function updateAdminTeacher(id, payload) {
+  return http.patch(`/admin/teachers/${id}`, payload).then((r) => r.data)
+}
+
+export function setAdminTeacherStatus(id, active) {
+  return http.patch(`/admin/teachers/${id}/status`, { active }).then((r) => r.data)
+}
+
 export function fetchAdminGroups() {
   return http.get('/admin/groups').then((r) => r.data)
 }

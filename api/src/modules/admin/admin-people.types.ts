@@ -18,3 +18,13 @@ export interface AdminGroupDto {
   name: string;
   branch: string;
 }
+
+export interface AdminTeacherDto {
+  id: number;
+  fullName: string;
+  initials: string;
+  phone: string;
+  groups: AdminGroupDto[];
+  studentCount: number;
+  active: boolean;
+}

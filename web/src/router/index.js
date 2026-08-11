@@ -158,14 +158,26 @@ const routes = [
     component: () => import('@/views/staff/admin/AdminStudentsView.vue'),
     meta: { requiresAuth: true, roles: ['admin'] },
   },
-  /* Nav destinations not built this round — flagged in the build summary. */
-  ...['home', 'teachers', 'settings'].map((segment) => ({
-    path: `/admin/${segment}`,
-    name: `admin-${segment}`,
-    component: PlaceholderView,
-    props: { title: uz.staffNav[segment === 'home' ? 'home' : segment] },
+  {
+    path: '/admin/home',
+    name: 'admin-home',
+    component: () => import('@/views/staff/admin/AdminHomeView.vue'),
     meta: { requiresAuth: true, roles: ['admin'] },
-  })),
+  },
+  {
+    path: '/admin/teachers',
+    name: 'admin-teachers',
+    component: () => import('@/views/staff/admin/AdminTeachersView.vue'),
+    meta: { requiresAuth: true, roles: ['admin'] },
+  },
+  /* Nav destinations not built this round — flagged in the build summary. */
+  {
+    path: '/admin/settings',
+    name: 'admin-settings',
+    component: PlaceholderView,
+    props: { title: uz.staffNav.settings },
+    meta: { requiresAuth: true, roles: ['admin'] },
+  },
 
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
