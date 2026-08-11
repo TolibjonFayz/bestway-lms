@@ -5,8 +5,8 @@
 > Jonli: https://bestway-lms.vercel.app · API: https://bestway-lms-production.up.railway.app/api
 > ✅ **Jonli dars masalasi hal bo'ldi (2026-08-10): Zoom Pro, eng oxirgi bosqichda.**
 > Batafsil va qaror tarixi: [LIVE-LESSON.md](LIVE-LESSON.md).
-> **Keyingi ustuvor vazifa — 9-bosqich: video darslarni YouTube'ga ko'chirish**
-> (hozir production'da video butunlay ishlamaydi).
+> **Keyingi vazifa — 10-bosqich: o'qituvchi sahifalari (Davomat, Guruhlarim).**
+> 9-bosqich (YouTube video) 2026-08-11 da tugadi va production'da tekshirildi.
 > Dizayn promptlari: [DESIGN-BRIEF.md](DESIGN-BRIEF.md) — Claude Design uchun 8 ta bosqichli prompt.
 > Kod yozish promptlari: [BUILD-PROMPTS.md](BUILD-PROMPTS.md) — Claude Code uchun 11 ta bosqich.
 > Loyiha qoidalari: [CLAUDE.md](CLAUDE.md) — Claude Code avtomatik o'qiydi (stack, tokenlar, DoD).
@@ -74,9 +74,11 @@ Batafsil promptlar: [BUILD-PROMPTS.md](BUILD-PROMPTS.md). Har bosqich alohida se
 Tekshiruv natijasi: MVP ishlayapti, lekin ikkita bo'shliq bor edi —
 video production'da buzuq va 9 ta sahifa bo'sh (`PlaceholderView`).
 
-- [ ] **9: video darslarni YouTube'ga ko'chirish** ⚠️ ENG MUHIM — hozir production'da
-      video butunlay ishlamaydi (`web/public/media/*.mp4` gitignore'da, Vercel'ga
-      chiqmagan, SPA rewrite HTML qaytaradi). Qaror: YouTube unlisted (bepul, cheksiz)
+- [x] **9: video darslarni YouTube'ga ko'chirish** ✅ (2026-08-11) — production'da video
+      endi ishlaydi. YouTube unlisted, admin panelda havola maydoni + thumbnail preview,
+      progress tracking 10 soniyalik throttle bilan saqlanib qoldi, fayl-video rejimi
+      ham ishlaydi (regression yo'q). Baza qayta seed qilindi: 10 unit YouTube, 2 tasi
+      ataylab bo'sh (ustoz o'zi yozadi)
 - [ ] 10: o'qituvchi sahifalari — Davomat, Guruhlarim (hozir bo'sh)
 - [ ] 11: admin sahifalari — Bosh sahifa, O'qituvchilar (hozir bo'sh)
 - [ ] 12: o'quvchi sahifalari — Mashq, Qo'shimcha dars (hozir bo'sh)
