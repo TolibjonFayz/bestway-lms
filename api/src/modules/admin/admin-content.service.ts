@@ -4,6 +4,7 @@ import { Op } from 'sequelize';
 import { LessonItemType } from '@/common/enums';
 import { PaginationDto } from '@/common/dto/pagination.dto';
 import { Paginated } from '@/common/types';
+import { normaliseVideoSource } from '@/common/video-source';
 import {
   Course,
   LessonItem,
@@ -179,7 +180,44 @@ export class AdminContentService {
     const item = await this.lessonItemsModel.findByPk(itemId);
     if (!item) throw new NotFoundException('Dars elementi topilmadi');
     await item.update({ title: dto.title });
+
+    if (item.type === LessonItemType.Video) {
+      await this.updateVideoPayload(item.id, dto);
+    }
+
     return this.toItemDto(item);
+  }
+
+  /* The admin pastes a YouTube link; we store one canonical form so the player
+     never has to guess which of the half-dozen YouTube URL shapes it got.
+     Clearing the field is allowed — an item with no source yet is a normal
+     intermediate state while a unit is being built. */
+  private async updateVideoPayload(lessonItemId: number, dto: UpdateLessonItemDto): Promise<void> {
+    const video = await this.videos.findOne({ where: { lessonItemId } });
+    if (!video) throw new NotFoundException('Video maʼlumoti topilmadi');
+
+    const changes: Partial<Video> = {};
+
+    if (dto.videoUrl !== undefined) {
+      const raw = dto.videoUrl.trim();
+      if (raw === '') {
+        changes.url = '';
+      } else {
+        const source = normaliseVideoSource(raw);
+        if (!source) {
+          throw new BadRequestException(
+            'Video havolasi notoʻgʻri. YouTube havolasini joylashtiring, masalan: https://www.youtube.com/watch?v=...',
+          );
+        }
+        changes.url = source.url;
+      }
+    }
+
+    if (dto.videoDurationSeconds !== undefined) {
+      changes.durationSeconds = dto.videoDurationSeconds;
+    }
+
+    if (Object.keys(changes).length > 0) await video.update(changes);
   }
 
   async deleteLessonItem(itemId: number): Promise<void> {
@@ -211,19 +249,31 @@ export class AdminContentService {
   private async toItemDto(item: LessonItem): Promise<AdminLessonItemDto> {
     const base = { id: item.id, orderIndex: item.orderIndex, type: item.type, title: item.title };
 
+    const empty = {
+      videoUrl: null,
+      videoDurationSeconds: null,
+      vocabWordCount: null,
+      testQuestionCount: null,
+    };
+
     if (item.type === LessonItemType.Video) {
       const video = await this.videos.findOne({ where: { lessonItemId: item.id } });
-      return { ...base, videoDurationSeconds: video?.durationSeconds ?? 0, vocabWordCount: null, testQuestionCount: null };
+      return {
+        ...base,
+        ...empty,
+        videoUrl: video?.url ?? '',
+        videoDurationSeconds: video?.durationSeconds ?? 0,
+      };
     }
     if (item.type === LessonItemType.Vocabulary) {
       const count = await this.vocabWords.count({ where: { lessonItemId: item.id } });
-      return { ...base, videoDurationSeconds: null, vocabWordCount: count, testQuestionCount: null };
+      return { ...base, ...empty, vocabWordCount: count };
     }
     if (item.type === LessonItemType.Test) {
       const test = await this.tests.findOne({ where: { lessonItemId: item.id } });
       const count = test ? await this.questions.count({ where: { testId: test.id } }) : 0;
-      return { ...base, videoDurationSeconds: null, vocabWordCount: null, testQuestionCount: count };
+      return { ...base, ...empty, testQuestionCount: count };
     }
-    return { ...base, videoDurationSeconds: null, vocabWordCount: null, testQuestionCount: null };
+    return { ...base, ...empty };
   }
 }

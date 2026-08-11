@@ -22,27 +22,33 @@ export interface SeedCourse {
   units: SeedUnit[];
 }
 
-/* Where the centre hosts video is still an open question (PLAN.md). Until it
-   is settled the seed points at clips served from web/public/media, generated
-   by `npm run media --prefix web`, so the player is exercised against a real,
-   seekable file on our own origin rather than a third party that can vanish.
-   The frontend routes every URL through resolveVideoUrl(), the single place to
-   change when hosting lands.
+/* Lessons are hosted on YouTube as unlisted videos (LIVE-LESSON.md decided the
+   hosting question). Until the centre records its own material, the seed points
+   at real, long-standing lessons from BBC Learning English, Khan Academy and
+   Math Antics so a demo has something genuine to play — the admin replaces each
+   URL from the unit editor once Best Way's own recordings exist.
 
-   One clip per duration, so the seconds stored here match the file exactly. */
-const video = (durationSeconds: number) => `/media/lesson-${durationSeconds}.mp4`;
+   Two units deliberately have no video: that is the state a half-built unit is
+   really in, and it exercises the "havola hali qoʻshilmagan" path.
+
+   Durations are approximate. The player reads the true length from YouTube; the
+   stored number only labels the item in lists. */
+const youtube = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+/** A unit whose video has not been chosen yet. */
+const NO_VIDEO = '';
 
 const IELTS_UNITS: SeedUnit[] = [
   {
     title: 'Unit 1.1 — Education and Learning',
-    videoTitle: 'Video dars: Present Simple va oʻqish haqida gapirish',
-    videoUrl: video(512),
-    videoDurationSeconds: 512,
+    videoTitle: 'Video dars: Present Perfect — just, already va yet',
+    videoUrl: youtube('8_nhtAwI0dA'),
+    videoDurationSeconds: 380,
     konspekt: [
-      'Present Simple: doimiy odat va umumiy haqiqatlarni ifodalaydi',
-      'Uchinchi shaxs birlikda feʼlga -s/-es qoʻshiladi',
-      'always, usually, often, never soʻzlari bilan qoʻllaniladi',
-      'Savol va inkorda do/does yordamchi feʼli ishlatiladi',
+      'just — hozirgina tugagan ish: I have just finished my homework',
+      'already — kutilganidan oldin bajarilgan ish, tasdiq gaplarda',
+      'yet — hali bajarilmagan ish, inkor va soʻroq gaplarda',
+      'Uchalasi ham Present Perfect (have/has + V3) bilan ishlatiladi',
     ],
     vocabularyTitle: 'Vocabulary: Education',
     speakingTitle: 'Speaking Part 1: Studies',
@@ -53,14 +59,14 @@ const IELTS_UNITS: SeedUnit[] = [
   },
   {
     title: 'Unit 1.2 — Work and Careers',
-    videoTitle: 'Video dars: Ish va kasb haqida suhbat',
-    videoUrl: video(634),
-    videoDurationSeconds: 634,
+    videoTitle: "Video dars: 'I've done' yoki 'I did'?",
+    videoUrl: youtube('VY5nh_-1phQ'),
+    videoDurationSeconds: 200,
     konspekt: [
-      'Kasb haqida gapirganda Present Simple va Present Perfect aralashadi',
-      'I have been working here for two years — davomiylik uchun for',
+      'Past Simple aniq oʻtgan vaqtni bildiradi: I worked there in 2019',
+      'Present Perfect vaqtni aytmaydi, natijani bildiradi: I have worked there',
       'Ish tajribasini sanashda since (nuqta) va for (muddat) farqlanadi',
-      'Rasmiy suhbatda qisqartmalardan kamroq foydalaniladi',
+      'yesterday, last year kabi soʻzlar bilan faqat Past Simple ishlatiladi',
     ],
     vocabularyTitle: 'Vocabulary: Work',
     speakingTitle: 'Speaking Part 2: Your ideal job',
@@ -71,14 +77,14 @@ const IELTS_UNITS: SeedUnit[] = [
   },
   {
     title: 'Unit 2.1 — Environment and Climate',
-    videoTitle: 'Video dars: Atrof-muhit mavzusidagi leksika',
-    videoUrl: video(727),
-    videoDurationSeconds: 727,
+    videoTitle: 'Video dars: Present Perfect — ever va never',
+    videoUrl: youtube('o-GWYDA4IQY'),
+    videoDurationSeconds: 380,
     konspekt: [
-      'Atrof-muhit mavzusida passiv nisbat koʻp uchraydi',
-      'Trees are being cut down — hozirgi davomli passiv shakli',
-      'Muammo va yechim tuzilmasi: muammo → sabab → yechim',
-      'Statistik maʼlumot berishda according to iborasi ishlatiladi',
+      'ever — soʻroq gaplarda: Have you ever seen a glacier?',
+      'never — inkor maʼno, lekin not bilan birga ishlatilmaydi',
+      'Tajriba haqida gapirganda Present Perfect tanlanadi',
+      'Javobda aniq vaqt aytilsa, Past Simple ga oʻtiladi',
     ],
     vocabularyTitle: 'Vocabulary: Environment',
     speakingTitle: 'Speaking Part 3: Climate change',
@@ -89,9 +95,9 @@ const IELTS_UNITS: SeedUnit[] = [
   },
   {
     title: 'Unit 2.2 — Technology and Media',
-    videoTitle: 'Video dars: Texnologiya haqida yozma vazifa',
-    videoUrl: video(588),
-    videoDurationSeconds: 588,
+    videoTitle: 'Video dars: Texnologiya mavzusidagi leksika (6 Minute English)',
+    videoUrl: youtube('GVfJi0dpwB0'),
+    videoDurationSeconds: 1800,
     konspekt: [
       'Texnologiya mavzusida Present Perfect natijani bildiradi',
       'Technology has changed the way we learn — natija muhim',
@@ -107,12 +113,12 @@ const IELTS_UNITS: SeedUnit[] = [
   },
   {
     title: 'Unit 3.1 — Health and Lifestyle',
-    videoTitle: 'Video dars: Sogʻliq mavzusida Part 2 javobi',
-    videoUrl: video(671),
-    videoDurationSeconds: 671,
+    videoTitle: 'Video dars: Present Perfect Simple yoki Continuous?',
+    videoUrl: youtube('pvoqkQHb3lo'),
+    videoDurationSeconds: 200,
     konspekt: [
-      'Sogʻliq haqida gapirganda should maslahat ifodalaydi',
-      'You should sleep at least seven hours — tavsiya shakli',
+      'Simple natijani bildiradi: I have run five kilometres',
+      'Continuous jarayonni bildiradi: I have been running',
       'Chastota ravishlari feʼldan oldin, to be dan keyin keladi',
       'Part 2 javobida kirish → asosiy qism → xulosa tuzilmasi',
     ],
@@ -125,9 +131,10 @@ const IELTS_UNITS: SeedUnit[] = [
   },
   {
     title: 'Unit 3.2 — Travel and Culture',
+    /* Left empty on purpose: the centre records this one itself. */
     videoTitle: 'Video dars: Sayohat haqida hikoya qilish',
-    videoUrl: video(745),
-    videoDurationSeconds: 745,
+    videoUrl: NO_VIDEO,
+    videoDurationSeconds: 0,
     konspekt: [
       'Sayohat hikoyasida Past Simple asosiy zamon boʻladi',
       'Fon voqealarni tasvirlash uchun Past Continuous ishlatiladi',
@@ -146,30 +153,30 @@ const IELTS_UNITS: SeedUnit[] = [
 const MATH_UNITS: SeedUnit[] = [
   {
     title: 'Unit 1 — Butun sonlar va amallar tartibi',
-    videoTitle: 'Video dars: Amallar tartibi va qavslar',
-    videoUrl: video(498),
-    videoDurationSeconds: 498,
+    videoTitle: 'Video dars: Amallar tartibi va qavslar (Khan Academy)',
+    videoUrl: youtube('3Po3nfITsok'),
+    videoDurationSeconds: 480,
     testTitle: 'Test: Butun sonlar',
   },
   {
     title: 'Unit 2 — Kasrlar va foizlar',
-    videoTitle: 'Video dars: Oddiy kasrlarni qoʻshish va ayirish',
-    videoUrl: video(623),
-    videoDurationSeconds: 623,
+    videoTitle: 'Video dars: Kasrlarni qoʻshish va ayirish (Math Antics)',
+    videoUrl: youtube('5juto2ze8Lg'),
+    videoDurationSeconds: 660,
     testTitle: 'Test: Kasrlar va foizlar',
   },
   {
     title: 'Unit 3 — Algebraik ifodalar',
     videoTitle: 'Video dars: Oʻxshash hadlarni ixchamlash',
-    videoUrl: video(556),
-    videoDurationSeconds: 556,
+    videoUrl: youtube('EKFuLxjBlCA'),
+    videoDurationSeconds: 540,
     testTitle: 'Test: Algebraik ifodalar',
   },
   {
     title: 'Unit 4 — Chiziqli tenglamalar',
-    videoTitle: 'Video dars: Bir nomaʼlumli tenglamalarni yechish',
-    videoUrl: video(702),
-    videoDurationSeconds: 702,
+    videoTitle: 'Video dars: Bir qadamli tenglamalarni yechish',
+    videoUrl: youtube('twN823nsPmA'),
+    videoDurationSeconds: 600,
     testTitle: 'Test: Chiziqli tenglamalar',
   },
 ];
@@ -178,15 +185,16 @@ const SCIENCE_UNITS: SeedUnit[] = [
   {
     title: 'Unit 1 — Moddaning holatlari',
     videoTitle: 'Video dars: Qattiq, suyuq va gaz holati',
-    videoUrl: video(531),
-    videoDurationSeconds: 531,
+    videoUrl: youtube('F0pG79qCE9c'),
+    videoDurationSeconds: 480,
     testTitle: 'Test: Moddaning holatlari',
   },
   {
     title: 'Unit 2 — Kuch va harakat',
+    /* Left empty on purpose: the centre records this one itself. */
     videoTitle: 'Video dars: Nyuton qonunlari bilan tanishuv',
-    videoUrl: video(604),
-    videoDurationSeconds: 604,
+    videoUrl: NO_VIDEO,
+    videoDurationSeconds: 0,
     testTitle: 'Test: Kuch va harakat',
   },
 ];

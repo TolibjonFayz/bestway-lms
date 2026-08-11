@@ -19,6 +19,8 @@ export interface AdminLessonItemDto {
   orderIndex: number;
   type: LessonItemType;
   title: string;
+  /** Canonical stored source; empty string on a video item with none set yet. */
+  videoUrl: string | null;
   videoDurationSeconds: number | null;
   vocabWordCount: number | null;
   testQuestionCount: number | null;

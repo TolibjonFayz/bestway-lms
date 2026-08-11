@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import BwIcon from '@/components/base/BwIcon.vue'
 import AdminQuestionEditor from './AdminQuestionEditor.vue'
+import AdminVideoEditor from './AdminVideoEditor.vue'
 import AdminVocabCsvModal from './AdminVocabCsvModal.vue'
 import AdminVocabEditor from './AdminVocabEditor.vue'
 import { allowedTypesFor, ITEM_TYPE_META } from './lessonItemTypes'
@@ -99,6 +100,7 @@ function metaFor(item) {
   return ''
 }
 
+const videoItem = computed(() => localItems.value.find((item) => item.type === 'video'))
 const vocabItem = computed(() => localItems.value.find((item) => item.type === 'vocabulary'))
 const testItem = computed(() => localItems.value.find((item) => item.type === 'test'))
 
@@ -186,6 +188,13 @@ watch(testItem, loadQuestions, { immediate: true })
         </button>
       </div>
     </div>
+
+    <AdminVideoEditor
+      v-if="videoItem"
+      :key="videoItem.id"
+      :item="videoItem"
+      @changed="emit('changed')"
+    />
 
     <AdminVocabEditor
       v-if="vocabItem"

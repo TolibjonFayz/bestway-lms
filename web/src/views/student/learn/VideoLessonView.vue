@@ -9,7 +9,7 @@ import KonspektPanel from './KonspektPanel.vue'
 import UnitItemRail from './UnitItemRail.vue'
 import VideoPlayer from './VideoPlayer.vue'
 import { reportVideoProgress } from '@/api/learning'
-import { resolveVideoUrl } from '@/composables/useVideoSource'
+import { resolveVideoSource } from '@/composables/useVideoSource'
 import { useThrottledProgress } from '@/composables/useThrottledProgress'
 import { useLessonsStore } from '@/stores/lessons'
 import { useToast } from '@/composables/useToast'
@@ -31,7 +31,7 @@ const videoItem = computed(
   () => unit.value?.items.find((item) => item.type === 'video') ?? null,
 )
 const source = computed(() =>
-  videoItem.value?.video ? resolveVideoUrl(videoItem.value.video) : null,
+  videoItem.value?.video ? resolveVideoSource(videoItem.value.video) : null,
 )
 
 const watched = ref(0)
@@ -157,7 +157,7 @@ onBeforeUnmount(() => {
         <template v-else-if="videoItem">
           <VideoPlayer
             v-if="source"
-            :src="source"
+            :source="source"
             @tick="onTick"
             @pause="onPause"
             @ended="onPause"

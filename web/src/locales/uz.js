@@ -203,6 +203,9 @@ export default {
       'Bu dars uchun video fayli hali joylanmagan. Oʻqituvchingizga murojaat qiling.',
     errorTitle: 'Videoni yuklab boʻlmadi',
     errorText: 'Video faylini ochib boʻlmadi. Qaytadan urinib koʻring.',
+    youtubeErrorTitle: 'Videoni ochib boʻlmadi',
+    youtubeErrorText:
+      'Video ijrochisini yuklashda muammo boʻldi. Internet aloqangizni tekshirib, sahifani yangilang.',
   },
 
   vocab: {
@@ -492,6 +495,17 @@ export default {
     selectUnitPrompt: 'Tahrirlash uchun unitni tanlang',
     errorTitle: 'Kurslarni yuklab boʻlmadi',
     errorText: 'Server bilan bogʻlanishda muammo boʻldi. Qaytadan urinib koʻring.',
+    videoEditorTitle: 'Video muharriri',
+    videoUrlLabel: 'YouTube havolasi',
+    videoUrlPlaceholder: 'https://www.youtube.com/watch?v=...',
+    videoUnlistedHint:
+      'Videoni YouTube kanalingizga yuklab, koʻrinishini «Unlisted» (roʻyxatda koʻrsatilmagan) qilib belgilang — shunda u qidiruvda chiqmaydi, faqat havolaga ega oʻquvchilar koʻra oladi.',
+    videoDurationLabel: 'Davomiyligi (soniya)',
+    videoUrlInvalid: 'Havola notoʻgʻri. YouTube havolasini toʻliq joylashtiring.',
+    videoNoSource: 'Havola hali qoʻshilmagan',
+    videoFileSource: 'Fayl havolasi',
+    videoPreviewAlt: 'Video koʻrinishi',
+    videoSaveError: 'Saqlab boʻlmadi',
   },
 
   adminStudents: {
