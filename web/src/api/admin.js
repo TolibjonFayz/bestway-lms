@@ -80,6 +80,14 @@ export function bulkSetAdminStudentStatus(ids, active) {
   return http.patch('/admin/students/bulk-status', { ids, active }).then((r) => r.data)
 }
 
+export function fetchCenterSettings() {
+  return http.get('/settings').then((r) => r.data)
+}
+
+export function updateCenterSettings(payload) {
+  return http.patch('/admin/settings', payload).then((r) => r.data)
+}
+
 export function fetchAdminOverview() {
   return http.get('/admin/overview').then((r) => r.data)
 }

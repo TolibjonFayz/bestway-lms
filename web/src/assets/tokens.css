@@ -36,7 +36,7 @@
   --sh-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
   --sh-md: 0 8px 24px rgba(15, 23, 42, 0.08);
   --sh-lg: 0 20px 48px rgba(15, 23, 42, 0.12);
-  --sh-green: 0 16px 40px rgba(22, 163, 74, 0.28);
+  --sh-green: 0 16px 40px color-mix(in srgb, var(--green) 28%, transparent);
 
   /* ── Extensions, all read off design/01-design-system.html ──────────── */
 
@@ -68,12 +68,12 @@
   --danger-bg: #fef4f4;
 
   /* Elevation */
-  --sh-btn: 0 8px 20px rgba(22, 163, 74, 0.24);
-  --sh-btn-hover: 0 6px 16px rgba(22, 163, 74, 0.28);
-  --sh-btn-lg-hover: 0 10px 26px rgba(22, 163, 74, 0.3);
-  --sh-btn-lg-active: 0 4px 12px rgba(22, 163, 74, 0.24);
+  --sh-btn: 0 8px 20px color-mix(in srgb, var(--green) 24%, transparent);
+  --sh-btn-hover: 0 6px 16px color-mix(in srgb, var(--green) 28%, transparent);
+  --sh-btn-lg-hover: 0 10px 26px color-mix(in srgb, var(--green) 30%, transparent);
+  --sh-btn-lg-active: 0 4px 12px color-mix(in srgb, var(--green) 24%, transparent);
   --sh-btn-danger: 0 8px 20px rgba(239, 68, 68, 0.22);
-  --sh-logo: 0 8px 24px rgba(22, 163, 74, 0.28);
+  --sh-logo: 0 8px 24px color-mix(in srgb, var(--green) 28%, transparent);
 
   /* Hairlines drawn inside a filled shape (colour swatches) */
   --sh-inset: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
@@ -81,7 +81,7 @@
   --sh-inset-stronger: inset 0 0 0 1px rgba(15, 23, 42, 0.12);
 
   /* Focus rings */
-  --ring-green: 0 0 0 4px rgba(22, 163, 74, 0.15);
+  --ring-green: 0 0 0 4px color-mix(in srgb, var(--green) 15%, transparent);
   --ring-danger: 0 0 0 4px rgba(239, 68, 68, 0.12);
 
   /* Overlay tints (toast close button hover) */
@@ -106,19 +106,19 @@
   --layer-w-28: rgba(255, 255, 255, 0.28);
   --layer-w-32: rgba(255, 255, 255, 0.32);
   --layer-w-85: rgba(255, 255, 255, 0.85);
-  --layer-green-14: rgba(22, 163, 74, 0.14);
-  --layer-green-16: rgba(22, 163, 74, 0.16);
-  --layer-green-22: rgba(22, 163, 74, 0.22);
+  --layer-green-14: color-mix(in srgb, var(--green) 14%, transparent);
+  --layer-green-16: color-mix(in srgb, var(--green) 16%, transparent);
+  --layer-green-22: color-mix(in srgb, var(--green) 22%, transparent);
   --layer-orange-14: rgba(234, 140, 60, 0.14);
 
   /* Elevation specific to this screen */
-  --sh-nav-active: 0 10px 24px rgba(22, 163, 74, 0.35);
-  --sh-join: 0 14px 34px rgba(22, 163, 74, 0.4);
-  --sh-join-sm: 0 12px 30px rgba(22, 163, 74, 0.4);
-  --sh-continue: 0 10px 26px rgba(22, 163, 74, 0.26);
-  --sh-continue-sm: 0 10px 24px rgba(22, 163, 74, 0.26);
-  --sh-day: 0 8px 18px rgba(22, 163, 74, 0.24);
-  --sh-hw-sm: 0 12px 28px rgba(22, 163, 74, 0.28);
+  --sh-nav-active: 0 10px 24px color-mix(in srgb, var(--green) 35%, transparent);
+  --sh-join: 0 14px 34px color-mix(in srgb, var(--green) 40%, transparent);
+  --sh-join-sm: 0 12px 30px color-mix(in srgb, var(--green) 40%, transparent);
+  --sh-continue: 0 10px 26px color-mix(in srgb, var(--green) 26%, transparent);
+  --sh-continue-sm: 0 10px 24px color-mix(in srgb, var(--green) 26%, transparent);
+  --sh-day: 0 8px 18px color-mix(in srgb, var(--green) 24%, transparent);
+  --sh-hw-sm: 0 12px 28px color-mix(in srgb, var(--green) 28%, transparent);
   --sh-thumb: 0 8px 20px rgba(15, 23, 42, 0.14);
   --sh-thumb-sm: 0 6px 14px rgba(15, 23, 42, 0.14);
 
@@ -129,10 +129,10 @@
   --layer-w-94: rgba(255, 255, 255, 0.94); /* video play button */
 
   --sh-drawer: -24px 0 48px rgba(15, 23, 42, 0.18);
-  --sh-node: 0 6px 16px rgba(22, 163, 74, 0.3);
-  --sh-unit-hover: 0 8px 20px rgba(22, 163, 74, 0.1);
-  --sh-unit-current: 0 10px 26px rgba(22, 163, 74, 0.14);
-  --sh-tab-active: 0 4px 12px rgba(22, 163, 74, 0.24);
+  --sh-node: 0 6px 16px color-mix(in srgb, var(--green) 30%, transparent);
+  --sh-unit-hover: 0 8px 20px color-mix(in srgb, var(--green) 10%, transparent);
+  --sh-unit-current: 0 10px 26px color-mix(in srgb, var(--green) 14%, transparent);
+  --sh-tab-active: 0 4px 12px color-mix(in srgb, var(--green) 24%, transparent);
   --sh-tooltip: 0 8px 20px rgba(15, 23, 42, 0.24);
   --sh-vocab-tile: 0 4px 12px rgba(15, 23, 42, 0.08);
   --sh-vocab-list: 0 2px 8px rgba(15, 23, 42, 0.05);
@@ -149,7 +149,17 @@
   --layer-ink-86: rgba(15, 23, 42, 0.86);
 
   --sh-scrub: 0 2px 6px rgba(0, 0, 0, 0.3);
-  --sh-speak: 0 8px 18px rgba(22, 163, 74, 0.28);
+  --sh-speak: 0 8px 18px color-mix(in srgb, var(--green) 28%, transparent);
+
+  /* Surfaces a theme may need to move independently of --ink, which doubles
+     as the body text colour. The dark themes darken the shell without
+     inverting every label that reads --ink. */
+  --sidebar-bg: var(--ink);
+  --sidebar-line: transparent;
+  /* The shell stays dark in every theme, so its text does not follow --white
+     and --gray-2 — those invert in the dark themes and would vanish here. */
+  --sidebar-text: #ffffff;
+  --sidebar-muted: #94a3b8;
 
   /* Type */
   --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;

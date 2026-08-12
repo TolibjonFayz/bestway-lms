@@ -471,6 +471,42 @@ export default {
     answered: 'Javob berildi',
   },
 
+  adminSettings: {
+    title: 'Sozlamalar',
+    subtitle: 'Markaz maʼlumotlari va saytning koʻrinishi',
+
+    themeTitle: 'Sayt mavzusi',
+    themeText: 'Tanlangan mavzu barcha foydalanuvchilarga qoʻllanadi',
+    themeCurrent: 'Tanlangan',
+    themeDark: 'Toʻq',
+    themeRandom: 'Tasodifiy tanlash',
+    themePreviewNote: 'Mavzuni bosing — sayt darhol oʻzgaradi',
+
+    centerTitle: 'Markaz maʼlumotlari',
+    centerName: 'Markaz nomi',
+    phone: 'Telefon',
+    phonePlaceholder: '+998 71 200 00 00',
+    address: 'Manzil',
+    addressPlaceholder: 'Toshkent, Chilonzor tumani',
+
+    coinsTitle: 'Tangalar',
+    coinsText: 'Oʻquvchi vazifani tugatganda necha tanga olishi',
+    coinsVocab: 'Vocabulary uchun',
+    coinsTest: 'Test uchun',
+
+    systemTitle: 'Tizim',
+    systemVersion: 'Versiya',
+    systemThemes: 'Mavjud mavzular',
+    systemRoles: 'Rollar',
+    systemRolesValue: 'Oʻquvchi · Oʻqituvchi · Administrator',
+
+    save: 'Saqlash',
+    saved: 'Saqlandi',
+    saveError: 'Saqlab boʻlmadi',
+    errorTitle: 'Sozlamalarni yuklab boʻlmadi',
+    errorText: 'Server bilan bogʻlanishda muammo boʻldi. Qaytadan urinib koʻring.',
+  },
+
   adminHome: {
     title: 'Bosh sahifa',
     statStudents: 'Oʻquvchilar',

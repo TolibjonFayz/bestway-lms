@@ -1,6 +1,7 @@
 import { Announcement } from './announcement.model';
 import { Attendance } from './attendance.model';
 import { CoinAward } from './coin-award.model';
+import { CenterSettings } from './center-settings.model';
 import { Course } from './course.model';
 import { Enrollment } from './enrollment.model';
 import { ExtraLessonRequest } from './extra-lesson-request.model';
@@ -23,6 +24,7 @@ export {
   Announcement,
   Attendance,
   CoinAward,
+  CenterSettings,
   Course,
   Enrollment,
   ExtraLessonRequest,
@@ -46,12 +48,14 @@ export { ScheduleSlot } from './group.model';
 export { AnnouncementTone } from './announcement.model';
 export { CoinReason } from './coin-award.model';
 export { MASTERED_LEVEL } from './vocab-word-progress.model';
+export { CENTER_SETTINGS_ID } from './center-settings.model';
 
 /** Every model, for SequelizeModule.forRoot(). */
 export const ALL_MODELS = [
   Announcement,
   Attendance,
   CoinAward,
+  CenterSettings,
   Course,
   Enrollment,
   ExtraLessonRequest,

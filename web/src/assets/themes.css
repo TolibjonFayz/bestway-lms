@@ -1,0 +1,292 @@
+/* Best Way LMS — themes.
+   Each theme is a [data-theme] override of tokens.css. Only tokens that
+   actually carry the theme's identity are listed; everything else inherits,
+   and every green-derived shadow, ring and layer is color-mix(--green …) in
+   tokens.css, so re-pointing --green carries them along automatically.
+
+   Three dials give each theme its personality:
+     colour   — the --green family (accent), plus --orange / --amber
+     shape    — --r-sm … --r-xl
+     depth    — --sh-sm / --sh-md / --sh-lg
+
+   Contrast rule: --green must stay legible for white text on a filled button,
+   and --green-darker for text on a --green-mid chip. Values here are picked to
+   hold AA at those two pairings. */
+
+/* ── 1. Bestway (default) — the marketing site's own green ──────────────── */
+[data-theme='bestway'] {
+  /* Identical to :root; declared so the picker can show it as a choice. */
+  --green: #16a34a;
+  --green-dark: #15803d;
+  --green-darker: #166534;
+  --green-light: #22c55e;
+  --green-soft: #bbf7d0;
+  --green-mid: #dcfce7;
+  --green-pale: #f0fdf4;
+  --green-300: #4ade80;
+}
+
+/* ── 2. Okean — cool teal-blue, slightly softer shadows ─────────────────── */
+[data-theme='okean'] {
+  /* One step darker than cyan-600, which only reached 3.7:1 behind the white
+     button label. */
+  --green: #0e7490;
+  --green-dark: #155e75;
+  --green-darker: #164e63;
+  --green-light: #22d3ee;
+  --green-soft: #a5f3fc;
+  --green-mid: #cffafe;
+  --green-pale: #ecfeff;
+  --green-300: #67e8f9;
+
+  --orange: #f97316;
+  --amber: #eab308;
+
+  --bg: #f6fafc;
+  --sh-sm: 0 2px 10px rgba(8, 47, 73, 0.06);
+  --sh-md: 0 8px 26px rgba(8, 47, 73, 0.09);
+  --sh-lg: 0 20px 50px rgba(8, 47, 73, 0.13);
+}
+
+/* ── 3. Shafaq — sunset orange-pink, warm and rounder ───────────────────── */
+[data-theme='shafaq'] {
+  --green: #e11d48;
+  --green-dark: #be123c;
+  --green-darker: #9f1239;
+  --green-light: #fb7185;
+  --green-soft: #fecdd3;
+  --green-mid: #ffe4e6;
+  --green-pale: #fff1f2;
+  --green-300: #fda4af;
+
+  --orange: #f97316;
+  --amber: #f59e0b;
+
+  --bg: #fffaf8;
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 26px;
+  --r-xl: 32px;
+}
+
+/* ── 4. Siyoh — dark shell, calm indigo accent ──────────────────────────── */
+[data-theme='siyoh'] {
+  /* Brighter than indigo-500: the button label here is the theme's dark
+     --white, so the accent has to be light enough to carry it (3.8 → 6.9). */
+  --green: #a5b4fc;
+  --green-dark: #818cf8;
+  --green-darker: #c7d2fe; /* text on the dark --green-mid chip */
+  --green-light: #c7d2fe;
+  --green-soft: #4338ca;
+  --green-mid: #312e81;
+  --green-pale: #1e1b4b;
+  --green-300: #a5b4fc;
+
+  --orange: #fb923c;
+  --amber: #fbbf24;
+
+  /* Surfaces invert; --ink stays the text colour so labels flip with them. */
+  --bg: #0b1120;
+  --white: #131c31;
+  --ink: #e2e8f0;
+  --ink-2: #cbd5e1;
+  --ink-3: #cbd5e1;
+  --ink-4: #94a3b8;
+  --gray: #94a3b8;
+  --gray-2: #64748b;
+  --gray-3: #475569;
+  --line: #263351;
+  --line-2: #1b2540;
+  --line-3: #1b2540;
+
+  --sidebar-bg: #060b17;
+  --sidebar-line: #1b2540;
+
+  --tint-green: #131c31;
+  --tint-orange: #131c31;
+  --tint-slate: #131c31;
+  --tint-danger: #131c31;
+
+  --sh-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --sh-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --sh-lg: 0 20px 48px rgba(0, 0, 0, 0.55);
+  --overlay-ink: rgba(255, 255, 255, 0.08);
+  --surface-blur: rgba(19, 28, 49, 0.9);
+}
+
+/* ── 5. Lavanda — violet, gentle and airy ───────────────────────────────── */
+[data-theme='lavanda'] {
+  --green: #7c3aed;
+  --green-dark: #6d28d9;
+  --green-darker: #5b21b6;
+  --green-light: #a78bfa;
+  --green-soft: #ddd6fe;
+  --green-mid: #ede9fe;
+  --green-pale: #f5f3ff;
+  --green-300: #c4b5fd;
+
+  --orange: #f472b6;
+  --amber: #fbbf24;
+
+  --bg: #faf9ff;
+  --r-lg: 24px;
+  --r-xl: 30px;
+}
+
+/* ── 6. Orzu — deep forest green, understated ───────────────────────────── */
+[data-theme='orzu'] {
+  --green: #047857;
+  --green-dark: #036049;
+  --green-darker: #064e3b;
+  --green-light: #10b981;
+  --green-soft: #a7f3d0;
+  --green-mid: #d1fae5;
+  --green-pale: #ecfdf5;
+  --green-300: #6ee7b7;
+
+  --orange: #d97706;
+  --amber: #ca8a04;
+
+  --bg: #f7faf8;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 22px;
+}
+
+/* ── 7. Gilos — cherry red, confident ───────────────────────────────────── */
+[data-theme='gilos'] {
+  --green: #dc2626;
+  --green-dark: #b91c1c;
+  --green-darker: #991b1b;
+  --green-light: #f87171;
+  --green-soft: #fecaca;
+  --green-mid: #fee2e2;
+  --green-pale: #fef2f2;
+  --green-300: #fca5a5;
+
+  /* The palette collides with --danger, so errors shift to a darker maroon
+     that still reads as "wrong" beside the accent. */
+  --danger: #7f1d1d;
+  --danger-dark: #6b1717;
+  --danger-darker: #551111;
+
+  --orange: #ea580c;
+  --amber: #d97706;
+
+  --bg: #fffafa;
+}
+
+/* ── 8. Oltin — warm amber, heavier shadows ─────────────────────────────── */
+[data-theme='oltin'] {
+  --green: #b45309;
+  --green-dark: #92400e;
+  --green-darker: #78350f;
+  --green-light: #f59e0b;
+  --green-soft: #fde68a;
+  --green-mid: #fef3c7;
+  --green-pale: #fffbeb;
+  --green-300: #fcd34d;
+
+  --orange: #ea580c;
+  --amber: #d97706;
+
+  --bg: #fffcf5;
+  --ink: #1c1917;
+  --ink-2: #292524;
+  --gray: #78716c;
+  --gray-2: #a8a29e;
+  --line: #e7e2da;
+  --line-2: #f3efe8;
+
+  --sh-sm: 0 2px 10px rgba(69, 26, 3, 0.07);
+  --sh-md: 0 10px 28px rgba(69, 26, 3, 0.1);
+  --sh-lg: 0 22px 52px rgba(69, 26, 3, 0.14);
+}
+
+/* ── 9. Neon — dark shell, high-energy lime, sharp corners ──────────────── */
+[data-theme='neon'] {
+  --green: #22c55e;
+  --green-dark: #16a34a;
+  --green-darker: #bbf7d0; /* text on the dark chip */
+  --green-light: #4ade80;
+  --green-soft: #15803d;
+  --green-mid: #14361f;
+  --green-pale: #0d2015;
+  --green-300: #86efac;
+
+  --orange: #fb923c;
+  --amber: #facc15;
+
+  --bg: #07090d;
+  --white: #10141c;
+  --ink: #e8f0e9;
+  --ink-2: #d1dbd3;
+  --ink-3: #d1dbd3;
+  --ink-4: #9aa89d;
+  --gray: #9aa89d;
+  --gray-2: #6b7a6f;
+  --gray-3: #3f4a43;
+  --line: #1e2a22;
+  --line-2: #141c17;
+  --line-3: #141c17;
+
+  --sidebar-bg: #04060a;
+  --sidebar-line: #1e2a22;
+
+  --tint-green: #10141c;
+  --tint-orange: #10141c;
+  --tint-slate: #10141c;
+  --tint-danger: #10141c;
+
+  /* Squarer than the rest, and the accent glows instead of casting. */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 18px;
+
+  --sh-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --sh-md: 0 8px 24px rgba(0, 0, 0, 0.55);
+  --sh-lg: 0 20px 48px rgba(0, 0, 0, 0.65);
+  --overlay-ink: rgba(255, 255, 255, 0.08);
+  --surface-blur: rgba(16, 20, 28, 0.9);
+}
+
+/* ── 10. Sokin — near-monochrome slate, minimal and quiet ───────────────── */
+[data-theme='sokin'] {
+  --green: #475569;
+  --green-dark: #334155;
+  --green-darker: #1e293b;
+  --green-light: #64748b;
+  --green-soft: #cbd5e1;
+  --green-mid: #e2e8f0;
+  --green-pale: #f1f5f9;
+  --green-300: #94a3b8;
+
+  --orange: #64748b;
+  --amber: #94a3b8;
+
+  --bg: #fbfbfc;
+  /* Crisp corners and almost no elevation — the quiet one. */
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 10px;
+  --r-xl: 12px;
+
+  --sh-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+  --sh-md: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --sh-lg: 0 6px 20px rgba(15, 23, 42, 0.08);
+}
+
+/* Switching themes crossfades the surfaces instead of snapping, but only for
+   users who have not asked for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  body.bw-theme-switching,
+  body.bw-theme-switching * {
+    transition:
+      background-color 0.28s ease,
+      border-color 0.28s ease,
+      color 0.28s ease,
+      box-shadow 0.28s ease;
+  }
+}

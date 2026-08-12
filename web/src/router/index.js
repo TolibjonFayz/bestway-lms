@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import PlaceholderView from '@/views/PlaceholderView.vue'
 import { useAuthStore } from '@/stores/auth'
-import uz from '@/locales/uz'
 
 const routes = [
   { path: '/', redirect: '/login/role' },
@@ -170,12 +168,10 @@ const routes = [
     component: () => import('@/views/staff/admin/AdminTeachersView.vue'),
     meta: { requiresAuth: true, roles: ['admin'] },
   },
-  /* Nav destinations not built this round — flagged in the build summary. */
   {
     path: '/admin/settings',
     name: 'admin-settings',
-    component: PlaceholderView,
-    props: { title: uz.staffNav.settings },
+    component: () => import('@/views/staff/admin/AdminSettingsView.vue'),
     meta: { requiresAuth: true, roles: ['admin'] },
   },
 

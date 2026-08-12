@@ -86,7 +86,7 @@ onMounted(loadCourses)
 </script>
 
 <template>
-  <StaffShell role="admin">
+  <StaffShell>
     <div class="acb">
       <BwSkeleton v-if="loading" variant="block" height="640px" radius="18px" />
 

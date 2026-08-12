@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import BwAvatar from '@/components/base/BwAvatar.vue'
 import BwIcon from '@/components/base/BwIcon.vue'
@@ -6,13 +7,16 @@ import { ADMIN_NAV_ITEMS, TEACHER_NAV_ITEMS } from './staffNav'
 import { useAuthStore } from '@/stores/auth'
 import uz from '@/locales/uz'
 
-const props = defineProps({
-  role: { type: String, required: true, validator: (v) => ['teacher', 'admin'].includes(v) },
-})
-
 const auth = useAuthStore()
 const router = useRouter()
-const items = props.role === 'admin' ? ADMIN_NAV_ITEMS : TEACHER_NAV_ITEMS
+
+/* Derived from the signed-in user rather than passed in: as a prop it was
+   silently omitted on six pages, which rendered the teacher menu inside the
+   admin panel. The shell already knows who is looking at it. */
+const role = computed(() => (auth.user?.role === 'admin' ? 'admin' : 'teacher'))
+const items = computed(() =>
+  role.value === 'admin' ? ADMIN_NAV_ITEMS : TEACHER_NAV_ITEMS,
+)
 
 async function signOut() {
   await auth.logout()
@@ -36,6 +40,7 @@ async function signOut() {
           v-for="item in items"
           :key="item.to"
           class="staff-shell__link"
+          :class="{ 'is-exact': item.exact }"
           :to="item.to"
         >
           <BwIcon :name="item.icon" :size="role === 'teacher' ? 19 : 18" /><span>{{ item.label }}</span>
@@ -74,7 +79,7 @@ async function signOut() {
 
 .staff-shell__sidebar {
   flex: none;
-  background: var(--ink);
+  background: var(--sidebar-bg);
   display: flex;
   flex-direction: column;
   width: 220px;
@@ -112,7 +117,7 @@ async function signOut() {
 }
 
 .staff-shell__logo-letter {
-  color: var(--white);
+  color: var(--sidebar-text);
   font-weight: 800;
   font-size: 18px;
   line-height: 1;
@@ -130,13 +135,13 @@ async function signOut() {
   height: 13px;
   border-radius: 50%;
   background: var(--orange);
-  border: 2.5px solid var(--ink);
+  border: 2.5px solid var(--sidebar-bg);
 }
 
 .staff-shell__wordmark {
   font-weight: 800;
   font-size: 14.5px;
-  color: var(--white);
+  color: var(--sidebar-text);
 }
 
 .staff-shell__sidebar--teacher .staff-shell__wordmark {
@@ -158,7 +163,7 @@ async function signOut() {
   border-radius: 10px;
   font-weight: 600;
   font-size: 14px;
-  color: var(--gray-2);
+  color: var(--sidebar-muted);
   transition:
     background 0.15s,
     color 0.15s;
@@ -173,7 +178,7 @@ async function signOut() {
 
 .staff-shell__link:hover {
   background: var(--layer-w-06);
-  color: var(--white);
+  color: var(--sidebar-text);
 }
 
 .staff-shell__link:focus-visible {
@@ -181,9 +186,12 @@ async function signOut() {
   outline-offset: 2px;
 }
 
-.staff-shell__link.router-link-active {
+/* Prefix-matching items light up normally; an `exact` item only when the
+   route is exactly it, so the home link stops glowing on every sub-page. */
+.staff-shell__link.router-link-active:not(.is-exact),
+.staff-shell__link.is-exact.router-link-exact-active {
   font-weight: 700;
-  color: var(--white);
+  color: var(--sidebar-text);
   background: var(--green);
   box-shadow: var(--sh-nav-active);
 }
@@ -208,7 +216,7 @@ async function signOut() {
   display: block;
   font-weight: 700;
   font-size: 13.5px;
-  color: var(--white);
+  color: var(--sidebar-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -217,7 +225,7 @@ async function signOut() {
 .staff-shell__user-role {
   display: block;
   font-size: 11px;
-  color: var(--gray-2);
+  color: var(--sidebar-muted);
 }
 
 .staff-shell__logout {
@@ -227,7 +235,7 @@ async function signOut() {
   border-radius: 9px;
   border: none;
   background: transparent;
-  color: var(--gray-2);
+  color: var(--sidebar-muted);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -236,7 +244,7 @@ async function signOut() {
 
 .staff-shell__logout:hover {
   background: var(--layer-w-06);
-  color: var(--white);
+  color: var(--sidebar-text);
 }
 
 .staff-shell__logout:focus-visible {

@@ -46,7 +46,7 @@ const auth = useAuthStore()
 .sidebar {
   width: 260px;
   flex: none;
-  background: var(--ink);
+  background: var(--sidebar-bg);
   padding: 26px 18px;
   display: flex;
   flex-direction: column;
@@ -59,7 +59,7 @@ const auth = useAuthStore()
 }
 
 .sidebar__brand :deep(.brand__name) {
-  color: var(--white);
+  color: var(--sidebar-text);
 }
 
 .sidebar__brand :deep(.brand__tagline) {
@@ -82,7 +82,7 @@ const auth = useAuthStore()
   border-radius: 12px;
   font-weight: 600;
   font-size: 15px;
-  color: var(--gray-2);
+  color: var(--sidebar-muted);
   transition:
     background 0.15s,
     color 0.15s;
@@ -90,7 +90,7 @@ const auth = useAuthStore()
 
 .sidebar__link:hover {
   background: var(--layer-w-06);
-  color: var(--white);
+  color: var(--sidebar-text);
 }
 
 .sidebar__link:focus-visible {
@@ -100,7 +100,7 @@ const auth = useAuthStore()
 
 .sidebar__link.router-link-active {
   font-weight: 700;
-  color: var(--white);
+  color: var(--sidebar-text);
   background: var(--green);
   box-shadow: var(--sh-nav-active);
 }
@@ -125,7 +125,7 @@ const auth = useAuthStore()
   display: block;
   font-weight: 700;
   font-size: 14px;
-  color: var(--white);
+  color: var(--sidebar-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -134,7 +134,7 @@ const auth = useAuthStore()
 .sidebar__user-level {
   display: block;
   font-size: 12px;
-  color: var(--gray-2);
+  color: var(--sidebar-muted);
 }
 
 .sidebar__user-chevron {

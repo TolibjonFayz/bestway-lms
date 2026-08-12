@@ -34,7 +34,7 @@ onMounted(load)
 </script>
 
 <template>
-  <StaffShell role="teacher">
+  <StaffShell>
     <div class="tdash">
       <BwSkeleton v-if="loading" variant="block" height="600px" radius="18px" />
 

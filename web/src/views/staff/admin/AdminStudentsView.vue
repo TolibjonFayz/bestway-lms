@@ -111,7 +111,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <StaffShell role="admin">
+  <StaffShell>
     <div class="asview">
       <div class="asview__head">
         <h3 class="asview__title">

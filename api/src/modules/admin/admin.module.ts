@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import {
   Attendance,
+  CenterSettings,
   Course,
   Group,
   LessonItem,
@@ -17,6 +18,8 @@ import {
 } from '@/database/models';
 import { LessonsModule } from '../lessons/lessons.module';
 import { UsersModule } from '../users/users.module';
+import { AdminSettingsController, PublicSettingsController } from './center-settings.controller';
+import { CenterSettingsService } from './center-settings.service';
 import { AdminContentController } from './admin-content.controller';
 import { AdminContentService } from './admin-content.service';
 import { AdminOverviewService } from './admin-overview.service';
@@ -45,6 +48,7 @@ import { AdminVocabService } from './admin-vocab.service';
       Group,
       Submission,
       Attendance,
+      CenterSettings,
     ]),
     LessonsModule,
     UsersModule,
@@ -55,6 +59,8 @@ import { AdminVocabService } from './admin-vocab.service';
     AdminQuestionsController,
     AdminStudentsController,
     AdminTeachersController,
+    AdminSettingsController,
+    PublicSettingsController,
   ],
   providers: [
     AdminContentService,
@@ -63,6 +69,7 @@ import { AdminVocabService } from './admin-vocab.service';
     AdminStudentsService,
     AdminTeachersService,
     AdminOverviewService,
+    CenterSettingsService,
   ],
 })
 export class AdminModule {}
