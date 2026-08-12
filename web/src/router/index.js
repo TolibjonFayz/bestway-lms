@@ -128,14 +128,18 @@ const routes = [
     component: () => import('@/views/staff/teacher/AttendanceRegisterView.vue'),
     meta: { requiresAuth: true, roles: ['teacher'] },
   },
-  /* Nav destinations not built this round — flagged in the build summary. */
-  ...['tasks', 'students'].map((segment) => ({
-    path: `/staff/${segment}`,
-    name: `staff-${segment}`,
-    component: PlaceholderView,
-    props: { title: uz.staffNav[segment] },
+  {
+    path: '/staff/tasks',
+    name: 'staff-tasks',
+    component: () => import('@/views/staff/teacher/TeacherTasksView.vue'),
     meta: { requiresAuth: true, roles: ['teacher'] },
-  })),
+  },
+  {
+    path: '/staff/students',
+    name: 'staff-students',
+    component: () => import('@/views/staff/teacher/TeacherStudentsView.vue'),
+    meta: { requiresAuth: true, roles: ['teacher'] },
+  },
 
   /* Staff: admin. */
   {

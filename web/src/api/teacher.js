@@ -16,6 +16,14 @@ export function gradeTeacherSubmission(id, payload) {
   return http.post(`/teacher/submissions/${id}/grade`, payload).then((r) => r.data)
 }
 
+export function fetchTeacherTasks(params = {}) {
+  return http.get('/teacher/tasks', { params }).then((r) => r.data)
+}
+
+export function fetchTeacherStudents(params = {}) {
+  return http.get('/teacher/students', { params }).then((r) => r.data)
+}
+
 export function fetchTeacherGroups() {
   return http.get('/teacher/groups').then((r) => r.data)
 }
