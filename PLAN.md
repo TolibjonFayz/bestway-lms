@@ -81,7 +81,7 @@ video production'da buzuq va 9 ta sahifa bo'sh (`PlaceholderView`).
       ataylab bo'sh (ustoz o'zi yozadi)
 - [x] 10: o'qituvchi sahifalari — Davomat, Guruhlarim ✅ (2026-08-11)
 - [x] 11: admin sahifalari — Bosh sahifa, O'qituvchilar ✅ (2026-08-11)
-- [ ] 12: o'quvchi sahifalari — Mashq, Qo'shimcha dars (hozir bo'sh)
+- [x] 12: o'quvchi sahifalari — Mashq, Qo'shimcha dars ✅ (2026-08-12)
 - [ ] **13: Zoom havolasini ulash** — ENG OXIRGI ([LIVE-LESSON.md](LIVE-LESSON.md))
 
 Zoom haqida: uzoq muhokamadan keyin **Zoom Pro** tanlandi (~$13-17/oy, ustoz boshiga,
