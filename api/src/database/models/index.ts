@@ -3,6 +3,7 @@ import { Attendance } from './attendance.model';
 import { CoinAward } from './coin-award.model';
 import { Course } from './course.model';
 import { Enrollment } from './enrollment.model';
+import { ExtraLessonRequest } from './extra-lesson-request.model';
 import { Group } from './group.model';
 import { LessonItem } from './lesson-item.model';
 import { Progress } from './progress.model';
@@ -24,6 +25,7 @@ export {
   CoinAward,
   Course,
   Enrollment,
+  ExtraLessonRequest,
   Group,
   LessonItem,
   Progress,
@@ -52,6 +54,7 @@ export const ALL_MODELS = [
   CoinAward,
   Course,
   Enrollment,
+  ExtraLessonRequest,
   Group,
   LessonItem,
   Progress,

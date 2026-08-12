@@ -4,6 +4,7 @@ import StaffShell from '@/layouts/StaffShell.vue'
 import BwNotificationBell from '@/components/base/BwNotificationBell.vue'
 import BwSkeleton from '@/components/base/BwSkeleton.vue'
 import LessonsStateCard from '@/views/student/lessons/LessonsStateCard.vue'
+import TeacherExtraLessons from './TeacherExtraLessons.vue'
 import TeacherPendingTable from './TeacherPendingTable.vue'
 import TeacherScheduleTimeline from './TeacherScheduleTimeline.vue'
 import TeacherStatCards from './TeacherStatCards.vue'
@@ -66,6 +67,8 @@ onMounted(load)
             :items="dashboard.pendingSubmissions"
           />
         </div>
+
+        <TeacherExtraLessons class="tdash__extra" />
       </template>
     </div>
   </StaffShell>
@@ -100,6 +103,10 @@ onMounted(load)
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+}
+
+.tdash__extra {
+  margin-top: 20px;
 }
 
 @media (min-width: 1280px) {

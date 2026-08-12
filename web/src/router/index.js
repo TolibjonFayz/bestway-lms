@@ -3,13 +3,6 @@ import PlaceholderView from '@/views/PlaceholderView.vue'
 import { useAuthStore } from '@/stores/auth'
 import uz from '@/locales/uz'
 
-/** Route segment → key in uz.nav, for the not-yet-built student pages. */
-const NAV_TITLE_KEY = {
-  lessons: 'lessons',
-  practice: 'practice',
-  'extra-lesson': 'extraLesson',
-}
-
 const routes = [
   { path: '/', redirect: '/login/role' },
 
@@ -97,15 +90,18 @@ const routes = [
     meta: { requiresAuth: true, roles: ['student'] },
   },
 
-  /* Student destinations the shell links to. Later stages build them; until
-     then they resolve so the nav never dead-ends. */
-  ...['practice', 'extra-lesson'].map((segment) => ({
-    path: `/${segment}`,
-    name: segment,
-    component: PlaceholderView,
-    props: { title: uz.nav[NAV_TITLE_KEY[segment]] },
+  {
+    path: '/practice',
+    name: 'practice',
+    component: () => import('@/views/student/practice/PracticeView.vue'),
     meta: { requiresAuth: true, roles: ['student'] },
-  })),
+  },
+  {
+    path: '/extra-lesson',
+    name: 'extra-lesson',
+    component: () => import('@/views/student/practice/ExtraLessonView.vue'),
+    meta: { requiresAuth: true, roles: ['student'] },
+  },
 
   /* Staff: teacher. */
   {

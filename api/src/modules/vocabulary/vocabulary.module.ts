@@ -22,5 +22,8 @@ import { VocabularyService } from './vocabulary.service';
   ],
   controllers: [VocabularyController],
   providers: [VocabularyService],
+  /* The practice module drills words through the same answer() path, so a
+     word revised there climbs the same mastery ladder. */
+  exports: [VocabularyService],
 })
 export class VocabularyModule {}

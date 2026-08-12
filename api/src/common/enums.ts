@@ -47,6 +47,13 @@ export enum QuestionType {
 
 /* Attendance is recorded in Uzbek because that is what the register says and
    what teachers pick from — translating it in the UI would only add a mapping. */
+export enum ExtraLessonStatus {
+  Sent = 'yuborildi',
+  UnderReview = 'korib_chiqilmoqda',
+  Approved = 'tasdiqlandi',
+  Rejected = 'rad_etildi',
+}
+
 export enum AttendanceStatus {
   Present = 'kelgan',
   Absent = 'kelmagan',

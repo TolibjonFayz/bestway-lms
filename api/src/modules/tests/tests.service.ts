@@ -26,10 +26,20 @@ function normalise(value: string): string {
   return value.trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
-interface GradeResult {
+export interface GradeResult {
   pointsEarned: number;
   correct: boolean;
   correctAnswerText: string;
+}
+
+/** A question the student previously answered wrongly, with the context the
+    practice screen needs to show it again. */
+export interface WrongQuestionRow {
+  question: Question;
+  previousAnswer: unknown;
+  unitTitle: string;
+  /** Shuffle seed — stable per question so options do not jump between loads. */
+  seed: string;
 }
 
 @Injectable()
@@ -185,6 +195,84 @@ export class TestsService {
     if (priorGraded === 0 && finalScore >= passScore) {
       await this.coins.award(studentId, lessonItemId, CoinReason.TestCompleted);
     }
+  }
+
+  /* Questions this student got wrong in a graded attempt, newest attempt
+     first, one entry per question. Lives here rather than in the practice
+     module because deciding what counts as wrong is this service's job — the
+     same grade() the real attempt used answers it. */
+  async wrongQuestionsFor(studentId: number, limit: number): Promise<WrongQuestionRow[]> {
+    const graded = await this.submissions.findAll({
+      where: { studentId, status: SubmissionStatus.Graded },
+      order: [['submittedAt', 'DESC']],
+    });
+    if (!graded.length) return [];
+
+    const items = await this.lessonItems.findAll({
+      where: { id: { [Op.in]: [...new Set(graded.map((row) => row.lessonItemId))] } },
+    });
+    const itemById = new Map(items.map((item) => [item.id, item]));
+
+    const tests = await this.tests.findAll({
+      where: { lessonItemId: { [Op.in]: items.map((item) => item.id) } },
+    });
+    const testByItemId = new Map(tests.map((test) => [test.lessonItemId, test]));
+
+    const questions = await this.questions.findAll({
+      where: { testId: { [Op.in]: tests.map((test) => test.id) } },
+      include: [{ model: QuestionOption, as: 'options' }],
+      order: [[{ model: QuestionOption, as: 'options' }, 'orderIndex', 'ASC']],
+    });
+    const questionsByTestId = new Map<number, Question[]>();
+    for (const question of questions) {
+      const bucket = questionsByTestId.get(question.testId) ?? [];
+      bucket.push(question);
+      questionsByTestId.set(question.testId, bucket);
+    }
+
+    const unitIds = [...new Set(items.map((item) => item.unitId))];
+    const units = await this.units.findAll({ where: { id: { [Op.in]: unitIds } } });
+    const unitTitleById = new Map(units.map((unit) => [unit.id, unit.title]));
+
+    const seen = new Set<number>();
+    const rows: WrongQuestionRow[] = [];
+
+    for (const submission of graded) {
+      const item = itemById.get(submission.lessonItemId);
+      const test = item ? testByItemId.get(item.id) : undefined;
+      if (!item || !test) continue;
+
+      for (const question of questionsByTestId.get(test.id) ?? []) {
+        if (seen.has(question.id) || rows.length >= limit) continue;
+        /* Open questions are marked by a human, so there is no stored answer
+           to re-grade — practising them here would be guesswork. */
+        if (question.type === QuestionType.Open) continue;
+
+        const answer = submission.answers?.[String(question.id)];
+        if (this.grade(question, answer).correct) continue;
+
+        seen.add(question.id);
+        rows.push({
+          question,
+          previousAnswer: answer ?? null,
+          unitTitle: unitTitleById.get(item.unitId) ?? '',
+          seed: `practice:${question.id}`,
+        });
+      }
+      if (rows.length >= limit) break;
+    }
+
+    return rows;
+  }
+
+  /** Turns a stored question into the answer-free shape the client may see. */
+  toClientQuestion(question: Question, seed: string): TestQuestionDto {
+    return this.toPublicQuestion(question, seed);
+  }
+
+  /** Grades one answer without touching any submission — practice only. */
+  checkAnswer(question: Question, rawAnswer: unknown): GradeResult {
+    return this.grade(question, rawAnswer);
   }
 
   private async loadTest(lessonItemId: number): Promise<{ item: LessonItem; test: Test }> {

@@ -15,9 +15,12 @@ defineProps({
   title: { type: String, required: true },
   text: { type: String, default: '' },
   retrying: { type: Boolean, default: false },
+  /* Optional call to action for an empty state — a dead end is worse than a
+     way out, so screens that know where the student should go next say so. */
+  actionLabel: { type: String, default: '' },
 })
 
-defineEmits(['retry'])
+defineEmits(['retry', 'action'])
 </script>
 
 <template>
@@ -35,6 +38,14 @@ defineEmits(['retry'])
       @click="$emit('retry')"
     >
       {{ retrying ? uz.actions.loading : uz.actions.retry }}
+    </BwButton>
+    <BwButton
+      v-else-if="actionLabel"
+      class="lstate__retry"
+      size="lg"
+      @click="$emit('action')"
+    >
+      {{ actionLabel }}
     </BwButton>
   </div>
 </template>

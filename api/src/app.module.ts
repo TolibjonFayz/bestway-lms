@@ -9,9 +9,11 @@ import { DatabaseModule } from './database/database.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { ExtraLessonsModule } from './modules/extra-lessons/extra-lessons.module';
 import { GamificationModule } from './modules/gamification/gamification.module';
 import { LessonsModule } from './modules/lessons/lessons.module';
 import { MarksModule } from './modules/marks/marks.module';
+import { PracticeModule } from './modules/practice/practice.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { ProgressModule } from './modules/progress/progress.module';
 import { RatingModule } from './modules/rating/rating.module';
@@ -29,8 +31,10 @@ import { UsersModule } from './modules/users/users.module';
     UsersModule,
     LessonsModule,
     DashboardModule,
+    ExtraLessonsModule,
     GamificationModule,
     MarksModule,
+    PracticeModule,
     ProfileModule,
     ProgressModule,
     RatingModule,
