@@ -11,6 +11,8 @@ const props = defineProps({
   page: { type: Number, required: true },
   limit: { type: Number, required: true },
   total: { type: Number, required: true },
+  /** Student ids whose status toggle is mid-flight. */
+  busy: { type: Array, default: () => [] },
 })
 
 const emit = defineEmits(['update:selected', 'toggle-status', 'page-change'])
@@ -93,6 +95,7 @@ const rangeTo = computed(() => Math.min(props.page * props.limit, props.total))
           <button
             type="button"
             class="astable__menu-item"
+            :disabled="busy.includes(student.id)"
             @click="() => { emit('toggle-status', student); openMenuId = null }"
           >
             {{ student.active ? uz.adminStudents.deactivate : uz.adminStudents.activate }}
@@ -303,6 +306,11 @@ const rangeTo = computed(() => Math.min(props.page * props.limit, props.total))
   font-weight: 600;
   color: var(--ink-3);
   cursor: pointer;
+}
+
+.astable__menu-item:disabled {
+  color: var(--gray-2);
+  cursor: not-allowed;
 }
 
 .astable__menu-item:hover {

@@ -856,5 +856,7 @@ export default {
     clearFilters: 'Filtrni tozalash',
     errorTitle: 'Oʻquvchilarni yuklab boʻlmadi',
     errorText: 'Server bilan bogʻlanishda muammo boʻldi. Qaytadan urinib koʻring.',
+    statusSaved: 'Holat yangilandi',
+    statusSaveError: 'Holatni oʻzgartirib boʻlmadi',
   },
 }

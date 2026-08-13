@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Op, QueryTypes } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { AttendanceStatus, LessonItemType, SubmissionStatus } from '@/common/enums';
-import { fromLocal, localParts, parseWallClock } from '@/common/tashkent';
+import { fromLocal, localDateKey, localParts, parseWallClock } from '@/common/tashkent';
 import { Attendance, Group, LessonItem, Submission, Unit, User } from '@/database/models';
 import { TeacherScopeService } from './teacher-scope.service';
 import {
@@ -156,9 +156,7 @@ export class TeacherDashboardService {
 
   private async averageAttendance(groupIds: number[]): Promise<number> {
     if (!groupIds.length) return 0;
-    const since = new Date(Date.now() - ATTENDANCE_WINDOW_DAYS * 86_400_000)
-      .toISOString()
-      .slice(0, 10);
+    const since = localDateKey(new Date(Date.now() - ATTENDANCE_WINDOW_DAYS * 86_400_000));
 
     const rows = await this.attendance.findAll({
       where: { groupId: { [Op.in]: groupIds }, date: { [Op.gte]: since } },

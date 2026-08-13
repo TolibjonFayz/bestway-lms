@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import StaffShell from '@/layouts/StaffShell.vue'
 import BwAvatar from '@/components/base/BwAvatar.vue'
 import BwButton from '@/components/base/BwButton.vue'
@@ -14,14 +14,20 @@ import uz from '@/locales/uz'
 
 const toast = useToast()
 
+const LIMIT = 20
+
 const teachers = ref([])
 const groups = ref([])
 const search = ref('')
+const page = ref(1)
+const total = ref(0)
 const loading = ref(true)
 const failed = ref(false)
 const modal = ref(null)
 /** Teacher ids whose status toggle is mid-flight. */
 const busy = ref(new Set())
+
+const totalPages = computed(() => Math.max(1, Math.ceil(total.value / LIMIT)))
 
 let searchTimer = null
 
@@ -30,10 +36,11 @@ async function load() {
   failed.value = false
   try {
     const [list, groupList] = await Promise.all([
-      fetchAdminTeachers({ search: search.value.trim() || undefined, limit: 50 }),
+      fetchAdminTeachers({ search: search.value.trim() || undefined, page: page.value, limit: LIMIT }),
       groups.value.length ? Promise.resolve(groups.value) : fetchAdminGroups(),
     ])
     teachers.value = list.items
+    total.value = list.total
     groups.value = groupList
   } catch {
     failed.value = true
@@ -45,8 +52,14 @@ async function load() {
 /* Debounced so typing a name does not fire a request per keystroke. */
 function onSearch(value) {
   search.value = value
+  page.value = 1
   clearTimeout(searchTimer)
   searchTimer = setTimeout(load, 300)
+}
+
+function goToPage(next) {
+  page.value = next
+  load()
 }
 
 async function toggleStatus(teacher) {
@@ -163,6 +176,28 @@ load()
             @click="modal = { teacher }"
           >
             <BwIcon name="edit" :size="15" />
+          </button>
+        </div>
+
+        <div v-if="totalPages > 1" class="ateachers__pager">
+          <button
+            type="button"
+            class="ateachers__page-btn"
+            :disabled="page <= 1"
+            :aria-label="uz.review.back"
+            @click="goToPage(page - 1)"
+          >
+            <BwIcon name="chevron-left" :size="15" :stroke-width="2" />
+          </button>
+          <span class="ateachers__page-info">{{ page }} / {{ totalPages }}</span>
+          <button
+            type="button"
+            class="ateachers__page-btn"
+            :disabled="page >= totalPages"
+            :aria-label="uz.actions.next"
+            @click="goToPage(page + 1)"
+          >
+            <BwIcon name="chevron-right" :size="15" :stroke-width="2" />
           </button>
         </div>
       </div>
@@ -340,6 +375,43 @@ load()
 .ateachers__edit:focus-visible {
   outline: none;
   box-shadow: var(--ring-green);
+}
+
+.ateachers__pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--line-2);
+}
+
+.ateachers__page-info {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--gray);
+}
+
+.ateachers__page-btn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.ateachers__page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ateachers__page-btn:not(:disabled):hover {
+  background: var(--bg);
 }
 
 @media (max-width: 900px) {

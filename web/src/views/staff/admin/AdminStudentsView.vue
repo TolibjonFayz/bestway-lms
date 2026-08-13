@@ -14,7 +14,10 @@ import {
   fetchAdminStudents,
   setAdminStudentStatus,
 } from '@/api/admin'
+import { useToast } from '@/composables/useToast'
 import uz from '@/locales/uz'
+
+const toast = useToast()
 
 const LIMIT = 20
 
@@ -32,6 +35,9 @@ const selected = ref([])
 const loading = ref(false)
 const error = ref(null)
 const showAddModal = ref(false)
+/** Student ids whose status toggle is mid-flight. */
+const busy = ref([])
+const bulkBusy = ref(false)
 
 const hasFilters = computed(() => Boolean(search.value || groupId.value || level.value || status.value !== 'all'))
 
@@ -89,13 +95,34 @@ function clearFilters() {
 }
 
 async function toggleStatus(student) {
-  await setAdminStudentStatus(student.id, !student.active)
-  student.active = !student.active
+  if (busy.value.includes(student.id)) return
+  busy.value = [...busy.value, student.id]
+  try {
+    await setAdminStudentStatus(student.id, !student.active)
+    student.active = !student.active
+    toast.success(uz.adminStudents.statusSaved)
+  } catch (error) {
+    toast.error(uz.adminStudents.statusSaveError, {
+      description: error?.response?.data?.message ?? uz.adminStudents.errorText,
+    })
+  } finally {
+    busy.value = busy.value.filter((id) => id !== student.id)
+  }
 }
 
 async function bulkSetStatus(active) {
-  await bulkSetAdminStudentStatus(selected.value, active)
-  await loadStudents()
+  if (bulkBusy.value) return
+  bulkBusy.value = true
+  try {
+    await bulkSetAdminStudentStatus(selected.value, active)
+    await loadStudents()
+  } catch (error) {
+    toast.error(uz.adminStudents.statusSaveError, {
+      description: error?.response?.data?.message ?? uz.adminStudents.errorText,
+    })
+  } finally {
+    bulkBusy.value = false
+  }
 }
 
 async function onStudentCreated() {
@@ -134,10 +161,15 @@ onMounted(() => {
       <div v-if="selected.length" class="asview__bulk">
         <span class="asview__bulk-count">{{ uz.adminStudents.selectedCount.replace('{n}', selected.length) }}</span>
         <div class="asview__bulk-actions">
-          <button type="button" class="asview__bulk-btn" @click="bulkSetStatus(true)">
+          <button type="button" class="asview__bulk-btn" :disabled="bulkBusy" @click="bulkSetStatus(true)">
             {{ uz.adminStudents.bulkActivate }}
           </button>
-          <button type="button" class="asview__bulk-btn asview__bulk-btn--danger" @click="bulkSetStatus(false)">
+          <button
+            type="button"
+            class="asview__bulk-btn asview__bulk-btn--danger"
+            :disabled="bulkBusy"
+            @click="bulkSetStatus(false)"
+          >
             {{ uz.adminStudents.bulkDeactivate }}
           </button>
         </div>
@@ -172,6 +204,7 @@ onMounted(() => {
         :page="page"
         :limit="LIMIT"
         :total="total"
+        :busy="busy"
         @toggle-status="toggleStatus"
         @page-change="goToPage"
       />
@@ -243,6 +276,13 @@ onMounted(() => {
 .asview__bulk-btn--danger {
   color: var(--danger);
   border-color: var(--danger-line);
+}
+
+.asview__bulk-btn:disabled {
+  color: var(--gray-2);
+  background: var(--bg);
+  border-color: var(--line);
+  cursor: not-allowed;
 }
 
 .asview__empty {
