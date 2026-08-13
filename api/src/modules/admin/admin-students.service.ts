@@ -5,7 +5,7 @@ import { Op, QueryTypes, WhereOptions } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { UserRole } from '@/common/enums';
 import { Paginated } from '@/common/types';
-import { Group, User } from '@/database/models';
+import { Group, ScheduleSlot, User } from '@/database/models';
 import { UsersService } from '../users/users.service';
 import { ZoomService } from '../zoom/zoom.service';
 import { AdminStudentsQueryDto } from './dto/admin-students-query.dto';
@@ -126,6 +126,21 @@ export class AdminStudentsService {
       name: group.name,
       branch: group.branch,
       zoomJoinUrl: meeting.joinUrl,
+    };
+  }
+
+  /** Replaces a group's weekly timetable wholesale — there's no per-slot id,
+      so the caller sends the full list every time. */
+  async updateGroupSchedule(groupId: number, schedule: ScheduleSlot[]): Promise<AdminGroupDto> {
+    const group = await this.groups.findByPk(groupId);
+    if (!group) throw new NotFoundException('Guruh topilmadi');
+
+    await group.update({ schedule });
+    return {
+      id: group.id,
+      name: group.name,
+      branch: group.branch,
+      zoomJoinUrl: group.zoomJoinUrl,
     };
   }
 

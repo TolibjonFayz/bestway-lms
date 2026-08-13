@@ -7,6 +7,7 @@ import { AdminStudentsQueryDto } from './dto/admin-students-query.dto';
 import { BulkStudentStatusDto } from './dto/bulk-student-status.dto';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateGroupZoomDto } from './dto/group-zoom.dto';
+import { UpdateGroupScheduleDto } from './dto/update-group-schedule.dto';
 import { UpdateStudentStatusDto } from './dto/update-student-status.dto';
 import { AdminGroupDto, AdminStudentDto } from './admin-people.types';
 
@@ -62,5 +63,13 @@ export class AdminStudentsController {
   @Post('groups/:id/zoom/create')
   createGroupZoom(@Param('id', ParseIntPipe) id: number): Promise<AdminGroupDto> {
     return this.students.createGroupZoomMeeting(id);
+  }
+
+  @Patch('groups/:id/schedule')
+  updateGroupSchedule(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateGroupScheduleDto,
+  ): Promise<AdminGroupDto> {
+    return this.students.updateGroupSchedule(id, dto.schedule);
   }
 }
