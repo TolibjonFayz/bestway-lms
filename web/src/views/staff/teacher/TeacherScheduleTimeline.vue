@@ -6,6 +6,7 @@ import { useNow } from '@/composables/useNow'
 import { useToast } from '@/composables/useToast'
 import { useUzbekDate } from '@/composables/useUzbekDate'
 import uz from '@/locales/uz'
+import { openExternal } from '@/utils/openExternal'
 
 defineProps({
   schedule: { type: Array, required: true },
@@ -29,18 +30,25 @@ function canHost(entry) {
   return now.value >= startsAt - JOIN_GRACE_MS && now.value < endsAt
 }
 
-/* Opened synchronously inside the click handler in a background tab would be
-   blocked by most browsers' popup guard once we await the API call first, so
-   the tab is opened immediately and pointed at the real URL once it's back —
-   not opened after the fact. */
+/* Opened synchronously inside the click handler — a tab opened after the
+   await below would be blocked by most browsers' popup guard, so the tab is
+   opened immediately and pointed at the real URL once it's back. Passing
+   'noopener' here would defeat the point: Chrome returns null from
+   window.open whenever 'noopener' is set, which would throw away the very
+   handle we need to redirect the tab later. 'about:blank' (not '') avoids a
+   separate footgun — an empty URL resolves as a relative reference against
+   the current document and reloads this app in the new tab instead of
+   staying blank. Reverse-tabnabbing protection is applied by hand instead,
+   by clearing the new tab's own opener reference. */
 async function host(entry) {
   if (!canHost(entry) || starting.value) return
   starting.value = entry.groupId
-  const tab = window.open('', '_blank', 'noopener,noreferrer')
+  const tab = window.open('about:blank', '_blank')
+  if (tab) tab.opener = null
   try {
     const { url } = await fetchZoomStartUrl(entry.groupId)
     if (tab) tab.location.href = url
-    else window.open(url, '_blank', 'noopener,noreferrer')
+    else openExternal(url)
   } catch (error) {
     tab?.close()
     toast.error(uz.zoom.startError, {

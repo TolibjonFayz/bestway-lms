@@ -4,6 +4,7 @@ import BwIcon from '@/components/base/BwIcon.vue'
 import { useNow } from '@/composables/useNow'
 import { useUzbekDate } from '@/composables/useUzbekDate'
 import uz from '@/locales/uz'
+import { openExternal } from '@/utils/openExternal'
 
 const props = defineProps({
   lesson: { type: Object, required: true },
@@ -35,11 +36,9 @@ const caption = computed(() => {
   return hasStarted.value ? uz.dashboard.joinOpenNow : uz.dashboard.joinOpenSoon
 })
 
-/* noopener keeps the new tab from reaching back into this one through
-   window.opener — the link is admin-supplied, but it still leaves our origin. */
 function join() {
   if (!canJoin.value) return
-  window.open(props.lesson.zoomJoinUrl, '_blank', 'noopener,noreferrer')
+  openExternal(props.lesson.zoomJoinUrl)
 }
 </script>
 
