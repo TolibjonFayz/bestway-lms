@@ -1,4 +1,5 @@
 import { StudentLevel } from '@/common/enums';
+import { ScheduleSlot } from '@/database/models';
 
 export interface AdminStudentDto {
   id: number;
@@ -19,6 +20,7 @@ export interface AdminGroupDto {
   branch: string;
   /** Recurring Zoom link; null until an admin sets one. */
   zoomJoinUrl?: string | null;
+  schedule?: ScheduleSlot[];
 }
 
 export interface AdminTeacherDto {

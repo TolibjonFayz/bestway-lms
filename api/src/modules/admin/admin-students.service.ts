@@ -100,12 +100,7 @@ export class AdminStudentsService {
 
   async listGroups(): Promise<AdminGroupDto[]> {
     const rows = await this.groups.findAll({ order: [['name', 'ASC']] });
-    return rows.map((row) => ({
-      id: row.id,
-      name: row.name,
-      branch: row.branch,
-      zoomJoinUrl: row.zoomJoinUrl ?? null,
-    }));
+    return rows.map((row) => this.toGroupDto(row));
   }
 
   get zoomConfigured(): boolean {
@@ -121,12 +116,7 @@ export class AdminStudentsService {
     const meeting = await this.zoom.createRecurringMeeting(`${group.name} — Best Way`);
     await group.update({ zoomJoinUrl: meeting.joinUrl, zoomMeetingId: meeting.id });
 
-    return {
-      id: group.id,
-      name: group.name,
-      branch: group.branch,
-      zoomJoinUrl: meeting.joinUrl,
-    };
+    return this.toGroupDto(group);
   }
 
   /** Replaces a group's weekly timetable wholesale — there's no per-slot id,
@@ -136,12 +126,7 @@ export class AdminStudentsService {
     if (!group) throw new NotFoundException('Guruh topilmadi');
 
     await group.update({ schedule });
-    return {
-      id: group.id,
-      name: group.name,
-      branch: group.branch,
-      zoomJoinUrl: group.zoomJoinUrl,
-    };
+    return this.toGroupDto(group);
   }
 
   /** Sets or clears a group's recurring Zoom link. */
@@ -155,11 +140,16 @@ export class AdminStudentsService {
        stale id would hand out host control for the wrong meeting. The start
        endpoint falls back to the plain join_url once this is null. */
     await group.update({ zoomJoinUrl: url?.trim() || null, zoomMeetingId: null });
+    return this.toGroupDto(group);
+  }
+
+  private toGroupDto(group: Group): AdminGroupDto {
     return {
       id: group.id,
       name: group.name,
       branch: group.branch,
       zoomJoinUrl: group.zoomJoinUrl,
+      schedule: group.schedule ?? [],
     };
   }
 

@@ -7,9 +7,12 @@ import {
   fetchAdminGroups,
   fetchZoomStatus,
   setGroupZoomUrl,
+  updateGroupSchedule,
 } from '@/api/admin'
 import { useToast } from '@/composables/useToast'
 import uz from '@/locales/uz'
+
+const WEEKDAYS = ['dushanba', 'seshanba', 'chorshanba', 'payshanba', 'juma', 'shanba', 'yakshanba']
 
 const toast = useToast()
 
@@ -85,6 +88,47 @@ function clear() {
   save()
 }
 
+/** Group id + a working copy of its slots, edited separately from the Zoom
+    link so the two forms don't fight over save/cancel state. */
+const scheduleEditing = ref(null)
+const savingSchedule = ref(false)
+
+function startEditSchedule(group) {
+  scheduleEditing.value = {
+    id: group.id,
+    slots: (group.schedule ?? []).map((slot) => ({ ...slot })),
+  }
+}
+
+function addSlot() {
+  if (!scheduleEditing.value) return
+  scheduleEditing.value.slots.push({ day: 'dushanba', start: '09:00', end: '10:00' })
+}
+
+function removeSlot(index) {
+  if (!scheduleEditing.value) return
+  scheduleEditing.value.slots.splice(index, 1)
+}
+
+async function saveSchedule() {
+  if (!scheduleEditing.value || savingSchedule.value) return
+  savingSchedule.value = true
+  const { id, slots } = scheduleEditing.value
+  try {
+    const updated = await updateGroupSchedule(id, slots)
+    const index = groups.value.findIndex((g) => g.id === id)
+    if (index !== -1) groups.value[index] = { ...groups.value[index], ...updated }
+    scheduleEditing.value = null
+    toast.success(uz.groupSchedule.saved)
+  } catch (error) {
+    toast.error(uz.groupSchedule.error, {
+      description: error?.response?.data?.message ?? uz.adminSettings.errorText,
+    })
+  } finally {
+    savingSchedule.value = false
+  }
+}
+
 load()
 </script>
 
@@ -154,6 +198,63 @@ load()
         <BwButton size="sm" variant="secondary" @click="startEdit(group)">
           {{ group.zoomJoinUrl ? uz.zoom.edit : uz.zoom.add }}
         </BwButton>
+      </div>
+
+      <div class="gzoom__schedule">
+        <div class="gzoom__schedule-head">
+          <span class="gzoom__schedule-title">{{ uz.groupSchedule.title }}</span>
+          <BwButton
+            v-if="scheduleEditing?.id !== group.id"
+            size="sm"
+            variant="secondary"
+            @click="startEditSchedule(group)"
+          >
+            {{ uz.groupSchedule.edit }}
+          </BwButton>
+        </div>
+
+        <div v-if="scheduleEditing?.id === group.id" class="gzoom__slots">
+          <div v-for="(slot, index) in scheduleEditing.slots" :key="index" class="gzoom__slot-row">
+            <select v-model="slot.day" class="gzoom__select">
+              <option v-for="day in WEEKDAYS" :key="day" :value="day">
+                {{ uz.groupSchedule.days[day] }}
+              </option>
+            </select>
+            <input v-model="slot.start" type="time" class="gzoom__time" />
+            <span class="gzoom__slot-sep">–</span>
+            <input v-model="slot.end" type="time" class="gzoom__time" />
+            <button
+              type="button"
+              class="gzoom__slot-remove"
+              :aria-label="uz.groupSchedule.remove"
+              @click="removeSlot(index)"
+            >
+              <BwIcon name="x" :size="14" />
+            </button>
+          </div>
+
+          <button type="button" class="gzoom__add-slot" @click="addSlot">
+            <BwIcon name="plus" :size="14" />{{ uz.groupSchedule.addSlot }}
+          </button>
+
+          <div class="gzoom__actions">
+            <BwButton size="sm" variant="ghost" @click="scheduleEditing = null">
+              {{ uz.groupSchedule.cancel }}
+            </BwButton>
+            <BwButton size="sm" :loading="savingSchedule" @click="saveSchedule">
+              {{ uz.groupSchedule.save }}
+            </BwButton>
+          </div>
+        </div>
+
+        <div v-else class="gzoom__chips">
+          <span v-if="!group.schedule?.length" class="gzoom__chips-empty">
+            {{ uz.groupSchedule.empty }}
+          </span>
+          <span v-for="(slot, index) in group.schedule" :key="index" class="gzoom__chip">
+            {{ uz.groupSchedule.days[slot.day] }} {{ slot.start }}–{{ slot.end }}
+          </span>
+        </div>
       </div>
     </div>
   </section>
@@ -301,5 +402,129 @@ load()
   justify-content: flex-end;
   gap: 7px;
   margin-top: 2px;
+}
+
+.gzoom__schedule {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line-2);
+}
+
+.gzoom__schedule-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  margin-bottom: 8px;
+}
+
+.gzoom__schedule-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.gzoom__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.gzoom__chips-empty {
+  font-size: 12px;
+  color: var(--gray-2);
+}
+
+.gzoom__chip {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--green-darker);
+  background: var(--green-mid);
+  border-radius: 99px;
+  padding: 4px 10px;
+}
+
+.gzoom__slots {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gzoom__slot-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.gzoom__select,
+.gzoom__time {
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 0 9px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  outline: none;
+  background: var(--white);
+}
+
+.gzoom__select:focus,
+.gzoom__time:focus {
+  border-color: var(--green);
+  box-shadow: var(--ring-green);
+}
+
+.gzoom__select {
+  flex: 1;
+  min-width: 0;
+}
+
+.gzoom__time {
+  width: 100px;
+}
+
+.gzoom__slot-sep {
+  color: var(--gray-2);
+}
+
+.gzoom__slot-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--gray);
+  cursor: pointer;
+}
+
+.gzoom__slot-remove:hover {
+  background: var(--line-2);
+  color: var(--danger);
+}
+
+.gzoom__add-slot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  border: 1px dashed var(--line);
+  border-radius: 9px;
+  padding: 7px 11px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--gray);
+  background: transparent;
+  cursor: pointer;
+}
+
+.gzoom__add-slot:hover {
+  border-color: var(--green);
+  color: var(--green-dark);
 }
 </style>

@@ -92,6 +92,10 @@ export function fetchZoomStatus() {
   return http.get('/admin/zoom/status').then((r) => r.data)
 }
 
+export function updateGroupSchedule(groupId, schedule) {
+  return http.patch(`/admin/groups/${groupId}/schedule`, { schedule }).then((r) => r.data)
+}
+
 export function fetchCenterSettings() {
   return http.get('/settings').then((r) => r.data)
 }
