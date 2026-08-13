@@ -1,4 +1,6 @@
 <script setup>
+import BwIcon from '@/components/base/BwIcon.vue'
+import { useNow } from '@/composables/useNow'
 import { useUzbekDate } from '@/composables/useUzbekDate'
 import uz from '@/locales/uz'
 
@@ -6,7 +8,24 @@ defineProps({
   schedule: { type: Array, required: true },
 })
 
+const now = useNow()
 const { time } = useUzbekDate()
+
+/* The host button appears from ten minutes before the slot until it ends —
+   the same window the students get, so nobody arrives to an empty room. */
+const JOIN_GRACE_MS = 10 * 60 * 1000
+
+function canHost(entry) {
+  if (!entry.zoomJoinUrl) return false
+  const startsAt = new Date(entry.startsAt).getTime()
+  const endsAt = new Date(entry.endsAt).getTime()
+  return now.value >= startsAt - JOIN_GRACE_MS && now.value < endsAt
+}
+
+function host(entry) {
+  if (!canHost(entry)) return
+  window.open(entry.zoomJoinUrl, '_blank', 'noopener,noreferrer')
+}
 </script>
 
 <template>
@@ -27,12 +46,61 @@ const { time } = useUzbekDate()
         <div class="tsched__name" :class="`tsched__name--${entry.status}`">
           {{ entry.groupName }}<template v-if="entry.courseName"> · {{ entry.courseName }}</template>
         </div>
+
+        <button
+          v-if="canHost(entry)"
+          type="button"
+          class="tsched__host"
+          @click="host(entry)"
+        >
+          <BwIcon name="video" :size="15" />{{ uz.zoom.joinHost }}
+        </button>
+        <span
+          v-else-if="!entry.zoomJoinUrl && entry.status !== 'done'"
+          class="tsched__nolink"
+        >
+          {{ uz.zoom.noLinkTeacher }}
+        </span>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.tsched__host {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 9px;
+  border: none;
+  background: var(--green);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--sh-btn);
+}
+
+.tsched__host:hover {
+  background: var(--green-dark);
+}
+
+.tsched__host:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-green);
+}
+
+.tsched__nolink {
+  display: block;
+  margin-top: 6px;
+  font-size: 11.5px;
+  color: var(--gray-2);
+}
+
 .tsched {
   flex: 1;
   min-width: 320px;

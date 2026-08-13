@@ -101,6 +101,7 @@ export class TeacherDashboardService {
           startsAt: startsAt.toISOString(),
           endsAt: endsAt.toISOString(),
           status,
+          zoomJoinUrl: group.zoomJoinUrl ?? null,
         });
       }
     }

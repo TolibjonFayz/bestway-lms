@@ -13,6 +13,9 @@ export interface NextLessonDto {
   joinOpensAt: string;
   /** Closes once the slot is over; the client hides the card after this. */
   joinClosesAt: string;
+  /** The group's recurring Zoom link, or null when nobody has set one — the
+      card says so rather than offering a button that goes nowhere. */
+  zoomJoinUrl: string | null;
 }
 
 export interface UnitItemProgressDto {

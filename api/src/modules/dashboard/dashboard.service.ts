@@ -250,6 +250,7 @@ export class DashboardService {
       endsAt: slot.endsAt.toISOString(),
       joinOpensAt: slot.joinOpensAt.toISOString(),
       joinClosesAt: slot.endsAt.toISOString(),
+      zoomJoinUrl: group.zoomJoinUrl ?? null,
     };
   }
 

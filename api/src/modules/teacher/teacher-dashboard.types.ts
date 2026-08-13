@@ -5,6 +5,9 @@ export interface ScheduleEntryDto {
   startsAt: string;
   endsAt: string;
   status: 'done' | 'current' | 'upcoming';
+  /** The group's recurring Zoom link, so the teacher starts the lesson from
+      the same row that tells them it is due. */
+  zoomJoinUrl: string | null;
 }
 
 export interface PendingSubmissionPreviewDto {

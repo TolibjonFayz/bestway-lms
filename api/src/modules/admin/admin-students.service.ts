@@ -98,7 +98,26 @@ export class AdminStudentsService {
 
   async listGroups(): Promise<AdminGroupDto[]> {
     const rows = await this.groups.findAll({ order: [['name', 'ASC']] });
-    return rows.map((row) => ({ id: row.id, name: row.name, branch: row.branch }));
+    return rows.map((row) => ({
+      id: row.id,
+      name: row.name,
+      branch: row.branch,
+      zoomJoinUrl: row.zoomJoinUrl ?? null,
+    }));
+  }
+
+  /** Sets or clears a group's recurring Zoom link. */
+  async setGroupZoomUrl(groupId: number, url: string | undefined): Promise<AdminGroupDto> {
+    const group = await this.groups.findByPk(groupId);
+    if (!group) throw new NotFoundException('Guruh topilmadi');
+
+    await group.update({ zoomJoinUrl: url?.trim() || null });
+    return {
+      id: group.id,
+      name: group.name,
+      branch: group.branch,
+      zoomJoinUrl: group.zoomJoinUrl,
+    };
   }
 
   private async requireStudent(id: number): Promise<User> {

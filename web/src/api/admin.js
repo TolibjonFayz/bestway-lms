@@ -80,6 +80,10 @@ export function bulkSetAdminStudentStatus(ids, active) {
   return http.patch('/admin/students/bulk-status', { ids, active }).then((r) => r.data)
 }
 
+export function setGroupZoomUrl(groupId, zoomJoinUrl) {
+  return http.patch(`/admin/groups/${groupId}/zoom`, { zoomJoinUrl }).then((r) => r.data)
+}
+
 export function fetchCenterSettings() {
   return http.get('/settings').then((r) => r.data)
 }

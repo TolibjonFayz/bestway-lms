@@ -41,6 +41,10 @@ export class Group extends Model<Group> {
   @Column(DataType.STRING)
   declare branch: string;
 
+  /** Recurring Zoom meeting link — the same one every lesson. */
+  @Column({ type: DataType.STRING(500), field: 'zoom_join_url' })
+  declare zoomJoinUrl: string | null;
+
   @BelongsTo(() => User, { foreignKey: 'teacherId', as: 'teacher' })
   declare teacher?: User;
 

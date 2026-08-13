@@ -471,6 +471,30 @@ export default {
     answered: 'Javob berildi',
   },
 
+  zoom: {
+    noLink: 'Dars havolasi hali qoʻshilmagan',
+    noLinkTeacher: 'Guruhga Zoom havolasi qoʻshilmagan — administratorga ayting',
+    joinHost: 'Darsni boshlash',
+    linkLabel: 'Zoom havolasi',
+    linkPlaceholder: 'https://zoom.us/j/1234567890?pwd=...',
+    linkHint:
+      'Zoomda takroriy uchrashuv (recurring meeting) yarating — bitta havola har darsda ishlaydi.',
+    linkFreeNote:
+      'Zoomning bepul rejasida guruh qoʻngʻirogʻi 40 daqiqadan keyin uziladi.',
+    linkSaved: 'Havola saqlandi',
+    linkCleared: 'Havola olib tashlandi',
+    linkError: 'Havolani saqlab boʻlmadi',
+    linkSet: 'Havola qoʻshilgan',
+    linkMissing: 'Havola yoʻq',
+    edit: 'Havolani oʻzgartirish',
+    add: 'Havola qoʻshish',
+    save: 'Saqlash',
+    clear: 'Oʻchirish',
+    cancel: 'Bekor qilish',
+    groupsTitle: 'Guruhlar va Zoom havolalari',
+    groupsText: 'Har bir guruh uchun takroriy Zoom havolasini kiriting',
+  },
+
   adminSettings: {
     title: 'Sozlamalar',
     subtitle: 'Markaz maʼlumotlari va saytning koʻrinishi',

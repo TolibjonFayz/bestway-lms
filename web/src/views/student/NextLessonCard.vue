@@ -16,19 +16,31 @@ const opensAt = computed(() => new Date(props.lesson.joinOpensAt))
 const startsAt = computed(() => new Date(props.lesson.startsAt))
 const closesAt = computed(() => new Date(props.lesson.joinClosesAt))
 
+const hasLink = computed(() => Boolean(props.lesson.zoomJoinUrl))
+
 /* The real check: the button is live from ten minutes before the start until
-   the slot ends, recomputed as the clock ticks. */
-const canJoin = computed(
+   the slot ends, recomputed as the clock ticks — and only if there is
+   somewhere to go. */
+const inWindow = computed(
   () => now.value >= opensAt.value && now.value < closesAt.value,
 )
+const canJoin = computed(() => inWindow.value && hasLink.value)
 const hasStarted = computed(() => now.value >= startsAt.value)
 
 const caption = computed(() => {
-  if (!canJoin.value) {
+  if (!hasLink.value) return uz.zoom.noLink
+  if (!inWindow.value) {
     return uz.dashboard.joinOpensAt.replace('{time}', time(opensAt.value))
   }
   return hasStarted.value ? uz.dashboard.joinOpenNow : uz.dashboard.joinOpenSoon
 })
+
+/* noopener keeps the new tab from reaching back into this one through
+   window.opener — the link is admin-supplied, but it still leaves our origin. */
+function join() {
+  if (!canJoin.value) return
+  window.open(props.lesson.zoomJoinUrl, '_blank', 'noopener,noreferrer')
+}
 </script>
 
 <template>
@@ -65,7 +77,7 @@ const caption = computed(() => {
         class="next__join"
         type="button"
         :disabled="!canJoin"
-        @click="$emit('join')"
+        @click="join"
       >
         <BwIcon :name="canJoin ? 'video' : 'lock'" :size="19" :stroke-width="1.9" />
         {{ uz.dashboard.join }}

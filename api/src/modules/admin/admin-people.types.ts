@@ -17,6 +17,8 @@ export interface AdminGroupDto {
   id: number;
   name: string;
   branch: string;
+  /** Recurring Zoom link; null until an admin sets one. */
+  zoomJoinUrl?: string | null;
 }
 
 export interface AdminTeacherDto {

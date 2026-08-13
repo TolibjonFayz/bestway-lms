@@ -5,6 +5,7 @@ import BwButton from '@/components/base/BwButton.vue'
 import BwInput from '@/components/base/BwInput.vue'
 import BwSkeleton from '@/components/base/BwSkeleton.vue'
 import LessonsStateCard from '@/views/student/lessons/LessonsStateCard.vue'
+import GroupZoomLinks from './GroupZoomLinks.vue'
 import ThemeGallery from './ThemeGallery.vue'
 import { fetchCenterSettings, updateCenterSettings } from '@/api/admin'
 import { useTheme } from '@/composables/useTheme'
@@ -137,6 +138,8 @@ load()
             :placeholder="uz.adminSettings.addressPlaceholder"
           />
         </section>
+
+        <GroupZoomLinks class="aset__block" />
 
         <section class="aset__block aset__panel">
           <h3 class="aset__panel-title">{{ uz.adminSettings.coinsTitle }}</h3>
