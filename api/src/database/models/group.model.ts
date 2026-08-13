@@ -45,6 +45,11 @@ export class Group extends Model<Group> {
   @Column({ type: DataType.STRING(500), field: 'zoom_join_url' })
   declare zoomJoinUrl: string | null;
 
+  /** Bare numeric meeting id — needed to mint a ZAK "start as host" link.
+      Null for a manually pasted join_url, which has no reliable id to parse. */
+  @Column({ type: DataType.BIGINT, field: 'zoom_meeting_id' })
+  declare zoomMeetingId: string | null;
+
   @BelongsTo(() => User, { foreignKey: 'teacherId', as: 'teacher' })
   declare teacher?: User;
 

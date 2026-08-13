@@ -10,6 +10,7 @@ import {
   User,
 } from '@/database/models';
 import { TestsModule } from '../tests/tests.module';
+import { ZoomModule } from '../zoom/zoom.module';
 import { TeacherAttendanceController } from './teacher-attendance.controller';
 import { TeacherAttendanceService } from './teacher-attendance.service';
 import { TeacherDashboardController } from './teacher-dashboard.controller';
@@ -26,6 +27,7 @@ import { TeacherSubmissionsService } from './teacher-submissions.service';
   imports: [
     SequelizeModule.forFeature([User, Group, Submission, Attendance, LessonItem, Unit, Course]),
     TestsModule,
+    ZoomModule,
   ],
   controllers: [
     TeacherAttendanceController,

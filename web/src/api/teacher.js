@@ -24,6 +24,10 @@ export function fetchTeacherStudents(params = {}) {
   return http.get('/teacher/students', { params }).then((r) => r.data)
 }
 
+export function fetchZoomStartUrl(groupId) {
+  return http.get(`/teacher/groups/${groupId}/zoom/start-url`).then((r) => r.data)
+}
+
 export function fetchTeacherGroups() {
   return http.get('/teacher/groups').then((r) => r.data)
 }

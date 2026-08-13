@@ -475,6 +475,8 @@ export default {
     noLink: 'Dars havolasi hali qoʻshilmagan',
     noLinkTeacher: 'Guruhga Zoom havolasi qoʻshilmagan — administratorga ayting',
     joinHost: 'Darsni boshlash',
+    starting: 'Ulanmoqda…',
+    startError: 'Zoom bilan bogʻlanib boʻlmadi',
     linkLabel: 'Zoom havolasi',
     linkPlaceholder: 'https://zoom.us/j/1234567890?pwd=...',
     linkHint:

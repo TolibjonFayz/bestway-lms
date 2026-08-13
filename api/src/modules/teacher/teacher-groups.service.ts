@@ -4,6 +4,7 @@ import { Op } from 'sequelize';
 import { AttendanceStatus, SubmissionStatus } from '@/common/enums';
 import { calendarDateKey, localParts } from '@/common/tashkent';
 import { Attendance, Group, Submission, User } from '@/database/models';
+import { ZoomService } from '../zoom/zoom.service';
 import { TeacherScopeService } from './teacher-scope.service';
 import {
   TeacherGroupDetailDto,
@@ -24,7 +25,29 @@ export class TeacherGroupsService {
     @InjectModel(Attendance) private readonly attendance: typeof Attendance,
     @InjectModel(Submission) private readonly submissions: typeof Submission,
     private readonly scope: TeacherScopeService,
+    private readonly zoom: ZoomService,
   ) {}
+
+  /**
+   * A link that drops the teacher straight into their group's meeting as
+   * host, no separate Zoom login needed. Falls back to the plain join_url —
+   * still joins the meeting, just without host controls — when the group's
+   * link was pasted by hand rather than created through us, since only a
+   * self-created meeting has a trustworthy id to mint a host token against.
+   */
+  async zoomStartUrl(teacherId: number, groupId: number): Promise<{ url: string; isHost: boolean }> {
+    const group = await this.groups.findByPk(groupId);
+    if (!group) throw new NotFoundException('Guruh topilmadi');
+    if (!(await this.scope.ownsGroup(teacherId, groupId))) {
+      throw new ForbiddenException('Bu guruh sizga tegishli emas');
+    }
+    if (!group.zoomJoinUrl) throw new NotFoundException('Zoom havolasi qoʻshilmagan');
+
+    if (!group.zoomMeetingId) {
+      return { url: group.zoomJoinUrl, isHost: false };
+    }
+    return { url: await this.zoom.getStartUrl(group.zoomMeetingId), isHost: true };
+  }
 
   async listFor(teacherId: number): Promise<TeacherGroupSummaryDto[]> {
     const groups = await this.groups.findAll({

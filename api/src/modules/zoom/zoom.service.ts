@@ -13,6 +13,11 @@ interface CachedToken {
   expiresAt: number;
 }
 
+export interface CreatedMeeting {
+  id: string;
+  joinUrl: string;
+}
+
 /* Server-to-Server OAuth: the account_credentials grant needs no user
    interaction, just the three values from a Zoom Marketplace app. */
 @Injectable()
@@ -26,8 +31,8 @@ export class ZoomService {
     return this.config.get<AppConfig['zoom']>('zoom') !== null;
   }
 
-  /** Creates a recurring, no-fixed-time meeting and returns its join link. */
-  async createRecurringMeeting(topic: string): Promise<string> {
+  /** Creates a recurring, no-fixed-time meeting. */
+  async createRecurringMeeting(topic: string): Promise<CreatedMeeting> {
     const token = await this.accessToken();
 
     const response = await fetch('https://api.zoom.us/v2/users/me/meetings', {
@@ -47,11 +52,36 @@ export class ZoomService {
     });
 
     const body = await response.json().catch(() => null);
-    if (!response.ok || !body?.join_url) {
+    if (!response.ok || !body?.join_url || !body?.id) {
       this.logger.error(`Zoom meeting creation failed: ${response.status} ${JSON.stringify(body)}`);
       throw new BadGatewayException('Zoom meeting yaratib boʻlmadi');
     }
-    return body.join_url as string;
+    return { id: String(body.id), joinUrl: body.join_url as string };
+  }
+
+  /**
+   * Builds a link that starts the meeting with host controls, with no prior
+   * Zoom login required — the click itself carries the authorisation.
+   *
+   * Mechanism: /users/me/zak mints a Zoom Access Key valid for five minutes,
+   * folded into https://zoom.us/s/{id}?zak=… . Minted fresh on every call
+   * rather than stored, both because it expires far too fast to cache
+   * usefully and because a five-minute host credential has no business
+   * sitting in the database between requests.
+   */
+  async getStartUrl(meetingId: string): Promise<string> {
+    const token = await this.accessToken();
+
+    const response = await fetch('https://api.zoom.us/v2/users/me/token?type=zak', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const body = await response.json().catch(() => null);
+    if (!response.ok || !body?.token) {
+      this.logger.error(`Zoom ZAK request failed: ${response.status} ${JSON.stringify(body)}`);
+      throw new BadGatewayException('Zoom bilan bogʻlanib boʻlmadi');
+    }
+
+    return `https://zoom.us/s/${meetingId}?zak=${encodeURIComponent(body.token)}`;
   }
 
   private async accessToken(): Promise<string> {

@@ -118,10 +118,15 @@ export class AdminStudentsService {
     const group = await this.groups.findByPk(groupId);
     if (!group) throw new NotFoundException('Guruh topilmadi');
 
-    const joinUrl = await this.zoom.createRecurringMeeting(`${group.name} — Best Way`);
-    await group.update({ zoomJoinUrl: joinUrl });
+    const meeting = await this.zoom.createRecurringMeeting(`${group.name} — Best Way`);
+    await group.update({ zoomJoinUrl: meeting.joinUrl, zoomMeetingId: meeting.id });
 
-    return { id: group.id, name: group.name, branch: group.branch, zoomJoinUrl: joinUrl };
+    return {
+      id: group.id,
+      name: group.name,
+      branch: group.branch,
+      zoomJoinUrl: meeting.joinUrl,
+    };
   }
 
   /** Sets or clears a group's recurring Zoom link. */
@@ -129,7 +134,12 @@ export class AdminStudentsService {
     const group = await this.groups.findByPk(groupId);
     if (!group) throw new NotFoundException('Guruh topilmadi');
 
-    await group.update({ zoomJoinUrl: url?.trim() || null });
+    /* zoomMeetingId is cleared here on purpose: it is only trustworthy when
+       we minted the link ourselves. A hand-pasted URL may point at a
+       different meeting entirely, and minting a host start-link against the
+       stale id would hand out host control for the wrong meeting. The start
+       endpoint falls back to the plain join_url once this is null. */
+    await group.update({ zoomJoinUrl: url?.trim() || null, zoomMeetingId: null });
     return {
       id: group.id,
       name: group.name,

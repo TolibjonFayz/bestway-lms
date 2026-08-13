@@ -1,6 +1,9 @@
 <script setup>
+import { ref } from 'vue'
 import BwIcon from '@/components/base/BwIcon.vue'
+import { fetchZoomStartUrl } from '@/api/teacher'
 import { useNow } from '@/composables/useNow'
+import { useToast } from '@/composables/useToast'
 import { useUzbekDate } from '@/composables/useUzbekDate'
 import uz from '@/locales/uz'
 
@@ -10,10 +13,14 @@ defineProps({
 
 const now = useNow()
 const { time } = useUzbekDate()
+const toast = useToast()
 
 /* The host button appears from ten minutes before the slot until it ends —
    the same window the students get, so nobody arrives to an empty room. */
 const JOIN_GRACE_MS = 10 * 60 * 1000
+
+/** groupId of the row currently minting its start link. */
+const starting = ref(null)
 
 function canHost(entry) {
   if (!entry.zoomJoinUrl) return false
@@ -22,9 +29,26 @@ function canHost(entry) {
   return now.value >= startsAt - JOIN_GRACE_MS && now.value < endsAt
 }
 
-function host(entry) {
-  if (!canHost(entry)) return
-  window.open(entry.zoomJoinUrl, '_blank', 'noopener,noreferrer')
+/* Opened synchronously inside the click handler in a background tab would be
+   blocked by most browsers' popup guard once we await the API call first, so
+   the tab is opened immediately and pointed at the real URL once it's back —
+   not opened after the fact. */
+async function host(entry) {
+  if (!canHost(entry) || starting.value) return
+  starting.value = entry.groupId
+  const tab = window.open('', '_blank', 'noopener,noreferrer')
+  try {
+    const { url } = await fetchZoomStartUrl(entry.groupId)
+    if (tab) tab.location.href = url
+    else window.open(url, '_blank', 'noopener,noreferrer')
+  } catch (error) {
+    tab?.close()
+    toast.error(uz.zoom.startError, {
+      description: error?.response?.data?.message ?? uz.adminSettings.errorText,
+    })
+  } finally {
+    starting.value = null
+  }
 }
 </script>
 
@@ -51,9 +75,11 @@ function host(entry) {
           v-if="canHost(entry)"
           type="button"
           class="tsched__host"
+          :disabled="starting === entry.groupId"
           @click="host(entry)"
         >
-          <BwIcon name="video" :size="15" />{{ uz.zoom.joinHost }}
+          <BwIcon name="video" :size="15" />
+          {{ starting === entry.groupId ? uz.zoom.starting : uz.zoom.joinHost }}
         </button>
         <span
           v-else-if="!entry.zoomJoinUrl && entry.status !== 'done'"

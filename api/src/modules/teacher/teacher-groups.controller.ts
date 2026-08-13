@@ -25,4 +25,14 @@ export class TeacherGroupsController {
   ): Promise<TeacherGroupDetailDto> {
     return this.groups.detail(user.sub, groupId);
   }
+
+  /* Minted just-in-time — see ZoomService.getStartUrl on why this can't be
+     precomputed or cached. */
+  @Get(':groupId/zoom/start-url')
+  zoomStartUrl(
+    @CurrentUser() user: JwtPayload,
+    @Param('groupId', ParseIntPipe) groupId: number,
+  ): Promise<{ url: string; isHost: boolean }> {
+    return this.groups.zoomStartUrl(user.sub, groupId);
+  }
 }
