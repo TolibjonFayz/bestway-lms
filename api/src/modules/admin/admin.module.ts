@@ -18,6 +18,7 @@ import {
 } from '@/database/models';
 import { LessonsModule } from '../lessons/lessons.module';
 import { UsersModule } from '../users/users.module';
+import { ZoomModule } from '../zoom/zoom.module';
 import { AdminSettingsController, PublicSettingsController } from './center-settings.controller';
 import { CenterSettingsService } from './center-settings.service';
 import { AdminContentController } from './admin-content.controller';
@@ -52,6 +53,7 @@ import { AdminVocabService } from './admin-vocab.service';
     ]),
     LessonsModule,
     UsersModule,
+    ZoomModule,
   ],
   controllers: [
     AdminContentController,

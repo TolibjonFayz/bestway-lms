@@ -43,11 +43,24 @@ export class AdminStudentsController {
     return this.students.listGroups();
   }
 
+  /** Whether ZOOM_ACCOUNT_ID/CLIENT_ID/CLIENT_SECRET are set — the panel
+      hides the auto-create button entirely rather than offering one that
+      always fails. */
+  @Get('zoom/status')
+  zoomStatus(): { configured: boolean } {
+    return { configured: this.students.zoomConfigured };
+  }
+
   @Patch('groups/:id/zoom')
   setGroupZoom(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateGroupZoomDto,
   ): Promise<AdminGroupDto> {
     return this.students.setGroupZoomUrl(id, dto.zoomJoinUrl);
+  }
+
+  @Post('groups/:id/zoom/create')
+  createGroupZoom(@Param('id', ParseIntPipe) id: number): Promise<AdminGroupDto> {
+    return this.students.createGroupZoomMeeting(id);
   }
 }

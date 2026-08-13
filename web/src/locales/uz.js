@@ -493,6 +493,11 @@ export default {
     cancel: 'Bekor qilish',
     groupsTitle: 'Guruhlar va Zoom havolalari',
     groupsText: 'Har bir guruh uchun takroriy Zoom havolasini kiriting',
+    autoCreate: 'Meeting yaratish',
+    autoCreating: 'Yaratilmoqda…',
+    autoCreated: 'Meeting yaratildi',
+    autoCreateError: 'Meeting yaratib boʻlmadi',
+    orManual: 'yoki qoʻlda kiriting',
   },
 
   adminSettings: {

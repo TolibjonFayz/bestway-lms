@@ -22,6 +22,8 @@ export interface AppConfig {
     refreshTtl: string;
   };
   seedPassword: string;
+  /** Null when not configured — the create-meeting feature is optional. */
+  zoom: { accountId: string; clientId: string; clientSecret: string } | null;
 }
 
 function required(name: string): string {
@@ -96,5 +98,16 @@ export default (): AppConfig => {
       refreshTtl: process.env.JWT_REFRESH_TTL ?? '30d',
     },
     seedPassword: process.env.SEED_PASSWORD ?? 'bestway123',
+    zoom: zoomConfig(),
   };
 };
+
+/* All three or none — a partially-configured app would fail confusingly
+   mid-request instead of just not offering the button. */
+function zoomConfig(): AppConfig['zoom'] {
+  const accountId = process.env.ZOOM_ACCOUNT_ID;
+  const clientId = process.env.ZOOM_CLIENT_ID;
+  const clientSecret = process.env.ZOOM_CLIENT_SECRET;
+  if (!accountId || !clientId || !clientSecret) return null;
+  return { accountId, clientId, clientSecret };
+}

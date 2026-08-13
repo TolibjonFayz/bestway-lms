@@ -2,7 +2,12 @@
 import { ref } from 'vue'
 import BwButton from '@/components/base/BwButton.vue'
 import BwIcon from '@/components/base/BwIcon.vue'
-import { fetchAdminGroups, setGroupZoomUrl } from '@/api/admin'
+import {
+  createGroupZoomMeeting,
+  fetchAdminGroups,
+  fetchZoomStatus,
+  setGroupZoomUrl,
+} from '@/api/admin'
 import { useToast } from '@/composables/useToast'
 import uz from '@/locales/uz'
 
@@ -13,15 +18,39 @@ const loading = ref(true)
 /** Group id being edited, with its draft value. */
 const editing = ref(null)
 const saving = ref(false)
+/* Hidden entirely rather than shown-disabled: a button that always fails is
+   worse than no button, and most groups won't have Zoom credentials set up. */
+const zoomConfigured = ref(false)
+/** Group id whose meeting is being auto-created. */
+const autoCreating = ref(null)
 
 async function load() {
   loading.value = true
   try {
-    groups.value = await fetchAdminGroups()
+    const [groupList, status] = await Promise.all([fetchAdminGroups(), fetchZoomStatus()])
+    groups.value = groupList
+    zoomConfigured.value = status.configured
   } catch {
     groups.value = []
   } finally {
     loading.value = false
+  }
+}
+
+async function autoCreate(group) {
+  if (autoCreating.value) return
+  autoCreating.value = group.id
+  try {
+    const updated = await createGroupZoomMeeting(group.id)
+    const index = groups.value.findIndex((g) => g.id === group.id)
+    if (index !== -1) groups.value[index] = { ...groups.value[index], ...updated }
+    toast.success(uz.zoom.autoCreated)
+  } catch (error) {
+    toast.error(uz.zoom.autoCreateError, {
+      description: error?.response?.data?.message ?? uz.adminSettings.errorText,
+    })
+  } finally {
+    autoCreating.value = null
   }
 }
 
@@ -109,6 +138,19 @@ load()
 
       <div v-else class="gzoom__view">
         <span v-if="group.zoomJoinUrl" class="gzoom__url">{{ group.zoomJoinUrl }}</span>
+        <span v-else-if="zoomConfigured" class="gzoom__spacer" />
+
+        <BwButton
+          v-if="zoomConfigured && !group.zoomJoinUrl"
+          size="sm"
+          :loading="autoCreating === group.id"
+          @click="autoCreate(group)"
+        >
+          <BwIcon name="video" :size="14" />{{ uz.zoom.autoCreate }}
+        </BwButton>
+        <span v-if="zoomConfigured && !group.zoomJoinUrl" class="gzoom__or">
+          {{ uz.zoom.orManual }}
+        </span>
         <BwButton size="sm" variant="secondary" @click="startEdit(group)">
           {{ group.zoomJoinUrl ? uz.zoom.edit : uz.zoom.add }}
         </BwButton>
@@ -204,6 +246,15 @@ load()
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+.gzoom__spacer {
+  flex: 1;
+}
+
+.gzoom__or {
+  font-size: 11.5px;
+  color: var(--gray-2);
 }
 
 .gzoom__url {

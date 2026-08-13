@@ -84,6 +84,14 @@ export function setGroupZoomUrl(groupId, zoomJoinUrl) {
   return http.patch(`/admin/groups/${groupId}/zoom`, { zoomJoinUrl }).then((r) => r.data)
 }
 
+export function createGroupZoomMeeting(groupId) {
+  return http.post(`/admin/groups/${groupId}/zoom/create`).then((r) => r.data)
+}
+
+export function fetchZoomStatus() {
+  return http.get('/admin/zoom/status').then((r) => r.data)
+}
+
 export function fetchCenterSettings() {
   return http.get('/settings').then((r) => r.data)
 }

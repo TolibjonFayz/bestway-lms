@@ -7,6 +7,7 @@ import { UserRole } from '@/common/enums';
 import { Paginated } from '@/common/types';
 import { Group, User } from '@/database/models';
 import { UsersService } from '../users/users.service';
+import { ZoomService } from '../zoom/zoom.service';
 import { AdminStudentsQueryDto } from './dto/admin-students-query.dto';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { AdminGroupDto, AdminStudentDto } from './admin-people.types';
@@ -19,6 +20,7 @@ export class AdminStudentsService {
     private readonly usersService: UsersService,
     private readonly config: ConfigService,
     private readonly sequelize: Sequelize,
+    private readonly zoom: ZoomService,
   ) {}
 
   async list(query: AdminStudentsQueryDto): Promise<Paginated<AdminStudentDto>> {
@@ -104,6 +106,22 @@ export class AdminStudentsService {
       branch: row.branch,
       zoomJoinUrl: row.zoomJoinUrl ?? null,
     }));
+  }
+
+  get zoomConfigured(): boolean {
+    return this.zoom.isConfigured;
+  }
+
+  /** Creates the group's recurring meeting via the Zoom API and stores its
+      link — the automated counterpart to setGroupZoomUrl's manual paste. */
+  async createGroupZoomMeeting(groupId: number): Promise<AdminGroupDto> {
+    const group = await this.groups.findByPk(groupId);
+    if (!group) throw new NotFoundException('Guruh topilmadi');
+
+    const joinUrl = await this.zoom.createRecurringMeeting(`${group.name} — Best Way`);
+    await group.update({ zoomJoinUrl: joinUrl });
+
+    return { id: group.id, name: group.name, branch: group.branch, zoomJoinUrl: joinUrl };
   }
 
   /** Sets or clears a group's recurring Zoom link. */
